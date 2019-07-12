@@ -1,0 +1,50 @@
+
+{% extends "experts/base.html" %}
+{% block content %}
+    <br>
+    <h3> 更新{{ expert.ename }}的工作经历</h3>
+    {% if result.status == 'success' %}
+        <p style="align-content: center;color: green;font-size: medium">
+            <!--<input type="button" class="btn btn-success" value="修改成功，返回专家列表" onclick="window.location.href='{% url 'expertinfolist' %}'">-->
+            <input type="button" class="btn btn-success btn-sm"  value="修改成功,返回工作经历列表" onclick="location.href='{% url 'workexp_detail' expert.eid expert.ename %}'">
+        </p>
+    {% endif %}
+
+    <!--<form action="{{ workexp.get_workexp_update_url }}" method="post" name="workexp_detail_update">-->
+    <form method="post">
+        {% csrf_token %}
+        <!--
+        {% for field in form %}
+            <div class="form-group">
+                <label class="sol-sm-2 control-label">请输入新{{ field.label }}</label>
+                <div class="col-sm-10">
+                    {{ field }}
+                </div>
+            </div>
+        {% endfor %}-->
+        {% for field in form %}
+                {% if field.label == '职责' %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        <div class="col-sm-10">
+                            <textarea name='duty' class="form-control" rows="3">{{ field.value }}</textarea>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        <div class="col-sm-10">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endif %}
+        {% endfor %}
+        <div class="pull-right col-sm-pull-11">
+                 <button type="reset" class="btn btn-warning">重置</button>
+                 <button type="submit" class="btn btn-success">更新</button>
+        </div>
+
+    </form>
+
+
+{% endblock content %}

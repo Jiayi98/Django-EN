@@ -1,0 +1,9 @@
+{% extends "experts/base.html" %}
+{% block content %}
+    <br><br>
+    <h1>操作成功</h1>
+    <br>
+    <p style="align-content: center;color: green;font-size: medium">
+        <input type="button" class="btn btn-success" value="返回专家列表" onclick="window.location.href='{% url 'expertinfolist' %}'"></a>
+    </p>
+{% endblock content %}

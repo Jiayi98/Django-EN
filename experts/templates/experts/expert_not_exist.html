@@ -1,0 +1,6 @@
+{% extends "experts/base.html" %}
+{% block content %}
+    <br>
+    <h1>数据库不存在该专家</h1>
+    <h3>请检查姓名与电话号码是否正确或 <a href="{% url 'addexpert'%}">先添加专家</a></h3>
+{% endblock content %}

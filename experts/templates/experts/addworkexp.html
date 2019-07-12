@@ -1,0 +1,48 @@
+{% extends "experts/base.html" %}
+    {% block content %}
+        <br>
+        <h2>增加工作经历</h2>
+        <br>
+       <form action="." class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% for field in formI %}
+                <div class="form-group">
+                    <label class="sol-sm-2 control-label">请输入专家姓名</label>
+                    <div class="col-sm-10">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="pull-right col-sm-pull-11">
+                 <button type="reset" class="btn btn-warning">重置</button>
+                 <button type="submit" class="btn btn-success">确认</button>
+             </div>
+            <br>
+
+            {% for expert in expert_objs %}
+            <p>
+                <a href="{{ expert.add_workexp_url }}">{{ expert.ename }}</a>
+               —— 行业: {{ expert.etrade }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp公司: {{ expert.get_company }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp职位: {{ expert.get_position }}
+            </p>
+            {% endfor %}
+        </form>
+
+<!--
+        <form action="/addworkexptodatabase/" method="post" name="addworkexp">
+            {% csrf_token %}
+            {% for field in formW %}
+                <div class="form-group">
+                    <label class="sol-sm-2 control-label">{{ field.label }}</label>
+                    <div class="col-sm-10">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="pull-right col-sm-pull-11">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-success">添加</button>
+            </div>
+        </form>-->
+
+    {% endblock content %}
+

@@ -1,0 +1,29 @@
+{% extends "experts/base.html" %}
+
+{% block content %}
+    <br><br>
+    <h2>{{expert.ename}} - 个人信息</h2>
+    <br>
+    <li> 电话： {{ expert.emobile }} </li>
+    <li> EID： {{ expert.eid }} </li>
+    <li> 性别： {{ expert.esex }} </li>
+    <li> 邮箱： {{ expert.eemail }} </li>
+    <li> 行业： {{ expert.etrade }} </li>
+    <li> 子行业： {{ expert.esubtrade }} </li>
+    <li> 生日： {{ expert.ebirthday }} </li>
+    <li> 地区： {{expert.elocation}} </li>
+    <li> Landline：{{ expert.elandline }} </li>
+    <li> MSN: {{ expert.emsn }} </li>
+    <li> QQ: {{ expert.eqq }} </li>
+    <li> State： {{ expert.estate }} </li>
+    <li> 来源： {{ expert.ecomefrom }} </li>
+    <li> 备注： {{ expert.eremark }} </li>
+    <li> admin_id：{{ expert.admin_id }} </li>
+    <li> 添加时间： {{ expert.addtime }} </li>
+    <br>
+
+        <input type="button" class="btn btn-info"  value="返回" onclick="javascript:history.go(-1);">
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <input type="button" class="btn btn-danger" value="删除" onclick="window.location.href='{{ expert.delete_confirm_url }}'">
+        <br><br>
+{% endblock content %}

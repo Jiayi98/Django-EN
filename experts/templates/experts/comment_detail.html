@@ -1,0 +1,61 @@
+
+{% extends "experts/base.html" %}
+
+{% block content %}
+
+    <br><br>
+    <h2>{{expert.ename}} - Comments</h2>
+    <br>
+    <input type="button" class="btn btn-info btn-sm"  value="返回专家信息" onclick="location.href='{% url 'expert_detail' expert.ename expert.eid%}'">
+    <input type="button" class="btn btn-warning btn-sm"  value="新建Comment" onclick="window.location.href='{{ expert.add_comment_url }}'">
+    <br><br>
+<table class="table table-condensed table-hover" width="100%" style="font-size: 11px">
+  <caption></caption>
+  <thead>
+    <tr>
+        <th width="26%">问题</th>
+        <th width="60%">详情</th>
+        <th width="4%"></th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for comment in comments %}
+   <tr class="info">
+
+      <td>{{ comment.eproblem }}</td>
+      <td>{{ comment.ecomment }}</td>
+
+       <td>
+           <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
+           <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ comment.delete_comment }}'">删除</button>
+       </td>
+  </tr>
+  {% endfor %}
+  {% if result.status == 'success'%}
+            <td> {{ c.eproblem }} </td>
+            <td> {{ c.ecomment }} </td>
+
+  <td><button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ c.delete_comment_confirm }}'">确认删除</button></td>
+  {% endif %}
+  </tbody>
+</table>
+<!--
+    {% for comment in comments %}
+        <div class="expert_comment">
+            <label class="sol-sm-2 control-label">Comment</label>
+            <li> 问题： {{ comment.eproblem }} </li>
+            <li> 详情： {{ comment.ecomment }} </li>
+        </div>
+        <br>
+        <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>&nbsp&nbsp&nbsp
+        <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ comment.delete_comment }}'">删除</button><br><br>
+    {% endfor %}
+{% if result.status == 'success'%}
+            <label class="sol-sm-2 control-label">Comment</label>
+            <li> 问题： {{ c.eproblem }} </li>
+            <li> 详情： {{ c.ecomment }} </li>
+            <br><br>
+            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ c.delete_comment_confirm }}'">确认删除</button><br><br>
+    {% endif %}-->
+{% endblock content %}

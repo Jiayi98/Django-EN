@@ -1,0 +1,40 @@
+{% extends "experts/base.html" %}
+{% block content %}
+    <br>
+   <h1> 更新{{ expert.ename }}-Comment</h1>
+    {% if result.status == 'success' %}
+        <p style="align-content: center;color: green;font-size: medium">
+            <!--<input type="button" class="btn btn-success" value="修改成功，返回专家信息" onclick="window.location.href='{% url 'expertinfolist' %}'"></a>-->
+            <input type="button" class="btn btn-success btn-sm"  value="修改成功,返回评论列表" onclick="location.href='{% url 'comment_detail' expert.eid expert.ename %}'">
+        </p>
+    {% endif %}
+    <br>
+
+    <form action="{{ comment.get_comment_update_url }}" method="post" name="comment_detail_update">
+        {% csrf_token %}
+        {% for field in form %}
+                {% if field.label == '问题' %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        <div class="col-sm-10">
+                            <textarea name='eproblem' class="form-control" rows="3">{{ field.value }}</textarea>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        <div class="col-sm-10">
+                            <textarea name='ecomment' class="form-control" rows="5">{{ field.value }}</textarea>
+                        </div>
+                    </div>
+                {% endif %}
+        {% endfor %}
+
+        <div class="pull-right col-sm-pull-11">
+                 <button type="reset" class="btn btn-warning">重置</button>
+                 <button type="submit" class="btn btn-success">更新</button>
+        </div>
+    </form>
+
+
+{% endblock content %}

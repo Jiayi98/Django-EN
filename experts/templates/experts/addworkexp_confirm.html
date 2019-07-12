@@ -1,0 +1,32 @@
+{% extends "experts/base.html" %}
+    {% block content %}
+        <br>
+        <input type="button" class="btn btn-info"  value="返回上一步" onclick="javascript:history.go(-1);">
+        <br><br>
+        <h1>增加工作经历</h1>
+        <br>
+        <form action="." class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% for field in formW %}
+                {% if field.label == '职责' %}
+                    <label>{{ field.label }}</label>
+                    <div class="col-sm-10">
+                        <textarea name='duty' class="form-control" rows="3"></textarea>
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        <div class="col-sm-10">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endif %}
+            <br>
+            {% endfor %}
+            <div class="pull-right col-sm-pull-11">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-success">添加</button>
+            </div>
+        </form>
+
+    {% endblock content %}

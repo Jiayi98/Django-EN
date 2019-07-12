@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'experts/main.css' %}">
+
+
+</head>
+<body>
+    <header class="site-header">
+     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'base' %}">Home</a>
+        </div>
+        <ul class="nav navbar-nav navbar-left">
+            {% if user.is_authenticated %}
+
+                <li class="nav-item">
+                    <div class="container-fluid">
+                        <form style="margin-top: 0%" method="get" action="{% url 'search_expert' %}" class="navbar-form navbar-left" role="search">
+                            {% csrf_token %}
+                            <input type="search" class="btn btn-sm" name='q' placeholder="全局搜索" required>
+                            <button type="submit" class="btn btn-success btn-sm">搜索</button>
+                        </form>
+                        {% if error_msg %}
+                            {{error_msg}}
+                        {% endif %}
+                    </div>
+                </li>
+             <li class="nav-item">
+                    <button class="btn btn-warning btn-sm" onclick="window.location.href='{% url 'advanced_expert_form'%}'">高级搜索</button>
+                </li>
+             &nbsp&nbsp&nbsp
+                 <li class="nav-item">
+                    <div class="dropdown">
+                        <button style="margin-top: 0%" type="button" class="btn dropdown-toggle btn-warning btn-sm" id="dropdownMenu1" data-toggle="dropdown">菜单
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{% url 'addexpert'%}" class="btn btn-sm"> &nbsp&nbsp&nbsp添加专家 </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{% url 'addcomment'%}" class="btn btn-sm"> &nbsp&nbsp&nbsp添加访谈 </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{% url 'addworkexp'%}" class="btn btn-sm"> &nbsp&nbsp&nbsp添加经历 </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{% url 'updateexpert' %}" class="btn btn-sm"> &nbsp&nbsp&nbsp更新专家信息 </a>
+                            </li>
+                            <li role="presentation">
+                                {% if perms.experts.can_delete_expert_info %}
+                                    <a role="menuitem" tabindex="-1" href="{% url 'deleteexpert' %}" class="btn btn-sm"> &nbsp&nbsp&nbsp删除专家信息 </a>
+                                {%  else %}
+                                <a role="menuitem" tabindex="-1" href="." class="btn btn-sm"> &nbsp&nbsp&nbsp删除专家信息(无权限)</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+             &nbsp&nbsp&nbsp
+
+            <li class="nav-item">
+                    <button class="btn btn-warning btn-sm" onclick="window.location.href='{% url 'expertinfolist' %}'">专家列表</button>
+                </li>
+             &nbsp&nbsp&nbsp
+                <li class="nav-item">
+                    <button class="btn btn-info btn-sm" onclick="location.href='{% url 'dashboard' %}'">个人账户 </button>
+                </li>
+             &nbsp&nbsp&nbsp
+                <li class="nav-item">
+                    <button class="btn btn-danger btn-sm" onclick="location.href='{% url 'logout' %}'">登出</button>
+                </li>
+            {% else %}
+                <!--<li class="nav-item">
+                    <button class="btn btn-sm" onclick="location.href='{% url 'register' %}'">注册</button>
+                </li>-->
+            &nbsp&nbsp&nbsp
+                <li class="nav-item">
+                    <button class="btn btn-success btn-sm" onclick="location.href='{% url 'login' %}'">登陆</button>
+                </li>
+            {% endif %}
+        </ul>
+     </nav>
+    </header>
+
+    <main role="main" class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          {% block content %}
+            <br>
+            <h1>Experts Network</h1>
+            {% endblock %}
+        </div>
+
+        </div>
+      </div>
+    </main>
+    <br><br><br><br>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>

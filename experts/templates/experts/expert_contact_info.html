@@ -1,0 +1,28 @@
+{% extends "experts/base.html" %}
+{% block content %}
+<br>
+    <h2>{{ expert.ename }}</h2>
+    <input type="button" class="btn btn-info btn-sm"  value="返回专家信息" onclick="location.href='{% url 'expert_detail' expert.ename expert.eid %}'">
+    <!--<button value="返回" onclick="javascript:history.go(-1);">返回</button>-->
+<br><br>
+<table class="table table-condensed table-bordered">
+  <caption></caption>
+  <thead>
+    <tr>
+        <th>电话</th>
+        <th>邮箱</th>
+        <th>微信</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="info">
+      <td>{{ expert.emobile }}</td>
+      <td>{{ expert.eemail}}</td>
+      <td>{{ expert.eqq }}</td>
+
+
+    </tr>
+  </tbody>
+</table>
+{% endblock content %}

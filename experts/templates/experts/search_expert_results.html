@@ -1,0 +1,44 @@
+{% extends "experts/base.html" %}
+
+
+{% block content %}
+    <br>
+    <h2>搜索结果</h2>
+    <input type="button" class="btn btn-info btn-sm"  value="返回专家列表" onclick="location.href='/expertinfolist/'">
+    <br><br>
+    {% if error_msg %}
+        <p>{{ error_msg }}</p>
+    {% endif %}
+
+    <table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="word-break:break-all" aline=center>
+	    <caption></caption>
+        <thead>
+            <tr>
+                <th width="6%">姓名</th>
+                <th width="8%">行业</th>
+                <th width="8%">公司</th>
+                <th width="8%">职位</th>
+                <th width="70%">背景</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for expert in expert_list %}
+            <tr>
+                <td style="font-size:11px"><a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a></td>
+                <td style="font-size:11px">{{ expert.etrade }}</td>
+                <td style="font-size:11px">{{ expert.get_company }}</td>
+                <td style="font-size:11px">{{ expert.get_position }}</td>
+                <td style="font-size:11px">{{ expert.ebackground }}</td>
+            </tr>
+            {% empty %}
+                <div class="no-post">
+                <td>没有搜索到符合条件的专家</td>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends "experts/base.html" %}
+{% block content %}
+    <br>
+    <h2>专家列表</h2>
+    <br>
+
+<div class="col-md-10">
+    <form style="margin-top: 0%" method="get" action="{% url 'search_expert' %}" class="navbar-form navbar-left" role="search">
+                            {% csrf_token %}
+                            <input type="search" style="width: auto;" class="btn btn-sm" name='q' placeholder="全局搜索" required>
+                            <button type="submit" class="btn btn-success btn-sm">搜索</button>
+                        </form>
+                        {% if error_msg %}
+                            {{error_msg}}
+                        {% endif %}
+</div>
+<br>
+<!--<table class="table table-condensed table-striped" width="100%" style="font-size:10px; max-height:50px">-->
+<table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size:11px;word-break:break-all" aline=center>
+	<caption></caption>
+   <thead>
+      <tr>
+          <th width="6%">姓名</th>
+          <th width="8%">行业</th>
+          <th width="8%">公司</th>
+          <th width="8%">职位</th>
+          <th width="70%" >背景</th>
+
+      </tr>
+   </thead>
+   <tbody>
+   {% for expert in experts %}
+      <tr>
+          <td><a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a></td>
+          <td>{{ expert.etrade }}</td>
+          <td>{{ expert.get_company }}</td>
+          <td>{{ expert.get_position }}</td>
+          <td>{{ expert.ebackground }}</td>
+      </tr>
+
+    {% endfor %}
+   </tbody>
+</table>
+
+    {% include "experts/pagination.html" with page=experts %}
+{% endblock content %}

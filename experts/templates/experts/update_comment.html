@@ -1,0 +1,43 @@
+{% extends "experts/base.html" %}
+    {% block content %}
+        <br>
+        <h1>更新访谈信息</h1>
+        <br>
+        <h3>POST方式</h3>
+        <form action="/commentupdatetodatabase/" class="form-horizontal" method="post" name="commentupdatetodatabase">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="sol-sm-2 control-label">请输入所要更改访谈的专家姓名</label>
+                    <div class="col-sm-10">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="pull-right col-sm-pull-11">
+                 <button type="reset" class="btn btn-warning">重置</button>
+                 <button type="submit" class="btn btn-success">确认</button>
+             </div>
+            <br>
+
+            {% for expert in expert_objs %}
+                <h3> <a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a></h3>
+
+            ——EID: {{ expert.eid }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp电话: {{ expert.emobile }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp行业: {{ expert.etrade }}</p>
+
+                {% for c in comment_objs %}
+                    <p> <a href="{{ c.get_comment_update_url }}"> {{ c.eproblem }} </a></p>
+
+                {% endfor %}
+
+            {% endfor %}
+
+       <!-- <form action="/expertinfoupdateForm/" method="post" name="updateexpertform">-->
+        <!--    {% csrf_token %}-->
+
+        <!--  {{ form.as_p }}-->
+            <!-- <input type="reset">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="add">-->
+        </form>
+
+    {% endblock content %}
+

@@ -1,0 +1,27 @@
+{% extends "experts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+
+        <div class="media-body">
+            <br><br>
+            <h1 class="page-name">{{ user.username }}的个人主页</h1>
+            <br>
+            <p class="text-secondary">{{ user.email }}</p>
+            <p class="text-secondary">{{ user.username }}</p>
+
+
+
+
+        </div>
+
+      </div>
+      <!-- FORM HERE -->
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a href="{% url 'password_change' %}">Change Password</a>
+        </small>
+    </div>
+{% endblock content %}

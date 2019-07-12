@@ -1,0 +1,36 @@
+{% extends "experts/base.html" %}
+{% block content %}
+    <br>
+   <h1> 更新{{ expert.ename }}信息</h1>
+    <br>
+
+    <form action="{{ expert.get_update_url }}" method="post" name="expert_detail_update">
+        {% csrf_token %}
+        {% for field in form %}
+                    {% if field.label == '背景' %}
+                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-10">
+                            <textarea name='ebackground' class="form-control" rows="5">{{ field.value }}</textarea>
+                        </div>
+                    {% else %}
+                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-10">
+                            {{ field }}
+                        </div>
+                    {% endif %}
+           <!-- <div class="form-group">
+                <label class="sol-sm-2 control-label">请输入新{{ field.label }}</label>
+                <div class="col-sm-10">
+                    {{ field }}
+                </div>
+            </div>-->
+        {% endfor %}
+        <br>
+        <div class="pull-right col-sm-pull-11">
+                 <button type="reset" class="btn btn-warning">重置</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                 <button type="submit" class="btn btn-success">更新</button>
+        </div>
+    </form>
+
+
+{% endblock content %}

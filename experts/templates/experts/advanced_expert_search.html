@@ -1,0 +1,131 @@
+{% extends "experts/base.html" %}
+{% block content %}
+<br><br>
+<h2>Advanced Search</h2>
+<br>
+                  <form method="get" action="{% url 'advanced_expert_search' %}" >
+                    {% csrf_token %}
+                      <input type="search" name='eid' placeholder="ID">&nbsp&nbsp&nbsp
+                      <input type="search" name='name' placeholder="姓名">&nbsp&nbsp&nbsp
+                      <input type="search"  name='sex' placeholder="性别:M/F">
+                      <br><br>
+                      <input type="search" name='location' placeholder="城市">&nbsp&nbsp&nbsp
+                      <input type="search"  name='trade' placeholder="行业">&nbsp&nbsp&nbsp
+                      <input type="search"  name='subtrade' placeholder="子行业">
+                      <br><br>
+                      <input type="search"  name='company' placeholder="公司">&nbsp&nbsp&nbsp
+                      <input type="search"  name='agency' placeholder="部门">&nbsp&nbsp&nbsp
+                      <input type="search"  name='position' placeholder="职位">
+                      <br><br>
+                      <input type="search"  name='duty' placeholder="工作职责">&nbsp&nbsp&nbsp
+                       <input type="search"  name='background' placeholder="背景">&nbsp&nbsp&nbsp
+                      <input type="search"  name='area' placeholder="专业领域">
+                      <br><br>
+                    <button type="submit" class="btn btn-success">搜索</button>
+                  </form>
+{% endblock content %}
+
+<!--
+
+
+
+
+<br><br>
+<h2>Advanced Search</h2>
+<br>
+                  <form role="form" method="get" action="{% url 'advanced_expert_search' %}">
+                    {% csrf_token %}
+                      <P>
+                        姓名：
+                        <input type="search" name='name' placeholder="姓名">&nbsp&nbsp&nbsp
+
+                      </P>
+                    <P>
+                        男：<input type="radio" name="sex" value="M">&nbsp&nbsp&nbsp
+                        女：<input type="radio" name="sex"  value="F">&nbsp&nbsp&nbsp
+                        未知：<input type="radio" name="sex"  value="">
+                    </p>
+                    <P>
+                      城市：
+
+
+                      <select class="bs-select form-control" data-live-search="true" data-size="8" name="location" >
+                        <option value="">请选择</option>
+                        {% for location in locations %}
+                            <option value="{{ location }}">{{location}}</option>
+                        {% endfor %}
+                      </select>
+
+                    </P>
+                    <P>
+                      公司：
+                      <input type="search"  name='company' placeholder="公司">&nbsp&nbsp&nbsp
+                    </P>
+                    <P>
+                      部门：
+                      <input type="search"  name='agency' placeholder="部门">&nbsp&nbsp&nbsp
+                    </P>
+                    <P>
+                      职位：
+                      <input type="search"  name='position' placeholder="职位">
+                    </P>
+                    <P>
+                      工作职责：
+                      <input type="search"  name='duty' placeholder="工作职责">&nbsp&nbsp&nbsp
+                    </P>
+                    <P>
+                      专业领域：
+                      <input type="search"  name='area' placeholder="专业领域">
+                    </P>
+                    <p>
+                      行业：
+                    <select class="bs-select form-control" data-live-search="true" data-size="8" name="trade" >
+                        <option value="">请选择</option>
+                        {% for trade in trade_list %}
+                            <option value="{{ trade }}">{{trade}}</option>
+                        {% endfor %}
+                    </select>
+                    </p>
+                    <p>
+                      子行业：
+                    <select class="bs-select form-control" data-live-search="true" data-size="8" name="subtrade" >
+                        <option value="">请选择</option>
+                        {% for subtrade in subtrade_list %}
+                            <option value="{{ subtrade }}">{{subtrade}}</option>
+                        {% endfor %}
+                    </select>
+                    </p>
+
+                      <br>
+                    <button type="submit" class="btn btn-success">搜索</button>
+                  </form>
+
+
+
+
+          <div class="content-section">
+
+          <p class='text-muted'>
+
+              <br><br>
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">
+                  边栏
+                </li>
+                <li class="list-group-item list-group-item-light">>
+                  {% for trade in trade_list %}
+                    <a>{{ trade }}; </a>
+                  {% endfor %}
+                </li>
+                <li class="list-group-item list-group-item-light">
+                  {% for subtrade in subtrade_list %}
+                    <a>{{ subtrade }}; </a>
+                  {% endfor %}
+                </li>
+              </ul>
+            </p>
+
+          </div>
+
+
+</div>-->

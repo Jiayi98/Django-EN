@@ -1,0 +1,46 @@
+{% extends "experts/base.html" %}
+    {% block content %}
+        <br>
+        <h1>删除专家</h1>
+        <br>
+        <form action="/expertinfodeletefromdatabase/" class="form-horizontal" method="post" name="expertinfodeletefromdatabase">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="sol-sm-2 control-label">请输入所要删除的专家姓名</label>
+                    <div class="col-sm-10">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="pull-right btn-group btn-group-sm">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-success">确认</button>
+        <!--
+        <input type="button" class="btn btn-info"  value="返回" onclick="javascript:history.go(-1);">
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <input type="button" class="btn btn-danger" value="删除" onclick="window.location.href='{{ expert.delete_confirm_url }}'">
+        -->
+            </div>
+            <!--
+            <div class="pull-right col-sm-pull-11">
+                 <button type="reset" class="btn btn-warning">重置</button>
+                 <button type="submit" class="btn btn-success">确认</button>
+             </div>
+            <br>
+            -->
+            {% for expert in expert_objs %}
+                <h3> <a href="{{ expert.myDelete }}"> {{ expert.ename }}</a></h3>
+            ——EID: {{ expert.eid }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp电话: {{ expert.emobile }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp行业: {{ expert.etrade }}</p>
+
+            {% endfor %}
+
+       <!-- <form action="/expertinfoupdateForm/" method="post" name="updateexpertform">-->
+        <!--    {% csrf_token %}-->
+
+        <!--  {{ form.as_p }}-->
+            <!-- <input type="reset">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="add">-->
+        </form>
+
+    {% endblock content %}
+
