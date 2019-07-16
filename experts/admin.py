@@ -14,7 +14,7 @@ admin.site.register(WorkExp)
 
 @admin.register(ExpertInfo)
 class ExpertInfoAdmin(admin.ModelAdmin):
-    list_display = ('ename','esex','emobile','eemail','etrade','esubtrade','ebirthday',
+    list_display = ('ename','esex','emobile','eemail','etrade','esubtrade',
                    'elocation','eqq','estate','ecomefrom',
                     'eremark','addtime')
     list_filter = ('etrade','esubtrade','elocation','addtime')

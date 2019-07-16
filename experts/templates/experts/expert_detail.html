@@ -25,11 +25,11 @@
     <p>
         <label style="font-weight: 700">EID: </label>{{expert.eid}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">性别: </label>{{expert.esex}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">生日: </label>{{expert.ebirthday}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">地区: </label>{{expert.elocation}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">评级: </label>{{expert.estate}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">来源: </label>{{expert.ecomefrom}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">添加时间:</label>{{ expert.addtime }}
+        <label style="font-weight: 700">添加时间:</label>{{ addtime }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <label style="font-weight: 700">添加人/修改人:</label>{{ expert.eupdated_by }}
     </p>
     <p>
         <label style="font-weight: 700">行业: </label>{{expert.etrade}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -37,7 +37,9 @@
             <label style="font-weight: 700">咨询费</label>: {{expert.efee}}
     </p>
     <p><label style="font-weight: 700">备注: </label>{{expert.eremark}}</p>
-    <p><label style="font-weight: 700">背景信息：</label>{{expert.ebackground }}</p>
+    <p style="white-space: pre-line"><label style="font-weight: 700">背景信息：</label>
+        {{expert.ebackground }}
+    </p>
 
 </div>
 

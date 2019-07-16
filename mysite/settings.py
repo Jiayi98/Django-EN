@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'projects.apps.ProjectsConfig',
+    'clients.apps.ClientsConfig',
     'experts.apps.ExpertsConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
@@ -82,7 +84,7 @@ DATABASES = {
         'NAME': 'exp_old',
         'USER': 'zhoujiayi',
         'PASSWORD': 'JUDYzhou959',
-        'HOST': 'rm-2zebl9v5873iw36c7.mysql.rds.aliyuncs.com',
+        'HOST': 'rm-2zebl9v5873iw36c71o.mysql.rds.aliyuncs.com',
         'PORT': '3306',
         'OPTIONS':{
             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",

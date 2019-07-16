@@ -10,7 +10,7 @@ class ExpertInfoForm(forms.ModelForm):
     eemail = forms.CharField(label='邮箱',max_length=80, required=False)
     etrade = forms.CharField(label='行业',max_length=150, required=False)
     esubtrade = forms.CharField(label='子行业',max_length=150, required=False)
-    ebirthday = forms.DateField(label='生日',required=False)
+    #ebirthday = forms.DateField(label='生日',required=False)
     #elandline = forms.CharField(max_length=50, required=False)
     elocation = forms.CharField(label='城市',max_length=150, required=False)
     eqq = forms.CharField(label='微信',max_length=50, required=False)
@@ -20,14 +20,15 @@ class ExpertInfoForm(forms.ModelForm):
     eremark = forms.CharField(label='备注',required=False)
     ebackground = forms.CharField(label='背景',required=False)
     efee = forms.FloatField(label='咨询费',required=False)
+    eupdated_by = forms.CharField(label='*录入员工姓名',max_length=50, required=True)
     #admin_id = forms.IntegerField(required=False)
     #addtime = forms.DateTimeField(initial=datetime.now())
 
     class Meta:
         model = ExpertInfo
         fields = ('ename','esex','emobile','eemail','etrade',
-                  'esubtrade','ebirthday','elocation',
-                  'eqq','estate','ecomefrom','eremark','ebackground','efee')
+                  'esubtrade','elocation',
+                  'eqq','estate','ecomefrom','eremark','ebackground','efee','eupdated_by')
 
     def __init__(self, *args, **kwargs):
         super(ExpertInfoForm, self).__init__(*args, **kwargs)

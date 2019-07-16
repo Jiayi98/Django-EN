@@ -20,29 +20,30 @@ class ExpertInfoFormUpdate(forms.ModelForm):
 class ExpertInfoFormUpdateDB(forms.ModelForm):
     ename = forms.CharField(label='姓名',max_length=50, required=True)
     esex = forms.CharField(label='性别(F/M)',max_length=2, required=False)
-    emobile = forms.CharField(label='电话(多个电话请用分号隔开)',max_length=50, required=False)
-    eemail = forms.CharField(label='邮箱',max_length=80, required=False)
+    #emobile = forms.CharField(label='电话(多个电话请用分号隔开)',max_length=50, required=False)
+    #eemail = forms.CharField(label='邮箱',max_length=80, required=False)
     etrade = forms.CharField(label='行业',max_length=150, required=False)
     esubtrade = forms.CharField(label='子行业',max_length=150, required=False)
-    ebirthday = forms.DateField(label='生日(YYYY-MM-DD)',required=False)
+    #ebirthday = forms.DateField(label='生日(YYYY-MM-DD)',required=False)
     #elandline = forms.CharField(max_length=50, required=False)
     elocation = forms.CharField(label='城市',max_length=150, required=False)
-    eqq = forms.CharField(label='微信',max_length=50, required=False)
+    #eqq = forms.CharField(label='微信',max_length=50, required=False)
     #ephoto = forms.CharField(max_length=20, required=False)
     estate = forms.IntegerField(label='评级',required=False)
     ecomefrom = forms.CharField(label='来源',required=False)
     eremark = forms.CharField(label='备注',required=False)
     efee = forms.FloatField(label='咨询费', required=False)
     ebackground = forms.CharField(label='背景',required=False)
+    eupdated_by = forms.CharField(label='*修改员工姓名', max_length=50, required=True)
     #admin_id = forms.IntegerField(required=False)
     #addtime = forms.DateTimeField(initial=datetime.now())
 
     class Meta:
         model = ExpertInfo
         #fields = ('ename',)
-        fields = ('ename','esex','emobile','eemail','etrade',
-                  'esubtrade','ebirthday','elocation',
-                  'eqq','estate','ecomefrom','eremark','efee','ebackground')
+        fields = ('ename','esex','etrade',
+                  'esubtrade','elocation',
+                  'estate','ecomefrom','eremark','efee','ebackground','eupdated_by')
 
     def __init__(self, *args, **kwargs):
         super(ExpertInfoFormUpdateDB, self).__init__(*args, **kwargs)
@@ -50,6 +51,26 @@ class ExpertInfoFormUpdateDB(forms.ModelForm):
             field = self.base_fields[field_name]
             field.widget.attrs.update({"class":"form-control"})
 
+class ContactInfoFormUpdateDB(forms.ModelForm):
+    ename = forms.CharField(label='姓名',max_length=50, required=True)
+
+    emobile = forms.CharField(label='电话(多个电话请用分号隔开)',max_length=50, required=False)
+    eemail = forms.CharField(label='邮箱',max_length=80, required=False)
+    eqq = forms.CharField(label='微信',max_length=50, required=False)
+    eupdated_by = forms.CharField(label='*修改员工姓名', max_length=50, required=True)
+    #admin_id = forms.IntegerField(required=False)
+    #addtime = forms.DateTimeField(initial=datetime.now())
+
+    class Meta:
+        model = ExpertInfo
+        #fields = ('ename',)
+        fields = ('ename','emobile','eemail','eqq','eupdated_by')
+
+    def __init__(self, *args, **kwargs):
+        super(ContactInfoFormUpdateDB, self).__init__(*args, **kwargs)
+        for field_name in self.base_fields:
+            field = self.base_fields[field_name]
+            field.widget.attrs.update({"class":"form-control"})
 
 #刚加的
 

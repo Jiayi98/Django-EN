@@ -19,6 +19,8 @@ from django.urls import path, include
 from users import views as user_views
 from experts import views as experts_views
 from experts import views_update as update_views
+from projects import views as projects_views
+from clients import views as clients_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -55,6 +57,7 @@ urlpatterns = [
     path('expertinfolist/', experts_views.expertInfo_list, name='expertinfolist'),
     path('<str:ename>/<int:eid>/', experts_views.expert_detail, name='expert_detail'),
     path('update/<str:ename>/<int:eid>/', experts_views.expert_detail_update, name='expert_detail_update'),
+    path('contact_info_update/<str:ename>/<int:eid>/', experts_views.expert_contact_info_update, name='expert_contact_info_update'),
     path('expertinfoupdatetodatabase/', update_views.expertInfoUpdateToDatabase, name='expertinfoupdatetodatabase'),
 
     path('<int:eid>/<str:ename>/commentdetail/', experts_views.comment_detail, name='comment_detail'),
@@ -80,12 +83,21 @@ urlpatterns = [
     path('expert_contact_info/<str:ename>/<int:eid>/', experts_views.expert_contact_info, name='expert_contact_info'),
 
 
+
+    path('', include('projects.urls')),
+    path('', include('clients.urls')),
     path('', include('experts.urls')),
     path('', include('users.urls')),
 
 ]
 
 """
+path('projects/', projects_views.project, name='project_base'),
+    path('projects_list/', projects_views.projectInfo_list, name='project_info_list'),
+    path('add_project/', projects_views.add_project, name='add_project'),
+    path('addProjectToDatabase/', projects_views.addProjectToDatabase, name='addProjectToDatabase'),
+     path('clients/', clients_views.client, name='client_base'),
+    
 path('export_all_excel/', experts_views.export_all_excel, name='export_all_excel'),
 path('addworkexptodatabase/', experts_views.addWorkexpToDatabase, name='addworkexptodatabase'),
 path('addcommenttodatabase/<str:ename>/<str:emobile>/', experts_views.addCommentToDatabase, name='addcommenttodatabase'),

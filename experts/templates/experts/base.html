@@ -19,7 +19,9 @@
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
          <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'base' %}">Home</a>
+            <a class="navbar-brand" href="{% url 'base' %}">Expert</a>
+            <a class="navbar-brand" href="{% url 'project_base' %}">Project</a>
+            <a class="navbar-brand" href="{% url 'client_base' %}">Client</a>
         </div>
         <ul class="nav navbar-nav navbar-left">
             {% if user.is_authenticated %}

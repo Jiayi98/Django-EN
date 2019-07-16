@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import ExpertInfo,ExpertComments,WorkExp
 from .forms import ExpertInfoForm, CommentForm,WorkexpForm,deleteConfirmForm
 
-from .forms_update import ExpertInfoFormUpdateDB,CommentFormUpdateDB, WorkexpFormUpdateDB,ExpertInfoFormUpdate
+from .forms_update import ExpertInfoFormUpdateDB,CommentFormUpdateDB, WorkexpFormUpdateDB,ExpertInfoFormUpdate,ContactInfoFormUpdateDB
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -234,7 +234,7 @@ def addok(request):
 
 
 def expertInfo_list(request):
-    experts_list = ExpertInfo.objects.all()
+    experts_list = ExpertInfo.objects.all()[:300]
     paginator = Paginator(experts_list, 30)
     page = request.GET.get('page')
     try:
@@ -250,6 +250,7 @@ def expert_detail(request, ename, eid):
     #    raise PermissionDenied
     #print("===========views.expert_detail=========")
     expert = get_object_or_404(ExpertInfo, eid=eid)
+    print(expert.ebackground)
     #eid = expert.eid
     #comments = ExpertComments.objects.filter(eid=expert.eid)
     #print(expert.eid)
@@ -257,14 +258,15 @@ def expert_detail(request, ename, eid):
     #    print(c.cmtid)
     workexps = WorkExp.objects.filter(eid=eid)
     comments = ExpertComments.objects.filter(eid=eid)
-    return render(request, 'experts/expert_detail.html', {'expert': expert, 'workexps':workexps,'comments': comments})
+    # 7.15添加修改了添加时间显示格式
+    addtime = ' {year}年{mon}月{day}日'.format(year=expert.addtime.year,mon=expert.addtime.month, day=expert.addtime.day)
+    return render(request, 'experts/expert_detail.html', {'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments})
     #return render(request, 'experts/expert_detail.html', {'expert':expert, 'comments':comments})
 
 
 def expert_detail_update(request, ename, eid):
     template_name = 'experts/expert_detail_update.html'
     object = get_object_or_404(ExpertInfo, eid=eid)
-    #form = ExpertInfoFormUpdateDB(instance=expert)
 
     if request.method == 'POST':
         form = ExpertInfoFormUpdateDB(instance=object, data=request.POST)
@@ -279,7 +281,25 @@ def expert_detail_update(request, ename, eid):
 
     return render(request, template_name, {'expert':object,'form': form,})
 
+# 7.15 修改联系方式
+def expert_contact_info_update(request, ename, eid):
+    print('==================views.expert_contact_info_update===============')
+    template_name = 'experts/update_expert_contact_info.html'
+    object = get_object_or_404(ExpertInfo, eid=eid)
 
+    if request.method == 'POST':
+        form = ContactInfoFormUpdateDB(instance=object, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # if is_ajax(), we just return the validated form, so the modal will close
+            myurl = "http://127.0.0.1:8000/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
+            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            return HttpResponseRedirect(myurl)
+    else:
+        form = ContactInfoFormUpdateDB(instance=object)
+
+
+    return render(request, template_name, {'expert': object, 'form': form, })
 
 def comment_detail(request, eid, ename):
     # if not request.user.has_perm(''):
@@ -508,8 +528,8 @@ def search_expert(request):
                                             Q(eemail__contains=q)|
                                             Q(etrade__contains=q) |
                                             Q(esubtrade__contains=q)|
-                                            Q(ebirthday__contains=q) |
-                                            Q(elandline__contains=q) |
+
+
                                             Q(elocation__contains=q) |
                                             Q(estate__contains=q) |
                                             Q(ecomefrom__contains=q) |
@@ -538,8 +558,8 @@ def search_expert(request):
                                                 Q(eemail__icontains=q)|
                                                 Q(etrade__icontains=q) |
                                                 Q(esubtrade__icontains=q)|
-                                                Q(ebirthday__icontains=q) |
-                                                Q(elandline__icontains=q) |
+
+
                                                 Q(elocation__icontains=q) |
                                                 Q(estate__icontains=q) |
                                                 Q(ecomefrom__icontains=q) |
@@ -565,12 +585,20 @@ def search_expert(request):
             expert_list.append(item)
             #print(item, "========expert")
         elif type(item) is ExpertComments:
-            expert = item.eid
-            expert_list.append(expert)
+            try:
+                expert = item.eid
+            except:
+                pass
+            else:
+                expert_list.append(expert)
             #print(expert, "=======comments")
         else:
-            expert = item.eid
-            expert_list.append(expert)
+            try:
+                expert = item.eid
+            except:
+                pass
+            else:
+                expert_list.append(expert)
             #print(expert,"=====workexp")
     expert_list = list(set(expert_list))
 

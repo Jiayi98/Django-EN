@@ -1,0 +1,38 @@
+{% extends "clients/client_base.html" %}
+{% block content %}
+    <br>
+    <h2>客户列表</h2>
+    <br>
+
+
+<!--<table class="table table-condensed table-striped" width="100%" style="font-size:10px; max-height:50px">-->
+<table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size:11px;word-break:break-all" aline=center>
+	<caption></caption>
+   <thead>
+      <tr>
+          <th width="20%">客户</th>
+          <th width="10%">主要业务联系人</th>
+          <th width="10%">主要财务联系人</th>
+          <th width="8%">30min访谈</th>
+          <th width="20%">客户类型</th>
+          <th width="32%">客户信息</th>
+
+      </tr>
+   </thead>
+   <tbody>
+   {% for client in clients %}
+      <tr>
+          <td><a href="{{ client.get_absolute_url }}"> {{ client.cname }}</a></td>
+          <td>{{ client.bc_id.bc_name }}cname
+          <td>{{ client.fc_id.fc_name }}</td>
+          <td>{{ client.half_hrs }}</td>
+          <td>{{ client.ctype }}</td>
+          <td>{{ client.cinfo }}</td>
+      </tr>
+
+    {% endfor %}
+   </tbody>
+</table>
+
+    {% include "experts/pagination.html" with page=experts %}
+{% endblock content %}

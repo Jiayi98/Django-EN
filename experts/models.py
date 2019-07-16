@@ -13,19 +13,20 @@ class ExpertInfo(models.Model):
     eemail = models.CharField(max_length=80, blank=True, null=True)
     etrade = models.CharField(max_length=150, blank=True, null=True)
     esubtrade = models.CharField(max_length=150, blank=True, null=True)
-    ebirthday = models.DateField(blank=True, null=True)
-    elandline = models.CharField(max_length=50, blank=True, null=True)
+    #ebirthday = models.DateField(blank=True, null=True)
+    #elandline = models.CharField(max_length=50, blank=True, null=True)
     elocation = models.CharField(max_length=150, blank=True, null=True)
-    emsn = models.CharField(max_length=80, blank=True, null=True)
+    #emsn = models.CharField(max_length=80, blank=True, null=True)
     eqq = models.CharField(max_length=50, blank=True, null=True)
-    ephoto = models.CharField(max_length=20, blank=True, null=True)
+    #ephoto = models.CharField(max_length=20, blank=True, null=True)
     estate = models.IntegerField(blank=True, null=True)
     ecomefrom = models.TextField(blank=True, null=True)
     eremark = models.TextField(blank=True, null=True)
-    admin_id = models.IntegerField(blank=True, null=True)
+    #admin_id = models.IntegerField(blank=True, null=True)
     addtime = models.DateTimeField(auto_now_add=True)
     ebackground = models.TextField(blank=True, null=False)
     efee = models.FloatField(blank=True,null=False,default=0.0)
+    eupdated_by = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -38,6 +39,10 @@ class ExpertInfo(models.Model):
         print("==============models.contact_info============", self.ename,self.eid)
         #print(reverse('expert_contact_info', args=[self.eid]))
         return reverse('expert_contact_info', args=[self.ename,self.eid])
+
+    def expert_contact_info_update(self):
+        print("==============models.expert_contact_info_update============", self.ename, self.eid)
+        return reverse('expert_contact_info_update', args=[self.ename, self.eid])
 
     def myDelete(self):
         print("==============models.delete============",self.eid, self.ename)
@@ -220,6 +225,20 @@ class WorkExp(models.Model):
         print("==========在models.py中的 delete_workexp_confirm()")
         num = self.eid.eid
         return reverse('delete_workexp_confirm', args=[num, self.expid])
+
+
+class Payment(models.Model):
+    # F. Expert_Payment
+    ep_id = models.AutoField(primary_key=True)
+    eid = models.ForeignKey(ExpertInfo, on_delete=models.CASCADE)
+    alipay = models.CharField(max_length=150, blank=True, null=True, verbose_name='支付宝')
+    bank = models.CharField(max_length=150, blank=True, null=True, verbose_name='银行账号')
+    wechat = models.CharField(max_length=150, blank=True, null=True, verbose_name='微信支付')
+    remark = models.TextField(max_length=150, blank=True, null=True, verbose_name='备注')
+
+    class Meta:
+        managed = True
+        db_table = 'payment'
 
 """
 class WorkExp(models.Model):

@@ -3,7 +3,7 @@ from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from .models import ExpertInfo,ExpertComments,WorkExp
 #from .forms import ExpertInfoForm, CommentForm,WorkexpForm
-from .forms_update import ExpertInfoFormUpdate
+from .forms_update import ExpertInfoFormUpdate,ContactInfoFormUpdateDB
 #CommentFormUpdate,WorkexpFormUpdate,ExpertInfoFormUpdateDB
 from django.contrib.auth.decorators import login_required
 from .views import comment_detail
@@ -40,6 +40,8 @@ def expertInfoUpdate(request):
     form = ExpertInfoFormUpdate()
     return render(request, 'experts/update_expert.html',{'form': form})
 
+
+
 @login_required
 @transaction.atomic
 def expertInfoUpdateToDatabase(request):
@@ -48,8 +50,8 @@ def expertInfoUpdateToDatabase(request):
     ename = request.POST["ename"]
     expert_objs = ExpertInfo.objects.filter(ename=ename)
     # 找到所有同名的专家
-    for obj in expert_objs:
-        print(obj.eid)
+    #for obj in expert_objs:
+    #    print(obj.eid)
     # 在update_expert.html中：
     # <form action="/expertinfoupdatetodatabase/" class="form-horizontal" method="post" name="expertinfoupdatetodatabase">
     # 选择某一专家后调用该object的【def expert_detail_update()】来更新具体信息。
