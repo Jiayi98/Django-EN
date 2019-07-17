@@ -1,75 +1,58 @@
 {% extends "projects/project_base.html" %}
     {% block content %}
-        <br>
-        <h2>新建项目</h2>
-        <br>
-        <form action="/addProjectToDatabase/" method="post" name="addProjectToDatabase">
+    <br>
+    <h3 class="col-sm-12">新建项目</h3>
+    <p>
+        <form class="col-sm-12" action="/addProjectToDatabase/" method="post" name="addProjectToDatabase">
             {% csrf_token %}
-           <!-- <div class="col-sm-12">
-                <label>姓名：</label>
+
+            <p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700">*项目名称：</label>
                 <input type="text" name='pname'>
-                <label>性别：</label>
-                <input type="text" name='esex'>
-                <label>电话：</label>
-                <input type="text" name='emobile'>
-                <label>邮箱：</label>
-                <input type="text" name='eemail'>
+           </div>
+            </p>
+<p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700">*客户ID：</label>
+                <input type="text" name='cid'>
+                <label style="font-weight: 700">客户名称：</label>
+                <input type="text" name='cname'>
+
+            </div>
+</p>
+<p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700" class="control-label">项目经理：</label>
+                <input type="text" name='pm'>
+                <label style="font-weight: 700" class="control-label">性别：</label>
+                <input type="text" name='pm_gender'>
+
+                <label style="font-weight: 700" class="control-label">电话：</label>
+                <input type="text" name='pm_mobile'>
+                <label style="font-weight: 700" class="control-label">邮箱：</label>
+                <input type="text" name='pm_email'>
+            </div>
+</p>
+<p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700" class="control-label">项目截止日期(YYYY-MM-DD)：</label>
+                <input type="text" name='pdeadline'>
+</p>
+<p>
             </div>
             <div class="col-sm-12">
-                <label class="control-label">行业：</label>
-                <input type="text" name='etrade'>
-                <label class="control-label">子行业：</label>
-                <input type="text" name='esubtrade'>
-                <label class="control-label">生日：</label>
-                <input type="text" name='ebirthday'>
-                <label class="control-label">地点：</label>
-                <input type="text" name='eloacation'>
+                <label style="font-weight: 700" class="control-label">备注：</label>
+                <textarea name='premark' class="form-control" rows="5"></textarea>
             </div>
-            <div class="col-sm-12">
-                <label class="control-label">微信：</label>
-                <input type="text" name='eqq'>
-                <label class="control-label">级别：</label>
-                <input type="text" name='estate'>
+</p>
 
-                <label class="control-label">咨询费：</label>
-                <input type="text" value="0.0" name='efee'>
-            </div>
-
-            <div class="col-sm-10">
-                <label class="control-label">备注：</label>
-            <input type="text" name='eremark' class="form-control">
-                <label class="sol-sm-2 control-label">背景：</label>
-                <textarea name='ebackground' class="form-control" rows="5"></textarea>
-            </div>-->
-            <br>
-            {% for field in form %}
-                <div class="form-group">
-                    {% if field.label == '背景' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <textarea name='ebackground' class="form-control" rows="5"></textarea>
-                        </div>
-                    {% elif field.label == '咨询费' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <input type="text" value="0.0" name='efee' class="form-control">
-                        </div>
-                    {% else %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            {{ field }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
             <div class="pull-right col-sm-10">
                 <button type="reset" class="btn btn-warning">重置</button>
                 <button type="submit" class="btn btn-success">添加</button>
             </div>
 
-            <!--{{ form.as_p }}-->
-            <!--<input type="reset">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="add">-->
         </form>
-
+    </p>
     {% endblock content %}
 

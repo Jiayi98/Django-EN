@@ -22,9 +22,9 @@
    <tbody>
    {% for client in clients %}
       <tr>
-          <td><a href="{{ client.get_absolute_url }}"> {{ client.cname }}</a></td>
-          <td>{{ client.bc_id.bc_name }}cname
-          <td>{{ client.fc_id.fc_name }}</td>
+          <td><a href="{{ client.get_client_detail }}"> {{ client.cname }}</a></td>
+          <td><a href=""> {{ client.bc_name }}</a></td>
+          <td><a href="">{{ client.fc_name }}</a></td>
           <td>{{ client.half_hrs }}</td>
           <td>{{ client.ctype }}</td>
           <td>{{ client.cinfo }}</td>
@@ -34,5 +34,5 @@
    </tbody>
 </table>
 
-    {% include "experts/pagination.html" with page=experts %}
+    {% include "clients/pagination.html" with page=clients %}
 {% endblock content %}

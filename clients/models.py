@@ -5,19 +5,21 @@ from django.urls import reverse
 class Client(models.Model):
     cid = models.AutoField(primary_key=True)
     cname = models.CharField(max_length=150, blank=True, null=True, verbose_name='客户名称')
-    bc_id = models.CharField(max_length=50, blank=True, null=True, verbose_name='主业务联系人')
-    fc_id = models.CharField(max_length=50, blank=True, null=True, verbose_name='主财务联系人')
+    bc_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='主业务联系人')
+    fc_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='主财务联系人')
     half_hrs = models.IntegerField(choices=[(1, '可半小时'), (0, '不可半小时'), (2,'未知')], default=2, verbose_name='是否支持半小时访谈')
     ctype = models.CharField(max_length=50,blank=True,null=True,verbose_name='客户类型')
     cinfo = models.TextField(blank=True, null=True,verbose_name='客户介绍')
     class Meta:
         managed = True
+        ordering = ('-cid',)
         db_table = 'client_info'
 
     def __str__(self):
         return "{}-{}".format(self.cid, self.cname)
 
-    def get_absolute_url(self):
+    def get_client_detail(self):
+        print("===================client_detail==============")
         return reverse('client_detail',args=[self.cid,])
 
 class BusinessContact(models.Model):

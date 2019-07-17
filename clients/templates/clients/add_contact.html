@@ -1,0 +1,47 @@
+{% extends "clients/client_base.html" %}
+    {% block content %}
+        <br>
+        <h2>新增客户-联系人</h2>
+        <br>
+    <form method="post">
+        {% if flag.create_bc == 'y' %}
+            <h4>业务联系人</h4>
+
+                {% csrf_token %}
+                <br>
+                {% for field in form_bc %}
+                    <div class="form-group">
+                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-10">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+        {% endif %}
+
+        {% if flag.create_fc == 'y' %}
+            <h4>财务联系人</h4>
+
+                {% csrf_token %}
+                <br>
+                {% for field in form_fc %}
+                    <div class="form-group">
+                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-10">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+        {% endif %}
+
+        <div class="pull-right col-sm-10">
+                    <button type="reset" class="btn btn-warning">重置</button>
+                    <button type="submit" class="btn btn-success">添加</button>
+        </div>
+    </form>
+{% endblock content %}
+

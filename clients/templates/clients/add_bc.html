@@ -1,30 +1,25 @@
 {% extends "clients/client_base.html" %}
     {% block content %}
+
         <br>
-        <h2>新增客户</h2>
+        <h2>新增业务联系人</h2>
+{% if result.status == 'success' %}
+        <p style="align-content: center;color: green;font-size: medium">
+            <!--<input type="button" class="btn btn-success" value="修改成功，返回专家信息" onclick="window.location.href='{% url 'expertinfolist' %}'"></a>-->
+            <input type="button" class="btn btn-success btn-sm"  value="修改成功,返回" onclick="location.href='{% url 'fc_detail_update' bc.bc_id bc.cid.cid %}'">
+        </p>
+    {% endif %}
+    <br>
         <br>
-        <form action="/addClientToDatabase/" method="post" name="addClientToDatabase">
+        <form action="{% url 'bc_detail_update' bc.bc_id bc.cid.cid %}" method="post" name="bc_detail_update">
             {% csrf_token %}
             <br>
             {% for field in form %}
                 <div class="form-group">
-                    {% if field.label == '客户信息' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <textarea name='cinfo' class="form-control" rows="5"></textarea>
-                        </div>
-                    {% elif field.label == '半小时政策' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <input type="number" name='half_hrs' value="2" class="form-control">
-                        </div>
-
-                    {% else %}
                         <label class="sol-sm-2 control-label">{{ field.label }}：</label>
                         <div class="col-sm-10">
                             {{ field }}
                         </div>
-                    {% endif %}
                 </div>
             {% endfor %}
             <div class="pull-right col-sm-10">

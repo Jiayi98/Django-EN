@@ -16,18 +16,28 @@ class Project(models.Model):
     pm_gender = models.CharField(max_length=10,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     pcreatetime = models.DateField(auto_now_add=True)
     pdeadline = models.CharField(max_length=50, blank=True, null=True)
+    premark = models.TextField(blank=True,null=True)
     expertinfos = models.ManyToManyField(ExpertInfo, through='Project2Expert')
 
     class Meta:
         managed = True
-        ordering = ('-pcreatetime',)
+        ordering = ('-pcreatetime','pdeadline')
         db_table = 'project_info'
+
 
     def __str__(self):
         return "{}-{}".format(self.pid, self.pname)
 
-    def get_absolute_url(self):
-        return reverse('project_detail',args=[self.pid,self.cid])
+    def get_project_detail(self):
+        return reverse('project_detail',args=[self.pid,self.cid.cid])
+
+    def add_p2e(self):
+        print("==========projects/models.add_p2e")
+        return reverse('add_p2e',args=[self.pid,])
+
+    def update_project_detail(self):
+        print("==========projects/models.update_project_detail========")
+        return reverse('update_project_detail', args=[self.pid,])
 
 class Project2Expert(models.Model):
     # B. Project: 一个项目有多个专家
@@ -47,3 +57,11 @@ class Project2Expert(models.Model):
     class Meta:
         managed = True
         db_table = 'p_e_relationship'
+        unique_together = ('pid', 'eid')
+
+    def __str__(self):
+        return "{}-{}".format(self.pname,self.ename)
+
+    def update_p2e_url(self):
+        print("==========projects/models.update_p2e_url()")
+        return reverse('update_p2e_detail', args=[self.pteid,])

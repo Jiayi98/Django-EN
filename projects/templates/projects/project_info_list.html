@@ -21,7 +21,7 @@
    <tbody>
    {% for project in projects %}
       <tr>
-          <td><a href="{{ project.get_absolute_url }}"> {{ project.pname }}</a></td>
+          <td><a href="{{ project.get_project_detail }}"> {{ project.pname }}</a></td>
           <td>{{ project.cname }}</td>
           <td>{{ project.pm }}</td>
           <td>{{ project.pcreatetime }}</td>
