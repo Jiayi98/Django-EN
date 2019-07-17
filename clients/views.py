@@ -62,12 +62,14 @@ def addClientToDatabase(request):
                 if new_client.fc_name != '':
                     FinancialContact.objects.create(fc_name=new_client.fc_name,cid=new_client)
 
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=new_client.cid)
+                #myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=new_client.cid)
+                myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
                 return HttpResponseRedirect(myurl)
             else:
                 #print("!!!!!!!!!!!This project already existed!!!!!!!!")
                 c = client.first()
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=c.cid)
+                #myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=c.cid)
+                myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
                 return HttpResponseRedirect(myurl)
         else:
             print("=============views.addClientToDatabase======")

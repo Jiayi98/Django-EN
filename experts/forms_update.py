@@ -34,6 +34,7 @@ class ExpertInfoFormUpdateDB(forms.ModelForm):
     eremark = forms.CharField(label='备注',required=False)
     efee = forms.FloatField(label='咨询费', required=False)
     ebackground = forms.CharField(label='背景',required=False)
+    interview_num = forms.IntegerField(label='访谈次数',required=False)
     eupdated_by = forms.CharField(label='*修改员工姓名', max_length=50, required=True)
     #admin_id = forms.IntegerField(required=False)
     #addtime = forms.DateTimeField(initial=datetime.now())
@@ -43,7 +44,7 @@ class ExpertInfoFormUpdateDB(forms.ModelForm):
         #fields = ('ename',)
         fields = ('ename','esex','etrade',
                   'esubtrade','elocation',
-                  'estate','ecomefrom','eremark','efee','ebackground','eupdated_by')
+                  'estate','ecomefrom','eremark','efee','ebackground','interview_num','eupdated_by')
 
     def __init__(self, *args, **kwargs):
         super(ExpertInfoFormUpdateDB, self).__init__(*args, **kwargs)

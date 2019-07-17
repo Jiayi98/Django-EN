@@ -1,5 +1,5 @@
 from django import forms
-from .models import ExpertInfo,ExpertComments,WorkExp
+from .models import ExpertInfo,ExpertComments,WorkExp,Payment
 #import datetime
 
 # 从ExpertInfo模型中动态地创建表单
@@ -20,6 +20,7 @@ class ExpertInfoForm(forms.ModelForm):
     eremark = forms.CharField(label='备注',required=False)
     ebackground = forms.CharField(label='背景',required=False)
     efee = forms.FloatField(label='咨询费',required=False)
+    interview_num = forms.IntegerField(label='访谈次数',required=False)
     eupdated_by = forms.CharField(label='*录入员工姓名',max_length=50, required=True)
     #admin_id = forms.IntegerField(required=False)
     #addtime = forms.DateTimeField(initial=datetime.now())
@@ -28,7 +29,7 @@ class ExpertInfoForm(forms.ModelForm):
         model = ExpertInfo
         fields = ('ename','esex','emobile','eemail','etrade',
                   'esubtrade','elocation',
-                  'eqq','estate','ecomefrom','eremark','ebackground','efee','eupdated_by')
+                  'eqq','estate','ecomefrom','eremark','ebackground','efee','interview_num','eupdated_by')
 
     def __init__(self, *args, **kwargs):
         super(ExpertInfoForm, self).__init__(*args, **kwargs)
@@ -102,6 +103,24 @@ class deleteConfirmForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(deleteConfirmForm, self).__init__(*args, **kwargs)
+        for field_name in self.base_fields:
+            print(field_name)
+            field = self.base_fields[field_name]
+            field.widget.attrs.update({"class":"form-control"})
+
+class PaymentForm(forms.ModelForm):
+    # F. Expert_Payment
+    alipay = forms.CharField(max_length=150, label='支付宝',required=False)
+    bank = forms.CharField(max_length=150, label='银行账号',required=False)
+    wechat = forms.CharField(max_length=150, label='微信支付',required=False)
+    remark = forms.CharField(max_length=150, label='备注',required=False)
+
+    class Meta:
+        model = Payment
+        fields = ['alipay','bank','wechat','remark']
+
+    def __init__(self, *args, **kwargs):
+        super(PaymentForm, self).__init__(*args, **kwargs)
         for field_name in self.base_fields:
             print(field_name)
             field = self.base_fields[field_name]

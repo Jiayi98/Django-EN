@@ -79,8 +79,8 @@ def update_p2e_detail(request,pteid):
             object.save()
             form.save()
             result['status'] = 'success'
-            myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
-            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            #myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
+            myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             return HttpResponseRedirect(myurl)
     else:
         form = Project2ExpertForm(instance=object)
@@ -145,8 +145,8 @@ def update_project_detail(request,pid):
         if form.is_valid():
             form.save()
             # if is_ajax(), we just return the validated form, so the modal will close
-            myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
-            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            #myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
+            myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
             return HttpResponseRedirect(myurl)
     else:
         form = ProjectUpdateForm(instance=project)

@@ -4,8 +4,8 @@ from itertools import chain
 # Create your views here.
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ExpertInfo,ExpertComments,WorkExp
-from .forms import ExpertInfoForm, CommentForm,WorkexpForm,deleteConfirmForm
+from .models import ExpertInfo,ExpertComments,WorkExp,Payment
+from .forms import ExpertInfoForm, CommentForm,WorkexpForm,deleteConfirmForm,PaymentForm
 
 from .forms_update import ExpertInfoFormUpdateDB,CommentFormUpdateDB, WorkexpFormUpdateDB,ExpertInfoFormUpdate,ContactInfoFormUpdateDB
 
@@ -140,8 +140,8 @@ def add_comment(request,ename,emobile):
     try:
         expert = ExpertInfo.objects.get(ename=ename, emobile=emobile)
         #47.94.224.242:1973
-        #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
-        myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+        myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+        #myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
     except:
         print("=============views.add_comment======")
         print("!!!!!!!!!!!This expert not exist!!!!!!!!")
@@ -157,8 +157,8 @@ def add_comment(request,ename,emobile):
             newComment.ecomment = ecomment
             newComment.save()
             # 47.94.224.242:1973
-            myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
-            #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+            #myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+            myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
             result['status'] = 'success'
             return HttpResponseRedirect(myurl)
     return render(request, 'experts/addcomment_confirm.html', {"expert":expert,"formC":formC,'result':result, 'myurl':myurl})
@@ -218,8 +218,8 @@ def add_workexp(request,ename,emobile):
             #newExp.istonow = istonow
             newExp.save()
             # 47.94.224.242:1973
-            #url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
-            url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
+            url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
+            #url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
             return HttpResponseRedirect(url)
             #return HttpResponseRedirect('/addcomplete/')
     return render(request, 'experts/addworkexp_confirm.html', {"formW":formW})
@@ -250,17 +250,18 @@ def expert_detail(request, ename, eid):
     #    raise PermissionDenied
     #print("===========views.expert_detail=========")
     expert = get_object_or_404(ExpertInfo, eid=eid)
-    print(expert.ebackground)
-    #eid = expert.eid
-    #comments = ExpertComments.objects.filter(eid=expert.eid)
-    #print(expert.eid)
-    #for c in comments:
-    #    print(c.cmtid)
+    pay = Payment.objects.filter(eid=expert)
+    if pay.exists() == 0:
+        # 没有支付方式
+        pay = Payment.objects.create(eid=expert)
+    else:
+        pay = pay.first()
+    print('--------------',pay)
     workexps = WorkExp.objects.filter(eid=eid)
     comments = ExpertComments.objects.filter(eid=eid)
     # 7.15添加修改了添加时间显示格式
     addtime = ' {year}年{mon}月{day}日'.format(year=expert.addtime.year,mon=expert.addtime.month, day=expert.addtime.day)
-    return render(request, 'experts/expert_detail.html', {'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments})
+    return render(request, 'experts/expert_detail.html', {'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments,'pay':pay})
     #return render(request, 'experts/expert_detail.html', {'expert':expert, 'comments':comments})
 
 
@@ -273,8 +274,8 @@ def expert_detail_update(request, ename, eid):
         if form.is_valid():
             form.save()
             # if is_ajax(), we just return the validated form, so the modal will close
-            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename,eid=eid)
-            #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            #myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename,eid=eid)
+            myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
     else:
         form = ExpertInfoFormUpdateDB(instance=object)
@@ -292,8 +293,8 @@ def expert_contact_info_update(request, ename, eid):
         if form.is_valid():
             form.save()
             # if is_ajax(), we just return the validated form, so the modal will close
-            myurl = "http://127.0.0.1:8000/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
-            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            #myurl = "http://127.0.0.1:8000/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
+            myurl = "http://47.94.224.242:1973/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
     else:
         form = ContactInfoFormUpdateDB(instance=object)
@@ -636,3 +637,26 @@ def isContainChinese(s):
         if ('\u4e00' <= c <= '\u9fa5'):
             return True
     return False
+
+def get_payment_update(request, ep_id):
+    template_name = 'experts/payment_update.html'
+    print("========experts/views.get_payment_update========")
+    print(ep_id)
+    pay = get_object_or_404(Payment, ep_id=ep_id)
+
+    if request.method == 'POST':
+        form = PaymentForm(instance=pay, data=request.POST)
+        if form.is_valid():
+            form.save()
+            myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=pay.eid.ename,eid=pay.eid.eid)
+            #myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=pay.eid.ename,eid=pay.eid.eid)
+            print(myurl)
+            return HttpResponseRedirect(myurl)
+        else:
+            print("=============views.py中workexp_detail_update()============")
+            print("表单无效")
+        # return HttpResponseRedirect('/addcomplete/')
+    else:
+        form = PaymentForm(instance=pay)
+
+    return render(request, template_name, {'expert': pay.eid, 'pay': pay, 'form': form,})

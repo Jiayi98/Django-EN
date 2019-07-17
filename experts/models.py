@@ -27,6 +27,7 @@ class ExpertInfo(models.Model):
     ebackground = models.TextField(blank=True, null=False)
     efee = models.FloatField(blank=True,null=False,default=0.0)
     eupdated_by = models.CharField(max_length=50, blank=True, null=True)
+    interview_num = models.IntegerField(blank=True,null=True)
 
     class Meta:
         managed = True
@@ -239,6 +240,14 @@ class Payment(models.Model):
     class Meta:
         managed = True
         db_table = 'payment'
+
+    def __str__(self):
+        return "{}-{}".format(self.ep_id,self.eid)
+
+    def get_payment_update(self):
+        print("==========在models.py中的 get_payment_update()")
+
+        return reverse('get_payment_update', args=[self.ep_id,])
 
 """
 class WorkExp(models.Model):
