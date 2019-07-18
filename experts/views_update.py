@@ -76,6 +76,22 @@ def delete_comment(request, eid, cmtid):
         result['status'] = 'success'
         return render(request, template_name,{'c':c,'expert':expert,'result':result})
 
+def delete_workexp(request, eid, expid):
+    print("=============views_update.delete_workexp======")
+    template_name = 'experts/workexp_detail.html'
+    result = {}
+    try:
+        #print("==============Try========")
+        expert = ExpertInfo.objects.get(eid=eid)
+        exp = WorkExp.objects.get(expid=expid)
+        print(expert,exp)
+    except:
+        #print("==============ERROR========")
+        result['status'] = 'error'
+    else:
+        result['status'] = 'success'
+        return render(request, template_name,{'exp':exp,'expert':expert,'result':result})
+
 @login_required
 @transaction.atomic
 def delete_comment_confirm(request, eid, cmtid):
@@ -97,7 +113,26 @@ def delete_comment_confirm(request, eid, cmtid):
         #url = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=eid,ename=expert.ename)
         return HttpResponseRedirect(url)
 
+@transaction.atomic
+def delete_workexp_confirm(request, eid, expid):
+    print("=============views_update.delete_workexp_confirm======")
+    result = {}
+    try:
+        #print("==============Try========")
+        expert = ExpertInfo.objects.get(eid=eid)
+        exp = WorkExp.objects.get(expid=expid)
+        print(expert,exp)
+    except:
+        #print("==============ERROR========")
+        result['status'] = 'error'
+    else:
+        exp.delete()
+        result['status'] = 'success'
+        url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=eid,ename=expert.ename)
+        #url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=eid,ename=expert.ename)
+        return HttpResponseRedirect(url)
 
+"""
 def delete_workexp(request, eid, expid):
     print("=============views_update.delete_workexp======")
     template_name = 'experts/workexp_detail.html'
@@ -129,7 +164,8 @@ def delete_workexp_confirm(request, eid, expid):
     else:
         exp.delete()
         result['status'] = 'success'
-        url = 'http://127.0.0.1:8000/eid}/{ename}/workexpdetail'.format(eid=eid,ename=expert.ename)
-        #url = 'http://47.94.224.242:1973/eid}/{ename}/workexpdetail'.format(eid=eid,ename=expert.ename)
+        url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=eid,ename=expert.ename)
+        #url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=eid,ename=expert.ename)
         return HttpResponseRedirect(url)
 
+"""

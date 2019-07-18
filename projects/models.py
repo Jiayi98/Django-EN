@@ -17,6 +17,7 @@ class Project(models.Model):
     pcreatetime = models.DateField(auto_now_add=True)
     pdeadline = models.CharField(max_length=50, blank=True, null=True)
     premark = models.TextField(blank=True,null=True)
+
     expertinfos = models.ManyToManyField(ExpertInfo, through='Project2Expert')
 
     class Meta:

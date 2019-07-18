@@ -30,7 +30,32 @@
        <td> {{ exp.area }}</td>
        <td>
            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
-            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ exp.delete_workexp }}'">删除</button>
+           <!-- 模态框（Modal） -->
+ <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
+    <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label  class="control-label">确定要删除吗？</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
        </td>
   </tr>
   {% endfor %}

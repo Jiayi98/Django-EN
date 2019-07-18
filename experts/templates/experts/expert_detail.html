@@ -102,7 +102,31 @@
                         <td>{{ exp.get_duty }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ exp.delete_workexp }}'">删除</button>
+
+                          <!-- 模态框（Modal） -->
+ <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
+    <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label  class="control-label">确定要删除吗？</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
                         </td>
                     </tr>
                     {% endfor %}
@@ -132,17 +156,47 @@
    <tr class="info">
 
       <td>{{ comment.eproblem }}</td>
-      <td>{{ comment.ecomment }}</td>
+      <td style="white-space: pre-line">{{ comment.ecomment }}</td>
 
        <td>
            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
-           <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ comment.delete_comment }}'">删除</button>
+
+
+
+<!-- 模态框（Modal） -->
+ <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCommentModal">删除</button>
+    <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label  class="control-label">确定要删除吗？</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ comment.delete_comment_confirm }}'">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
        </td>
   </tr>
   {% endfor %}
   {% if result.status == 'success'%}
             <td> {{ c.eproblem }} </td>
-            <td> {{ c.ecomment }} </td>
+            <td style="white-space: pre-line"> {{ c.ecomment }} </td>
 
   <td><button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ c.delete_comment_confirm }}'">确认删除</button></td>
   {% endif %}
@@ -201,7 +255,7 @@
                         <td>{{ p2e.pid.pcreatetime }}</td>
                         <td>{{ p2e.pid.pdeadline }}</td>
                         <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.pid.update_project_detail }}'">修改</button>
+                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
                             <button type="button" class="btn btn-danger btn-sm" onclick="location.href=''">删除</button>
                         </td>
                     </tr>
