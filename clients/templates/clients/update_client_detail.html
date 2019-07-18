@@ -11,7 +11,7 @@
     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 <label style="font-weight: 700" class="sol-sm-2 control-label">客户名称：</label>
 
-                    <input type="text" name='cname'  >
+                    <input type="text" name='cname' value="{{ client.cname }}">
             </p>
 
             <p class="sol-sm-12">
@@ -31,12 +31,12 @@
                 </p>
             <p class="sol-sm-12">
                 <label style="font-weight: 700" class="sol-sm-2 ">客户类型：</label>
-                    <input name='ctype' type="text">
+                    <input name='ctype' type="text" value="{{ client.ctype }}">
 
 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                <label style="font-weight: 700" class="sol-sm-2 ">是否支持半小时：</label>
+                <label style="font-weight: 700" class="sol-sm-2 ">收费政策：</label>
 
-                    <input name='half_hrs' type="number" >(0:否 | 1:是 | 2:未知)
+                    <input name='cpolicy' type="text" value="{{ client.cpolicy }}">
 
 
         </p>
@@ -44,7 +44,13 @@
 
                 <label style="font-weight: 700" class="sol-sm-2 control-label">客户信息：</label>
 
-                    <textarea name='cinfo' class="form-control" rows="5"></textarea>
+                    <textarea name='cinfo' class="form-control" rows="5">{{ client.cinfo }}</textarea>
+        </p>
+         <p class="sol-sm-12">
+
+                <label style="font-weight: 700" class="sol-sm-2 control-label">备注：</label>
+
+                    <textarea name='cremark' class="form-control" rows="5">{{ client.cremark }}</textarea>
         </p>
 
         <div class="pull-right col-sm-12">

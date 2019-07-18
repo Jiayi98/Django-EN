@@ -31,14 +31,17 @@ def client_detail(request, cid):
     print("===========clients/views.client_detail=========")
     client = get_object_or_404(Client, cid=cid)
     projects = Project.objects.filter(cid=client)
+    bc_list = BusinessContact.objects.filter(cid=client)
+    fc_list = FinancialContact.objects.filter(cid=client)
+
     experts = []
     if len(projects) > 0:
         print("===========clients/views.client_detail/该客户有projects=========")
         for project in projects:
             experts += project.expertinfos.all()
-        return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts})
+        return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts,'bc_list':bc_list,'fc_list':fc_list})
     print("===========clients/views.client_detail/该客户无projects=========")
-    return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts})
+    return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts,'bc_list':bc_list,'fc_list':fc_list})
 
 
 @login_required
@@ -146,40 +149,121 @@ def update_client_detail(request,cid):
 
     return render(request, template_name, {'client': client, 'form': form,'bc_list':bc_list,'fc_list':fc_list })
 
-
-def bc_detail_update(request, bc_id, cid):
-    print("---------------bc_detail_update------------")
+def client_add_bc(request, cid):
+    print('-------------add_bc-----------')
     template_name = 'clients/add_bc.html'
-    object = get_object_or_404(BusinessContact, bc_id=bc_id)
     result = {}
     if request.method == 'POST':
-        form = BCForm(instance=object, data=request.POST)
+        form = BCForm(data=request.POST)
+        bc_name = request.POST.get('bc_name')
+        bc_gender = request.POST.get('bc_gender')
+        bc_mobile = request.POST.get('bc_mobile')
+        bc_email = request.POST.get('bc_email')
+        bc_position = request.POST.get('bc_position')
         if form.is_valid():
             print("valid????")
-            form.save()
-            result['status'] = 'success'
-            #myurl = "http://127.0.0.1:8000/clients/{cid}/detail/".format(cid=cid)
-            #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
-            #return HttpResponseRedirect(myurl)
+            new_bc = form.save(commit=False)
+            # filter得到的是一个list，而不是一个object
+            bc = BusinessContact.objects.filter(bc_name=new_bc.bc_name)
+            if bc.exists() == 0:
+                new_bc = BusinessContact()
+                new_bc.cid_id = cid
+                new_bc.bc_name = bc_name
+                new_bc.bc_gender = bc_gender
+                new_bc.bc_mobile = bc_mobile
+                new_bc.bc_email = bc_email
+                new_bc.bc_position = bc_position
+                new_bc.save()
+                result['status'] = 'success'
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                return HttpResponseRedirect(myurl)
+            else:
+                result['status'] = 'error'
+        else:
+            result['status'] = 'error'
     else:
-        form = BCForm(instance=object)
+        form = BCForm()
+    return render(request, template_name, {'form': form, 'result': result, })
+
+def client_add_fc(request, cid):
+    print('-------------add_fc-----------')
+    template_name = 'clients/add_fc.html'
+    result = {}
+    if request.method == 'POST':
+        form = FCForm(data=request.POST)
+        fc_name = request.POST.get('fc_name')
+        fc_gender = request.POST.get('fc_gender')
+        fc_mobile = request.POST.get('fc_mobile')
+        fc_email = request.POST.get('fc_email')
+        fc_position = request.POST.get('fc_position')
+        if form.is_valid():
+            print("valid????")
+            new_fc = form.save(commit=False)
+            # filter得到的是一个list，而不是一个object
+            fc = FinancialContact.objects.filter(fc_name=new_fc.fc_name)
+            if fc.exists() == 0:
+                new_fc = FinancialContact()
+                new_fc.cid_id = cid
+                new_fc.fc_name = fc_name
+                new_fc.fc_gender = fc_gender
+                new_fc.fc_mobile = fc_mobile
+                new_fc.fc_email = fc_email
+                new_fc.fc_position = fc_position
+                new_fc.save()
+                result['status'] = 'success'
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                return HttpResponseRedirect(myurl)
+            else:
+                result['status'] = 'error'
+        else:
+            result['status'] = 'error'
+
+    else:
+        form = FCForm()
+    return render(request, template_name, {'form': form, 'result': result, })
+
+def bc_detail_update(request, bc_id, cid):
+    template_name = 'clients/add_bc.html'
+    result = {}
+    if bc_id:
+        print("---------------update_bc------------")
+        object = get_object_or_404(BusinessContact, bc_id=bc_id)
+
+        if request.method == 'POST':
+            form = BCForm(instance=object, data=request.POST)
+            if form.is_valid():
+                print("valid????")
+                form.save()
+                result['status'] = 'success'
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail/".format(cid=cid)
+                #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+                return HttpResponseRedirect(myurl)
+
+        else:
+            form = BCForm(instance=object)
 
     return render(request, template_name, {'bc':object,'form': form,'result':result, })
 
 def fc_detail_update(request, fc_id, cid):
-    print("---------------fc_detail_update------------")
     template_name = 'clients/add_fc.html'
-    object = get_object_or_404(FinancialContact, fc_id=fc_id)
+    result = {}
+    if fc_id:
+        print("---------------update_fc------------")
+        object = get_object_or_404(FinancialContact, fc_id=fc_id)
 
-    if request.method == 'POST':
-        form = FCForm(instance=object, data=request.POST)
-        if form.is_valid():
-            form.save()
-            # if is_ajax(), we just return the validated form, so the modal will close
-            #myurl = "http://127.0.0.1:8000/client_detail/{cid}/".format(cid=cid)
-            #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
-            #return HttpResponseRedirect(myurl)
-    else:
-        form = FCForm(instance=object)
+        if request.method == 'POST':
+            form = FCForm(instance=object, data=request.POST)
+            if form.is_valid():
+                print("valid????")
+                form.save()
+                result['status'] = 'success'
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail/".format(cid=cid)
+                # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+                return HttpResponseRedirect(myurl)
+        else:
+            form = FCForm(instance=object)
 
-    return render(request, template_name, {'bc':object,'form': form,})
+
+    return render(request, template_name, {'bc': object, 'form': form, 'result': result, })

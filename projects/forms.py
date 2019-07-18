@@ -23,13 +23,16 @@ class ProjectForm(forms.ModelForm):
     cid = forms.IntegerField(label='客户ID',required=False)
     pm = forms.CharField(max_length=50,required=False,label='项目经理')
     pm_mobile = forms.CharField(max_length=50,label='项目经理电话',required=False)
+    pm_wechat = forms.CharField(max_length=50, label='项目经理微信', required=False)
     pm_email = forms.CharField(max_length=50,label='项目经理邮箱',required=False)
     pm_gender = forms.CharField(max_length=50, label='项目经理性别(M/F)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
+    pdetail = forms.CharField(max_length=250, label='详情',required=False)
+    person_in_charge = forms.CharField(max_length=50,required=False,label='我方项目对接人')
     class Meta:
         model = Project
-        fields = ('pname','cid','pm','pm_mobile','pm_email','pm_gender','pdeadline','premark')
+        fields = ('pname','cid','pm','pm_mobile','pm_wechat','pm_email','pm_gender','pdeadline','premark','pdetail','person_in_charge')
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -41,13 +44,17 @@ class ProjectUpdateForm(forms.ModelForm):
     pname = forms.CharField(max_length=50, label='项目名称', required=False)
     pm = forms.CharField(max_length=50, required=False, label='项目经理')
     pm_mobile = forms.CharField(max_length=50, label='项目经理电话', required=False)
+    pm_wechat = forms.CharField(max_length=50, label='项目经理微信', required=False)
     pm_email = forms.CharField(max_length=50, label='项目经理邮箱', required=False)
     pm_gender = forms.CharField(max_length=50, label='项目经理性别(M/F)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
+    pdetail = forms.CharField(max_length=250, label='详情', required=False)
+    person_in_charge = forms.CharField(max_length=50,required=False,label='我方项目对接人')
+
     class Meta:
         model = Project
-        fields = ('pname','pm','pm_mobile','pm_email','pm_gender','pdeadline','premark')
+        fields = ('pname','pm','pm_mobile','pm_wechat','pm_email','pm_gender','pdeadline','premark','pdetail','person_in_charge')
 
     def __init__(self, *args, **kwargs):
         super(ProjectUpdateForm, self).__init__(*args, **kwargs)

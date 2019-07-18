@@ -24,11 +24,11 @@ class ClientForm(forms.ModelForm):
     fc_name = forms.CharField(max_length=50,label='主财务联系人',required=False)
     ctype = forms.CharField(max_length=50,label='客户类型',required=False)
     cinfo = forms.CharField(label='客户信息', required=False)
-    half_hrs = forms.IntegerField(label='半小时政策',required=False)
-
+    cpolicy = forms.CharField(label='收费政策',required=False)
+    cremark = forms.CharField(label='备注', required=False)
     class Meta:
         model = Client
-        fields = ('cname','bc_name','fc_name','ctype','cinfo','half_hrs')
+        fields = ('cname','bc_name','fc_name','ctype','cinfo','cpolicy','cremark')
 
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
@@ -42,11 +42,11 @@ class ClientUpdateForm(forms.ModelForm):
     fc_name = forms.CharField(max_length=50, label='主财务联系人', required=False)
     ctype = forms.CharField(max_length=50, label='客户类型', required=False)
     cinfo = forms.CharField(label='客户信息', required=False)
-    half_hrs = forms.IntegerField(label='半小时政策(0:否|1:是|2:未知)', required=False)
-
+    cpolicy = forms.CharField(label='收费政策', required=False)
+    cremark = forms.CharField(label='备注', required=False)
     class Meta:
         model = Client
-        fields = ('cname', 'bc_name', 'fc_name', 'ctype', 'cinfo', 'half_hrs')
+        fields = ('cname', 'bc_name', 'fc_name', 'ctype', 'cinfo', 'cpolicy','cremark')
 
     def __init__(self, *args, **kwargs):
         super(ClientUpdateForm, self).__init__(*args, **kwargs)

@@ -12,11 +12,15 @@ class Project(models.Model):
     cname = models.CharField(max_length=150, blank=True, null=True, verbose_name='客户名称')
     pm = models.CharField(max_length=50, blank=True, null=True, verbose_name='项目经理')
     pm_mobile = models.CharField(max_length=50, blank=True, null=True)
+    pm_wechat = models.CharField(max_length=50, blank=True, null=True)
     pm_email = models.CharField(max_length=150, blank=True, null=True)
     pm_gender = models.CharField(max_length=50,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     pcreatetime = models.DateField(auto_now_add=True)
     pdeadline = models.CharField(max_length=50, blank=True, null=True)
     premark = models.TextField(blank=True,null=True)
+    pdetail = models.TextField(blank=True,null=True)
+
+    person_in_charge = models.CharField(max_length=50, blank=True, null=True, verbose_name='我方项目对接人')
 
     expertinfos = models.ManyToManyField(ExpertInfo, through='Project2Expert')
 

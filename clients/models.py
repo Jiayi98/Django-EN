@@ -7,9 +7,11 @@ class Client(models.Model):
     cname = models.CharField(max_length=150, blank=True, null=True, verbose_name='客户名称')
     bc_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='主业务联系人')
     fc_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='主财务联系人')
-    half_hrs = models.IntegerField(choices=[(1, '可半小时'), (0, '不可半小时'), (2,'未知')], default=2, verbose_name='是否支持半小时访谈')
+    cpolicy = models.CharField(max_length=50, blank=True, null=True,verbose_name='收费政策')
     ctype = models.CharField(max_length=50,blank=True,null=True,verbose_name='客户类型')
     cinfo = models.TextField(blank=True, null=True,verbose_name='客户介绍')
+    cremark = models.TextField(blank=True, null=True,verbose_name='备注')
+
     class Meta:
         managed = True
         ordering = ('-cid',)
@@ -29,6 +31,14 @@ class Client(models.Model):
     def client_add_project(self):
         #print("===================client_detail==============")
         return reverse('client_add_project',args=[self.cid,])
+
+    def client_add_bc(self):
+        #print("===================client_detail==============")
+        return reverse('client_add_bc',args=[self.cid,])
+
+    def client_add_fc(self):
+        #print("===================client_detail==============")
+        return reverse('client_add_fc',args=[self.cid,])
 
 class BusinessContact(models.Model):
     # D. BusinessContact: 一个客户公司有多个业务联系人
@@ -51,7 +61,7 @@ class FinancialContact(models.Model):
     fc_gender = models.CharField(max_length=10,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     fc_mobile = models.CharField(max_length=150, blank=True, null=True)
     fc_email = models.CharField(max_length=150, blank=True, null=True)
-    pc_position = models.CharField(max_length=80, blank=True, null=True)
+    fc_position = models.CharField(max_length=80, blank=True, null=True)
     cid = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     class Meta:

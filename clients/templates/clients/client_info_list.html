@@ -11,11 +11,12 @@
    <thead>
       <tr>
           <th width="20%">客户</th>
-          <th width="10%">主要业务联系人</th>
-          <th width="10%">主要财务联系人</th>
-          <th width="8%">30min访谈</th>
-          <th width="20%">客户类型</th>
-          <th width="32%">客户信息</th>
+          <th width="10%">客户类型</th>
+          <th width="10%">业务联系人</th>
+          <th width="10%">财务联系人</th>
+          <th width="20%">收费政策</th>
+
+          <th width="30%">客户信息</th>
 
       </tr>
    </thead>
@@ -23,10 +24,11 @@
    {% for client in clients %}
       <tr>
           <td><a href="{{ client.get_client_detail }}"> {{ client.cname }}</a></td>
+          <td>{{ client.ctype }}</td>
           <td><a href=""> {{ client.bc_name }}</a></td>
           <td><a href="">{{ client.fc_name }}</a></td>
           <td>{{ client.half_hrs }}</td>
-          <td>{{ client.ctype }}</td>
+
           <td>{{ client.cinfo }}</td>
       </tr>
 

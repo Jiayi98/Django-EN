@@ -6,12 +6,12 @@
 {% if result.status == 'success' %}
         <p style="align-content: center;color: green;font-size: medium">
             <!--<input type="button" class="btn btn-success" value="修改成功，返回专家信息" onclick="window.location.href='{% url 'expertinfolist' %}'"></a>-->
-            <input type="button" class="btn btn-success btn-sm"  value="修改成功,返回" onclick="location.href='{% url 'fc_detail_update' bc.bc_id bc.cid.cid %}'">
+            <input type="button" class="btn btn-success btn-sm"  value="修改成功,返回" onclick="location.href=''">
         </p>
     {% endif %}
     <br>
         <br>
-        <form action="{% url 'bc_detail_update' bc.bc_id bc.cid.cid %}" method="post" name="bc_detail_update">
+        <form method="post">
             {% csrf_token %}
             <br>
             {% for field in form %}
