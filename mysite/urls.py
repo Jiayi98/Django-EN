@@ -46,12 +46,12 @@ urlpatterns = [
     path('addecomment/', experts_views.addComment, name='addcomment'),
     path('addeworkexp/', experts_views.addWorkexp, name='addworkexp'),
 
-    path('addexperttodatabase/', experts_views.addExpertToDatabase, name='addexperttodatabase'),
+
     path('addcomment/<str:ename>/<str:emobile>/', experts_views.add_comment, name='add_comment'),
     path('addworkexp/<str:ename>/<str:emobile>/', experts_views.add_workexp, name='add_workexp'),
 
     path('addcomplete/', experts_views.addok, name='addcomplete'),
-    path('expertalreadyexist/', experts_views.addExpertToDatabase, name='expertalreadyexist'),
+
 
     path('updateexpert/', update_views.expertInfoUpdate, name='updateexpert'),
     path('expertinfolist/', experts_views.expertInfo_list, name='expertinfolist'),
@@ -93,6 +93,7 @@ urlpatterns = [
 ]
 
 """
+path('addexperttodatabase/', experts_views.addExpertToDatabase, name='addexperttodatabase'),
 path('projects/', projects_views.project, name='project_base'),
     path('projects_list/', projects_views.projectInfo_list, name='project_info_list'),
     path('add_project/', projects_views.add_project, name='add_project'),

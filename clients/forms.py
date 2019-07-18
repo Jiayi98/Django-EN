@@ -36,6 +36,24 @@ class ClientForm(forms.ModelForm):
             field = self.base_fields[field_name]
             field.widget.attrs.update({"class":"form-control"})
 
+class ClientUpdateForm(forms.ModelForm):
+    cname = forms.CharField(max_length=50, label='客户名称', required=False)
+    bc_name = forms.CharField(max_length=50, required=False, label='主业务联系人')
+    fc_name = forms.CharField(max_length=50, label='主财务联系人', required=False)
+    ctype = forms.CharField(max_length=50, label='客户类型', required=False)
+    cinfo = forms.CharField(label='客户信息', required=False)
+    half_hrs = forms.IntegerField(label='半小时政策(0:否|1:是|2:未知)', required=False)
+
+    class Meta:
+        model = Client
+        fields = ('cname', 'bc_name', 'fc_name', 'ctype', 'cinfo', 'half_hrs')
+
+    def __init__(self, *args, **kwargs):
+        super(ClientUpdateForm, self).__init__(*args, **kwargs)
+        for field_name in self.base_fields:
+            field = self.base_fields[field_name]
+            field.widget.attrs.update({"class": "form-control"})
+
 class BCForm(forms.ModelForm):
     bc_name = forms.CharField(label='业务联系人姓名',max_length=50, required=False)
     bc_gender = forms.CharField(label='业务联系人性别(M/F)',max_length=10, required=False)

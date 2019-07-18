@@ -1,0 +1,57 @@
+{% extends "projects/project_base.html" %}
+{% block content %}
+    <br>
+   <h3 class="col-sm-12"> 更新{{ client.cname }}信息</h3>
+
+<br>
+    <form class="col-sm-12" action="{{ client.update_client_detail }}" method="post" name="update_client_detail">
+        {% csrf_token %}
+            <p class="sol-sm-12">
+                <label style="font-weight: 700">客户ID: {{ client.cid }}</label>
+    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <label style="font-weight: 700" class="sol-sm-2 control-label">客户名称：</label>
+
+                    <input type="text" name='cname'  >
+            </p>
+
+            <p class="sol-sm-12">
+                    <label style="font-weight: 700" class="sol-sm-2" for="bc">主业务联系人</label>
+                    <select name="bc_name">
+                        {% for bc in bc_list %}
+                        <option>{{ bc.bc_name }}</option>
+                        {% endfor %}
+                    </select>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <label style="font-weight: 700" class="sol-sm-2" for="fc">主财务联系人</label>
+                    <select name="fc_name">
+                        {% for fc in fc_list %}
+                        <option>{{ fc.fc_name }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            <p class="sol-sm-12">
+                <label style="font-weight: 700" class="sol-sm-2 ">客户类型：</label>
+                    <input name='ctype' type="text">
+
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <label style="font-weight: 700" class="sol-sm-2 ">是否支持半小时：</label>
+
+                    <input name='half_hrs' type="number" >(0:否 | 1:是 | 2:未知)
+
+
+        </p>
+            <p class="sol-sm-12">
+
+                <label style="font-weight: 700" class="sol-sm-2 control-label">客户信息：</label>
+
+                    <textarea name='cinfo' class="form-control" rows="5"></textarea>
+        </p>
+
+        <div class="pull-right col-sm-12">
+                 <button type="reset" class="btn btn-warning btn-sm">重置</button>
+                 <button type="submit" class="btn btn-success btn-sm">更新</button>
+        </div>
+    </form>
+
+
+{% endblock content %}

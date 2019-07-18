@@ -19,8 +19,16 @@ class Client(models.Model):
         return "{}-{}".format(self.cid, self.cname)
 
     def get_client_detail(self):
-        print("===================client_detail==============")
+        #print("===================client_detail==============")
         return reverse('client_detail',args=[self.cid,])
+
+    def update_client_detail(self):
+        #print("===================client_detail==============")
+        return reverse('update_client_detail',args=[self.cid,])
+
+    def client_add_project(self):
+        #print("===================client_detail==============")
+        return reverse('client_add_project',args=[self.cid,])
 
 class BusinessContact(models.Model):
     # D. BusinessContact: 一个客户公司有多个业务联系人

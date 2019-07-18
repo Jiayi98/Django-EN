@@ -5,7 +5,7 @@
 <br>
 {% if perms.experts.can_view_contact_info %}
     <h3 class="col-sm-10">{{ client.cname }}&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-success btn-sm"  value="修改客户信息" onclick="window.location.href=''">
+        <input type="button" class="btn btn-success btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
     </h3>
 {% else %}
     <h2>{{ client.cname }}&nbsp&nbsp&nbsp
@@ -22,6 +22,14 @@
         <label style="font-weight: 700">主业务联系人: </label>{{client.bc_name}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">主财务联系人: </label>{{client.fc_name}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">客户类型: </label>{{client.ctype}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <label style="font-weight: 700">是否支持半小时: </label>
+        {% if client.half_hrs == 0 %}
+        否
+        {% elif client.half_hrs == 1 %}
+        是
+        {% else %}
+        未知
+        {% endif %}
     </p>
     <p>
         <label style="font-weight: 700">客户信息:</label>{{ client.cinfo }}
@@ -35,7 +43,7 @@
    {% endfor %}-->
 
 </div>
-<h5 class="col-sm-10">项目列表 &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="添加项目" onclick="window.location.href='{% url 'add_project' %}'"></h5>
+<h5 class="col-sm-10">项目列表 &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="添加项目" onclick="window.location.href='{{ client.client_add_project }}'"></h5>
 <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
                     <caption></caption>
                     <thead>

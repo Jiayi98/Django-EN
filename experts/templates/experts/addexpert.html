@@ -3,7 +3,7 @@
         <br>
         <h2>增加专家</h2>
         <br>
-        <form action="/addexperttodatabase/" method="post" name="addexpert">
+        <form class="col-sm-12" method="post">
             {% csrf_token %}
             <div class="col-sm-12">
                 <label>姓名：</label>
@@ -31,7 +31,7 @@
                 <input type="text" name='estate'>
 
                 <label class="control-label">咨询费：</label>
-                <input type="text" value="0.0" name='efee'>
+                <input type="number" value="0.0" name='efee'>
                 <label class="control-label">访谈次数：</label>
                 <input type="number" value="0" name='interview_num'>
             </div>
@@ -42,31 +42,22 @@
                 <label class="sol-sm-2 control-label">背景：</label>
                 <textarea name='ebackground' class="form-control" rows="5"></textarea>
             </div>
+            <div class="col-sm-10">
+                <label class="control-label">添加人：</label>
+            <input type="text" name='eupdated_by' value="{{ user.username }}" class="form-control">
+
+            </div>
             <br>
-            <!--{% for field in form %}
-                <div class="form-group">
-                    {% if field.label == '背景' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <textarea name='ebackground' class="form-control" rows="5"></textarea>
-                        </div>
-                    {% elif field.label == '咨询费' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <input type="text" value="0.0" name='efee' class="form-control">
-                        </div>
-                    {% else %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            {{ field }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}-->
+            <p class="col-sm-10">
+            {% if error == 'error' %}
+                操作未成功请重新操作
+            {% endif %}
+            </p>
             <div class="pull-right col-sm-10">
                 <button type="reset" class="btn btn-warning">重置</button>
                 <button type="submit" class="btn btn-success">添加</button>
             </div>
+
 
             <!--{{ form.as_p }}-->
             <!--<input type="reset">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="add">-->

@@ -12,7 +12,7 @@ from .forms_update import ExpertInfoFormUpdateDB,CommentFormUpdateDB, WorkexpFor
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
-
+from projects.models import Project,Project2Expert
 """
 def export_all_excel(request):
     print("==========views.export_all_excel========")
@@ -85,15 +85,17 @@ def delete_confirm(request, eid,ename):
 EXPERTS INFORMATION
 """
 
-
+"""
 @login_required
 def addExpert(request):
     form = ExpertInfoForm()
     return render(request, 'experts/addexpert.html', {'form': form})
-
+"""
 
 @login_required
-def addExpertToDatabase(request):
+def addExpert(request):
+    form = ExpertInfoForm()
+    error = ""
     if request.method == "POST":
         expertInfo_form = ExpertInfoForm(data=request.POST)
         if expertInfo_form.is_valid():
@@ -102,17 +104,21 @@ def addExpertToDatabase(request):
             expert = ExpertInfo.objects.filter(ename=new_expert.ename, emobile=new_expert.emobile, eemail=new_expert.eemail)
             if expert.exists() == 0:
                 new_expert = expertInfo_form.save()
+                return HttpResponseRedirect('/addcomplete/')
             else:
-                #print("!!!!!!!!!!!This expert already existed!!!!!!!!")
-                return render(request, 'experts/expert_already_exist.html')
+                print("!!!!!!!!!!!This expert already existed!!!!!!!!")
+                error = "error"
+                return render(request, 'experts/addexpert.html', {'form': form, 'error': error})
         else:
             print("=============views.addExpertToDatabase======")
             print("-----------NOT VALID----------")
+            error = "error"
     else:
         print("!!!!!!!!!!!GET!!!!!!!!")
 
     # 重定向
-    return HttpResponseRedirect('/addcomplete/')
+    #return HttpResponseRedirect('/addcomplete/')
+    return render(request, 'experts/addexpert.html', {'form': form, 'error':error})
 
 """
 """
@@ -140,8 +146,8 @@ def add_comment(request,ename,emobile):
     try:
         expert = ExpertInfo.objects.get(ename=ename, emobile=emobile)
         #47.94.224.242:1973
-        myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
-        #myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+        #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+        myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
     except:
         print("=============views.add_comment======")
         print("!!!!!!!!!!!This expert not exist!!!!!!!!")
@@ -157,8 +163,8 @@ def add_comment(request,ename,emobile):
             newComment.ecomment = ecomment
             newComment.save()
             # 47.94.224.242:1973
-            #myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
-            myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+            myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+            #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
             result['status'] = 'success'
             return HttpResponseRedirect(myurl)
     return render(request, 'experts/addcomment_confirm.html', {"expert":expert,"formC":formC,'result':result, 'myurl':myurl})
@@ -218,8 +224,8 @@ def add_workexp(request,ename,emobile):
             #newExp.istonow = istonow
             newExp.save()
             # 47.94.224.242:1973
-            url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
-            #url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
+            #url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
+            url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
             return HttpResponseRedirect(url)
             #return HttpResponseRedirect('/addcomplete/')
     return render(request, 'experts/addworkexp_confirm.html', {"formW":formW})
@@ -251,6 +257,8 @@ def expert_detail(request, ename, eid):
     #print("===========views.expert_detail=========")
     expert = get_object_or_404(ExpertInfo, eid=eid)
     pay = Payment.objects.filter(eid=expert)
+    p2es = Project2Expert.objects.filter(eid=expert)
+
     if pay.exists() == 0:
         # 没有支付方式
         pay = Payment.objects.create(eid=expert)
@@ -261,21 +269,20 @@ def expert_detail(request, ename, eid):
     comments = ExpertComments.objects.filter(eid=eid)
     # 7.15添加修改了添加时间显示格式
     addtime = ' {year}年{mon}月{day}日'.format(year=expert.addtime.year,mon=expert.addtime.month, day=expert.addtime.day)
-    return render(request, 'experts/expert_detail.html', {'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments,'pay':pay})
+    return render(request, 'experts/expert_detail.html', {'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments,'pay':pay,'p2es':p2es})
     #return render(request, 'experts/expert_detail.html', {'expert':expert, 'comments':comments})
 
 
 def expert_detail_update(request, ename, eid):
     template_name = 'experts/expert_detail_update.html'
     object = get_object_or_404(ExpertInfo, eid=eid)
-
     if request.method == 'POST':
         form = ExpertInfoFormUpdateDB(instance=object, data=request.POST)
         if form.is_valid():
             form.save()
             # if is_ajax(), we just return the validated form, so the modal will close
-            #myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename,eid=eid)
-            myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename,eid=eid)
+            #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
     else:
         form = ExpertInfoFormUpdateDB(instance=object)
@@ -293,8 +300,8 @@ def expert_contact_info_update(request, ename, eid):
         if form.is_valid():
             form.save()
             # if is_ajax(), we just return the validated form, so the modal will close
-            #myurl = "http://127.0.0.1:8000/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
-            myurl = "http://47.94.224.242:1973/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
+            myurl = "http://127.0.0.1:8000/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
+            #myurl = "http://47.94.224.242:1973/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
     else:
         form = ContactInfoFormUpdateDB(instance=object)
@@ -648,8 +655,8 @@ def get_payment_update(request, ep_id):
         form = PaymentForm(instance=pay, data=request.POST)
         if form.is_valid():
             form.save()
-            myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=pay.eid.ename,eid=pay.eid.eid)
-            #myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=pay.eid.ename,eid=pay.eid.eid)
+            #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=pay.eid.ename,eid=pay.eid.eid)
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=pay.eid.ename,eid=pay.eid.eid)
             print(myurl)
             return HttpResponseRedirect(myurl)
         else:

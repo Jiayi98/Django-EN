@@ -24,7 +24,7 @@ class ProjectForm(forms.ModelForm):
     pm = forms.CharField(max_length=50,required=False,label='项目经理')
     pm_mobile = forms.CharField(max_length=50,label='项目经理电话',required=False)
     pm_email = forms.CharField(max_length=50,label='项目经理邮箱',required=False)
-    pm_gender = forms.CharField(max_length=10, label='项目经理性别(M/F)', required=False)
+    pm_gender = forms.CharField(max_length=50, label='项目经理性别(M/F)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
     class Meta:
@@ -42,7 +42,7 @@ class ProjectUpdateForm(forms.ModelForm):
     pm = forms.CharField(max_length=50, required=False, label='项目经理')
     pm_mobile = forms.CharField(max_length=50, label='项目经理电话', required=False)
     pm_email = forms.CharField(max_length=50, label='项目经理邮箱', required=False)
-    pm_gender = forms.CharField(max_length=10, label='项目经理性别(M/F)', required=False)
+    pm_gender = forms.CharField(max_length=50, label='项目经理性别(M/F)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
     class Meta:

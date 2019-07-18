@@ -6,7 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from experts.models import *
 from clients.models import Client, BusinessContact, FinancialContact
 from projects.models import Project
-from .forms import ClientForm,BCForm,FCForm
+from .forms import ClientForm,BCForm,FCForm,ClientUpdateForm
+from projects.forms import ProjectForm
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -41,6 +42,53 @@ def client_detail(request, cid):
 
 
 @login_required
+def client_add_project(request, cid):
+    print("==========clients/views.client_add_project()==============")
+    form = ProjectForm()
+    client = Client.objects.get(cid=cid)
+    if request.method == "POST":
+        pname = request.POST.get('pname')
+        pm = request.POST.get('pm')
+        pm_mobile = request.POST.get('pm_mobile')
+        pm_email = request.POST.get('pm_email')
+        pm_gender = request.POST.get('pm_gender')
+        pdeadline = request.POST.get('pdeadline')
+        premark = request.POST.get('premark')
+        try:
+            client = Client.objects.get(cid=cid)
+        except:
+            return HttpResponseRedirect('/project_info_list/')
+        else:
+            # filter得到的是一个list，而不是一个object
+            project = Project.objects.filter(pname=pname, cid=client)
+            if project.exists() == 0:
+                new_project = Project()
+                new_project.cid = client
+                new_project.pname = pname
+                new_project.cname = client.cname
+                new_project.pm = pm
+                new_project.pm_mobile = pm_mobile
+                new_project.pm_email = pm_email
+                new_project.pm_gender = pm_gender
+                new_project.pdeadline = pdeadline
+                new_project.premark = premark
+                new_project.save()
+
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                return HttpResponseRedirect(myurl)
+
+            else:
+                print("!!!!!!!!!!!This project already existed!!!!!!!!")
+                pass
+
+    else:
+        print("!!!!!!!!!!!GET!!!!!!!!")
+        pass
+    return render(request, 'clients/client_add_project.html', {'form': form,'client':client})
+
+
+@login_required
 def add_client(request):
     form = ClientForm()
     return render(request, 'clients/add_client.html', {'form': form})
@@ -62,14 +110,14 @@ def addClientToDatabase(request):
                 if new_client.fc_name != '':
                     FinancialContact.objects.create(fc_name=new_client.fc_name,cid=new_client)
 
-                #myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=new_client.cid)
-                myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=new_client.cid)
+                #myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
                 return HttpResponseRedirect(myurl)
             else:
                 #print("!!!!!!!!!!!This project already existed!!!!!!!!")
                 c = client.first()
-                #myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=c.cid)
-                myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=c.cid)
+                #myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
                 return HttpResponseRedirect(myurl)
         else:
             print("=============views.addClientToDatabase======")
@@ -78,6 +126,25 @@ def addClientToDatabase(request):
         print("!!!!!!!!!!!GET!!!!!!!!")
     # 重定向
     return HttpResponseRedirect('/client_info_list/')
+
+
+def update_client_detail(request,cid):
+    template_name = 'clients/update_client_detail.html'
+    client = get_object_or_404(Client, cid=cid)
+    bc_list = BusinessContact.objects.filter(cid=client)
+    fc_list = FinancialContact.objects.filter(cid=client)
+
+    if request.method == 'POST':
+        form = ClientUpdateForm(instance=client, data=request.POST)
+        if form.is_valid():
+            form.save()
+            myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+            # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+            return HttpResponseRedirect(myurl)
+    else:
+        form = ClientUpdateForm(instance=client)
+
+    return render(request, template_name, {'client': client, 'form': form,'bc_list':bc_list,'fc_list':fc_list })
 
 
 def bc_detail_update(request, bc_id, cid):

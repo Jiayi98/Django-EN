@@ -5,13 +5,12 @@ from .models import ExpertInfo,ExpertComments,WorkExp,Payment
 # 从ExpertInfo模型中动态地创建表单
 class ExpertInfoForm(forms.ModelForm):
     ename = forms.CharField(label='*姓名',max_length=50, required=True)
-    esex = forms.CharField(label='性别(M/F)',max_length=2, required=False)
+    esex = forms.CharField(label='性别(M/F)',max_length=10, required=False)
     emobile = forms.CharField(label='*电话(多个电话请用分号隔开)',max_length=50, required=True)
     eemail = forms.CharField(label='邮箱',max_length=80, required=False)
     etrade = forms.CharField(label='行业',max_length=150, required=False)
     esubtrade = forms.CharField(label='子行业',max_length=150, required=False)
-    #ebirthday = forms.DateField(label='生日',required=False)
-    #elandline = forms.CharField(max_length=50, required=False)
+
     elocation = forms.CharField(label='城市',max_length=150, required=False)
     eqq = forms.CharField(label='微信',max_length=50, required=False)
     #ephoto = forms.CharField(max_length=20, required=False)

@@ -1,0 +1,50 @@
+{% extends "clients/client_base.html" %}
+    {% block content %}
+    <br>
+    <h3 class="col-sm-12">新建项目</h3>
+    <p>
+        <form class="col-sm-12"  method="post">
+            {% csrf_token %}
+
+            <p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700">*项目名称：</label>
+                <input type="text" name='pname'>
+           </div>
+            </p>
+
+<p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700" class="control-label">项目经理：</label>
+                <input type="text" name='pm'>
+                <label style="font-weight: 700" class="control-label">性别：</label>
+                <input type="text" name='pm_gender'>
+
+                <label style="font-weight: 700" class="control-label">电话：</label>
+                <input type="text" name='pm_mobile'>
+                <label style="font-weight: 700" class="control-label">邮箱：</label>
+                <input type="text" name='pm_email'>
+            </div>
+</p>
+<p>
+            <div class="col-sm-12">
+                <label style="font-weight: 700" class="control-label">项目截止日期(YYYY-MM-DD)：</label>
+                <input type="text" name='pdeadline'>
+</p>
+<p>
+            </div>
+            <div class="col-sm-12">
+                <label style="font-weight: 700" class="control-label">备注：</label>
+                <textarea name='premark' class="form-control" rows="5"></textarea>
+            </div>
+</p>
+
+            <div class="pull-right col-sm-10">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-success">添加</button>
+            </div>
+
+        </form>
+    </p>
+    {% endblock content %}
+
