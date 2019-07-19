@@ -238,10 +238,10 @@
                     <thead>
                     <tr>
                         <th width="10%">项目ID</th>
-                        <th width="20%">项目名称</th>
+                        <th width="30%">项目名称</th>
                         <th width="10%">项目经理</th>
-                        <th width="20%">项目发布时间</th>
-                        <th width="20%">项目截止时间</th>
+                        <th width="15%">项目发布时间</th>
+                        <th width="15%">项目截止时间</th>
                         <th width="10%"></th>
 
                     </tr>
@@ -256,7 +256,32 @@
                         <td>{{ p2e.pid.pdeadline }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href=''">删除</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
+                            <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid p2e.pid.pid %}'">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if result == '删除失败' %}
+                                {{ result }}
+                            {% endif %}
+
                         </td>
                     </tr>
                     {% endfor %}

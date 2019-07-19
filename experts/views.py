@@ -514,6 +514,8 @@ def advanced_expert_search(request):
                 expert_list = search_sort_helper(expert_list, company)
             return render(request, template_name, {'expert_list': expert_list})
 
+
+
 def search_expert(request):
     q = request.GET.get('q')
     error_msg = ''

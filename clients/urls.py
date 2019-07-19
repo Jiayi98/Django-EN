@@ -17,6 +17,10 @@ urlpatterns = [
     path('clients/client_add_bc/<int:cid>/', views.client_add_bc, name='client_add_bc'),
     path('clients/client_add_fc/<int:cid>/', views.client_add_fc, name='client_add_fc'),
 
-    path('bc_detail_update/<int:bc_id>/<int:cid>', views.bc_detail_update, name='bc_detail_update'),
-    path('fc_detail_update/<int:fc_id>/<int:cid>', views.fc_detail_update, name='fc_detail_update'),
+    path('clients/bc_detail_update/<int:bc_id>/<int:cid>', views.bc_detail_update, name='bc_detail_update'),
+    path('clients/fc_detail_update/<int:fc_id>/<int:cid>', views.fc_detail_update, name='fc_detail_update'),
+
+    path('clients/delete_client/<int:cid>/', views.delete_client, name='delete_client'),
+    path('clients/delete_client_bc/<int:bc_id>/<int:cid>/', views.delete_client_bc, name='delete_client_bc'),
+    path('clients/delete_client_fc/<int:fc_id>/<int:cid>/', views.delete_client_fc, name='delete_client_fc'),
 ]

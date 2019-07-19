@@ -40,6 +40,9 @@ class Client(models.Model):
         #print("===================client_detail==============")
         return reverse('client_add_fc',args=[self.cid,])
 
+    def delete_client(self):
+        return reverse('delete_client',args=[self.cid,])
+
 class BusinessContact(models.Model):
     # D. BusinessContact: 一个客户公司有多个业务联系人
     bc_id = models.AutoField(primary_key=True)

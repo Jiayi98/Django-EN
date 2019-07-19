@@ -11,6 +11,31 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
+def delete_project(request, pid):
+    print("=============project/views.delete======")
+    template_name = 'projects/project_detail.html'
+    project = Project.objects.get(pid=pid)
+    result = project.delete()
+    if result:
+        return HttpResponseRedirect('/project_info_list/')
+    else:
+        result = '删除失败'
+    return render(request, template_name,{'result':result})
+
+def delete_p2e(request, pteid, pid):
+    print("=============project/views.delete======")
+    template_name = 'projects/project_detail.html'
+    p2e = Project2Expert.objects.get(pteid=pteid)
+    project = Project.objects.get(pid=pid)
+    result = p2e.delete()
+    if result:
+        myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=pid, cid=project.cid.cid)
+        # myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
+        return HttpResponseRedirect(myurl)
+    else:
+        result = '删除失败'
+    return render(request, template_name,{'result':result})
+
 def project(request):
     return render(request, 'projects/project_base.html')
 
@@ -45,24 +70,28 @@ def add_p2e(request,pid):
     eid_num = request.POST.get("eid")
     flag = {}
     if request.method == "POST":
-        expert = ExpertInfo.objects.get(eid=eid_num)
-        print("===========projects/views.valid=========")
-        print(eid_num, expert)
-        temp = Project2Expert.objects.filter(eid=expert,pid=project)
-        if temp.exists() == 0 and (not ename or expert.ename == ename):
-            new_obj = Project2Expert.objects.create(eid=expert,pid=project)
-            print('--------------->',new_obj.pteid)
-            myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
-            return HttpResponseRedirect(myurl)
-            #return render(request, 'projects/add_p2e.html', {"project": project, "form": form,"new_obj":new_obj})
-        else:
+        try:
+            expert = ExpertInfo.objects.get(eid=eid_num)
+            print("===========projects/views.valid=========")
+            #print(eid_num, expert)
+        except:
             flag['status'] = 'error'
+        else:
+            temp = Project2Expert.objects.filter(eid=expert,pid=project)
+            if temp.exists() == 0 and (not ename or expert.ename == ename):
+                new_obj = Project2Expert.objects.create(eid=expert,pid=project)
+                print('--------------->',new_obj.pteid)
+                myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
+                return HttpResponseRedirect(myurl)
+                #return render(request, 'projects/add_p2e.html', {"project": project, "form": form,"new_obj":new_obj})
+            else:
+                flag['status'] = 'error'
     return render(request, 'projects/add_p2e.html', {"project": project, "form": form,'flag':flag})
 
 def update_p2e_detail(request,pteid):
 
     object = get_object_or_404(Project2Expert, pteid=pteid)
-    print(type(object.pid),type(object.eid))
+    #print(type(object.pid),type(object.eid))
     company = WorkExp.objects.filter(eid=object.eid.eid).first()
     if company:
         company = company.company
@@ -72,7 +101,7 @@ def update_p2e_detail(request,pteid):
     if request.method == 'POST':
         form = Project2ExpertForm(instance=object, data=request.POST)
         if form.is_valid():
-            print("valid????")
+            #print("valid????")
             object.pname = object.pid.pname
             object.ename = object.eid.ename
             object.ecompany = company
@@ -134,7 +163,7 @@ def addProjectToDatabase(request):
         print("!!!!!!!!!!!GET!!!!!!!!")
 
     # 重定向
-    return HttpResponseRedirect('/projects_list/')
+    return HttpResponseRedirect('/project_info_list/')
 
 def update_project_detail(request,pid):
     template_name = 'projects/update_project_detail.html'

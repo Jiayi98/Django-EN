@@ -10,10 +10,10 @@
             <p>
                 <div class="col-sm-12">
                     <label style="font-weight: 700">*专家ID：</label>
-                    <input type="number" name='eid'>
+                    <input type="number" name='eid' value=0>
                     &nbsp&nbsp&nbsp
                     <label style="font-weight: 700">专家姓名：</label>
-                    <input type="text" name='ename'>
+                    <input type="text" name='ename' placeholder="选填">
                     {% if flag.status == 'error' %}
                         &nbsp&nbsp&nbsp
                         <button type="reset" class="btn btn-danger btn-sm">重复添加/ID与姓名不匹配</button>

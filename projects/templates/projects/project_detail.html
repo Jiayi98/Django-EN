@@ -3,16 +3,40 @@
 
 {% block content %}
 <br>
-{% if perms.experts.can_view_contact_info %}
-    <h2 class="col-sm-10">{{ project.pname }}&nbsp&nbsp&nbsp
+{% if perms.projects.can_delete_project %}
+    <h3 class="col-sm-10">{{ project.pname }}&nbsp&nbsp&nbsp
         <input type="button" class="btn btn-success btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
-    </h2>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">删除</button>
+        <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="deleteProjectLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label  style="color: red" class="control-label">确定要删除吗？</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ project.delete_project }}'">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h3>
+    {% if result == '删除失败' %}
+        {{ result }}
+    {% endif %}
+    </h3>
 {% else %}
-    <h2>{{ project.pname }}&nbsp&nbsp&nbsp
-        <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='.'">无权限查看联系方式
-        </button>
-        <input type="button" class="btn btn-success btn-sm"  value="修改项目信息" onclick="window.location.href=''">
-    </h2>
+    <h3>{{ project.pname }}&nbsp&nbsp&nbsp
+        <input type="button" class="btn btn-success btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
+    </h3>
 {% endif %}
 <br>
 <div class="col-sm-10" style="position: center">
@@ -69,17 +93,35 @@
                         <td>{{ p2e.itv_duration }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href=''">删除</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
+                            <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid project.pid %}'">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if result == '删除失败' %}
+                                {{ result }}
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
-                    {% if result.status == 'success'%}
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }} - {{ exp.duty }}</td>
-                        <td> {{ exp.area }}</td>
-                        <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
-                    {% endif %}
+
                     </tbody>
                 </table>
 {% endblock content %}

@@ -19,9 +19,9 @@
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
          <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'base' %}">Expert</a>
-            <a class="navbar-brand" href="{% url 'project_base' %}">Project</a>
-            <a class="navbar-brand" href="{% url 'client_base' %}">Client</a>
+            <a class="navbar-brand" href="{% url 'base' %}">专家</a>
+            <a class="navbar-brand" href="{% url 'project_base' %}">项目</a>
+            <a class="navbar-brand" href="{% url 'client_base' %}">客户</a>
         </div>
         <ul class="nav navbar-nav navbar-left">
             {% if user.is_authenticated %}
@@ -39,7 +39,7 @@
                     </div>
                 </li>
              <li class="nav-item">
-                    <button class="btn btn-warning btn-sm" onclick="window.location.href=''">高级搜索</button>
+                    <button class="btn btn-warning btn-sm" onclick="window.location.href=''">查找客户</button>
                 </li>
              &nbsp&nbsp&nbsp
                  <li class="nav-item">
@@ -105,7 +105,7 @@
 
           {% block content %}
             <br>
-            <h1>CLIENT</h1>
+            <h1 class="col-md-12">CLIENT</h1>
             {% endblock %}
         </div>
 

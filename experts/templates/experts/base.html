@@ -19,9 +19,9 @@
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
          <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'base' %}">Expert</a>
-            <a class="navbar-brand" href="{% url 'project_base' %}">Project</a>
-            <a class="navbar-brand" href="{% url 'client_base' %}">Client</a>
+            <a class="navbar-brand" href="{% url 'base' %}">专家</a>
+            <a class="navbar-brand" href="{% url 'project_base' %}">项目</a>
+            <a class="navbar-brand" href="{% url 'client_base' %}">客户</a>
         </div>
         <ul class="nav navbar-nav navbar-left">
             {% if user.is_authenticated %}
@@ -39,7 +39,7 @@
                     </div>
                 </li>
              <li class="nav-item">
-                    <button class="btn btn-warning btn-sm" onclick="window.location.href='{% url 'advanced_expert_form'%}'">高级搜索</button>
+                    <button class="btn btn-warning btn-sm" onclick="window.location.href='{% url 'advanced_expert_form'%}'">查找专家</button>
                 </li>
              &nbsp&nbsp&nbsp
                  <li class="nav-item">
@@ -86,7 +86,7 @@
                 </li>-->
             &nbsp&nbsp&nbsp
                 <li class="nav-item">
-                    <button class="btn btn-success btn-sm" onclick="location.href='{% url 'login' %}'">登陆</button>
+                    <button class="btn btn-success btn-sm" onclick="location.href='{% url 'login' %}'">登录</button>
                 </li>
             {% endif %}
         </ul>
@@ -106,7 +106,8 @@
 
           {% block content %}
             <br>
-            <h1>Experts Network</h1>
+            <h1 class="col-md-12">Experts Network</h1>
+
             {% endblock %}
         </div>
 
