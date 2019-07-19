@@ -43,8 +43,8 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name='password_reset_complete'),
     path('addexpert/', experts_views.addExpert, name='addexpert'),
-    path('addecomment/', experts_views.addComment, name='addcomment'),
-    path('addeworkexp/', experts_views.addWorkexp, name='addworkexp'),
+
+
 
 
     path('addcomment/<str:ename>/<str:emobile>/', experts_views.add_comment, name='add_comment'),
@@ -93,6 +93,8 @@ urlpatterns = [
 ]
 
 """
+path('addeworkexp/', experts_views.addWorkexp, name='addworkexp'),
+    path('addecomment/', experts_views.addComment, name='addcomment'),
 path('addexperttodatabase/', experts_views.addExpertToDatabase, name='addexperttodatabase'),
 path('projects/', projects_views.project, name='project_base'),
     path('projects_list/', projects_views.projectInfo_list, name='project_info_list'),

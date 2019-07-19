@@ -121,9 +121,6 @@ def addExpert(request):
     return render(request, 'experts/addexpert.html', {'form': form, 'error':error})
 
 """
-"""
-
-
 @login_required
 def addComment(request):
     formI = ExpertInfoFormUpdate()
@@ -132,7 +129,7 @@ def addComment(request):
 
     return render(request, 'experts/addcomment.html', {'formI': formI, 'expert_objs': expert_objs})
     #return render(request, 'experts/addcomment.html', {'formC': formC,'formI':formI,'expert_objs':expert_objs})
-
+"""
 
 
 @login_required
@@ -170,7 +167,7 @@ def add_comment(request,ename,emobile):
     return render(request, 'experts/addcomment_confirm.html', {"expert":expert,"formC":formC,'result':result, 'myurl':myurl})
 
 
-
+"""
 
 @login_required
 def addWorkexp(request):
@@ -183,7 +180,7 @@ def addWorkexp(request):
     #    print(obj.eid)
     return render(request, 'experts/addworkexp.html', {'formI': formI, 'expert_objs': expert_objs})
     #return render(request, 'experts/addworkexp.html', {'formW': formW, 'formI': formI, 'expert_objs': expert_objs})
-
+"""
 
 
 
