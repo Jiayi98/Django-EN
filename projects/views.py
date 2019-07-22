@@ -55,11 +55,11 @@ def project_detail(request, pid, cid):
     print("===========projects/views.project_detail=========")
 
     project = get_object_or_404(Project, pid=pid)
+    createtime = ' {year}-{mon}-{day}'.format(year=project.pcreatetime.year,mon=project.pcreatetime.month, day=project.pcreatetime.day)
     client = Client.objects.filter(cid=cid).first()
     experts = get_object_or_404(Project, pid=pid).expertinfos.all()
     p2es = Project2Expert.objects.filter(pid=pid)
-    #print(p2es.first().itv_duration)
-    return render(request, 'projects/project_detail.html', {'project': project, 'client': client, 'p2es': p2es})
+    return render(request, 'projects/project_detail.html', {'project': project, 'client': client, 'p2es': p2es,'createtime':createtime})
 
 
 

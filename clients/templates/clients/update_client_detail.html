@@ -18,31 +18,39 @@
                     <input type="text" name='cname' value="{{ client.cname }}">
             </p>
 
-            <p class="sol-sm-12">
-                    <label style="font-weight: 700" class="sol-sm-2" for="bc">主业务联系人</label>
-                    <select name="bc_name">
-                        {% for bc in bc_list %}
+        <p class="sol-sm-12">
+            <label style="font-weight: 700" class="sol-sm-2" for="bc">主业务联系人</label>
+                <select name="bc_name">
+                    <option>请选择</option>
+                    {% for bc in bc_list %}
                         <option>{{ bc.bc_name }}</option>
-                        {% endfor %}
-                    </select>
-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                    <label style="font-weight: 700" class="sol-sm-2" for="fc">主财务联系人</label>
-                    <select name="fc_name">
-                        {% for fc in fc_list %}
+                    {% endfor %}
+                </select>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <label style="font-weight: 700" class="sol-sm-2" for="fc">主财务联系人</label>
+                <select name="fc_name">
+                    <option>请选择</option>
+                    {% for fc in fc_list %}
                         <option>{{ fc.fc_name }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
-            <p class="sol-sm-12">
-                <label style="font-weight: 700" class="sol-sm-2 ">客户类型：</label>
-                    <input name='ctype' type="text" value="{{ client.ctype }}">
+                    {% endfor %}
+                </select>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <label style="font-weight: 700" class="sol-sm-2 " for="ctype">客户类型：</label>
+                <select name="ctype">
+                        <option>请选择</option>
+                        <option>咨询公司</option>
+                        <option>投资机构</option>
+                        <option>企业</option>
+                        <option>其它</option>
+                </select>
 
-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                <label style="font-weight: 700" class="sol-sm-2 ">收费政策：</label>
+        </p>
+        <p class="sol-sm-12">
 
-                    <input name='cpolicy' type="text" value="{{ client.cpolicy }}">
+                <label style="font-weight: 700" class="sol-sm-2 control-label">收费政策：</label>
 
-
+                    <textarea name='cpolicy' class="form-control" rows="5">{{ client.cpolicy }}</textarea>
+        </p>
         </p>
             <p class="sol-sm-12">
 

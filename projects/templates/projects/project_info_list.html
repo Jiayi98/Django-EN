@@ -13,7 +13,7 @@
           <th width="6%">项目</th>
           <th width="8%">客户</th>
           <th width="8%">项目负责人</th>
-          <th width="8%">发布时间</th>
+        <th width="8%">我方对接人</th>
           <th width="70%">截止时间</th>
 
       </tr>
@@ -24,7 +24,7 @@
           <td><a href="{{ project.get_project_detail }}"> {{ project.pname }}</a></td>
           <td>{{ project.cname }}</td>
           <td>{{ project.pm }}</td>
-          <td>{{ project.pcreatetime }}</td>
+          <td>{{ project.person_in_charge }}</td>
           <td>{{ project.pdeadline }}</td>
       </tr>
 

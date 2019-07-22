@@ -9,18 +9,32 @@
             {% for field in form %}
                 <div class="form-group">
                     {% if field.label == '客户信息' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
                         <div class="col-sm-10">
                             <textarea name='cinfo' class="form-control" rows="5"></textarea>
                         </div>
-                    {% elif field.label == '半小时政策' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+                    {% elif field.label == '收费政策' %}
+                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
                         <div class="col-sm-10">
-                            <input type="number" name='half_hrs' value="2" class="form-control">
+                            <textarea name='cpolicy' class="form-control" rows="5"></textarea>
                         </div>
-
+                    {% elif field.label == '备注' %}
+                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-10">
+                            <textarea name='cremark' class="form-control" rows="5"></textarea>
+                        </div>
+                    {% elif field.label == '客户类型' %}
+                        <label style="font-weight: 700" class="sol-sm-2 " for="ctype">客户类型：</label>
+                            <select name="ctype">
+                                <option>请选择</option>
+                                <option>咨询公司</option>
+                                <option>投资机构</option>
+                                <option>企业</option>
+                                <option>其它</option>
+                            </select>
                     {% else %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
+
+                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
                         <div class="col-sm-10">
                             {{ field }}
                         </div>
