@@ -82,3 +82,10 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.navbar-nav > li > a{
+    padding-top:4px ;
+    padding-bottom:0 ;
+    height: 28px;
+}
+.navbar {min-height:20px ;}

@@ -130,9 +130,12 @@ def addProjectToDatabase(request):
         pm = request.POST.get('pm')
         pm_mobile = request.POST.get('pm_mobile')
         pm_email = request.POST.get('pm_email')
+        pm_wechat = request.POST.get('pm_wechat')
         pm_gender = request.POST.get('pm_gender')
         pdeadline = request.POST.get('pdeadline')
         premark = request.POST.get('premark')
+        person_in_charge = request.POST.get('person_in_charge')
+        pdetail = request.POST.get('pdetail')
         cid_num = request.POST.get('cid')
         print('---------',cid_num)
         try:
@@ -151,9 +154,12 @@ def addProjectToDatabase(request):
                 new_project.pm = pm
                 new_project.pm_mobile = pm_mobile
                 new_project.pm_email = pm_email
+                new_project.pm_wechat = pm_wechat
                 new_project.pm_gender = pm_gender
                 new_project.pdeadline = pdeadline
                 new_project.premark = premark
+                new_project.pdetail = pdetail
+                new_project.person_in_charge = person_in_charge
                 new_project.save()
 
             else:
@@ -181,3 +187,33 @@ def update_project_detail(request,pid):
         form = ProjectUpdateForm(instance=project)
 
     return render(request, template_name, {'project': project, 'form': form, })
+
+def advanced_project_form(request):
+    template_name = 'projects/advanced_project_search.html'
+    return render(request, template_name)
+
+def advanced_project_search(request):
+    template_name = 'projects/advanced_project_search_result.html'
+    pid = request.GET.get('pid')
+    pname = request.GET.get('pname')
+    cname = request.GET.get('cname')
+    premark = request.GET.get('premark')
+    pdetail = request.GET.get('pdetail')
+    #print(type(pname),type(cname),type(premark),type(pdetail))
+    if not premark:
+        premark = ''
+    if not pdetail:
+        pdetail = ''
+    if pid:
+        project_list = Project.objects.filter(pid=pid)
+        num_of_result = len(project_list)
+        return render(request, template_name, {'num_of_result': num_of_result, 'project_list': project_list})
+    else:
+        project_list = Project.objects.filter(
+        cname__contains=cname,
+        pname__contains=pname,
+        premark__contains=premark,
+        pdetail__contains=pdetail)
+
+        num_of_result = len(project_list)
+        return render(request, template_name, {'num_of_result': num_of_result, 'project_list': project_list})

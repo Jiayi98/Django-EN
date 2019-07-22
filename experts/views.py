@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from projects.models import Project,Project2Expert
+from clients.models import Client
 """
 def export_all_excel(request):
     print("==========views.export_all_excel========")
@@ -372,16 +373,8 @@ def workexp_detail_update(request, eid, expid):
     return render(request, template_name, {'workexp':exp,'expert': expert,'form': form,'result':result})
 
 def advanced_expert_form(request):
-    trade_list = ExpertInfo.objects.values("etrade").distinct()
-    trade_list = set([item[key] for item in trade_list for key in item])
-    #print(len(trade_list))
-    subtrade_list = ExpertInfo.objects.values("esubtrade").distinct()
-    subtrade_list = set([item[key] for item in subtrade_list for key in item])
-    #print(len(subtrade_list))
-    locations = ExpertInfo.objects.values("elocation").distinct()
-    locations = set([item[key] for item in locations for key in item])
-    #print(len(locations))
-    return render(request, 'experts/advanced_expert_search.html',{'trade_list':trade_list,'subtrade_list':subtrade_list,'locations':locations})
+
+    return render(request, 'experts/advanced_expert_search.html')
 
 def advanced_expert_search(request):
     template_name = 'experts/advanced_expert_search_result.html'
@@ -403,20 +396,15 @@ def advanced_expert_search(request):
     work_variables = [company,agency,position,duty,area]
     work_variables = [var for var in work_variables if var]
 
-    # DEBUG
-
-    #for q in info_variables:
-    #    print("========== 搜索关键词： ", q)
-    #for q in work_variables:
-    #    print("========== 搜索关键词： ", q)
-
     if len(info_variables) == 0 and len(work_variables) == 0:
         # 没有任何限制，直接获取所有专家
         expert_list = ExpertInfo.objects.all()
-        return render(request, template_name, {'expert_list': expert_list})
+        num_of_result = len(expert_list)
+        return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     elif eid:
         expert_list = ExpertInfo.objects.filter(eid=eid)
-        return render(request, template_name, {'expert_list': expert_list})
+        num_of_result = len(expert_list)
+        return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     elif len(work_variables) == 0:
         # 对工作经历无限制，通过对专家信息的条件限制筛选
         #print("对工作经历无限制，通过对专家信息的条件限制筛选")
@@ -429,7 +417,8 @@ def advanced_expert_search(request):
             ebackground__contains=background
         )
         #DEBUG
-        return render(request, template_name, {'expert_list': expert_list})
+        num_of_result = len(expert_list)
+        return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     elif len(info_variables) == 0:
         # 对专家个人信息无限制，通过对工作经历的条件限制筛选
         #print("对专家个人信息无限制，通过对工作经历的条件限制筛选")
@@ -446,7 +435,8 @@ def advanced_expert_search(request):
         if company != '':
             #print("排序！！")
             expert_list = search_sort_helper(expert_list, company)
-        return render(request, template_name, {'expert_list': expert_list})
+        num_of_result = len(expert_list)
+        return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     else:
         # 对专家个人信息、工作经历都有条件限制，取交集进行筛选
 
@@ -477,7 +467,8 @@ def advanced_expert_search(request):
                 expert_list.append(exp)
             # DEBUG
             # print(len(expert_list))
-            return render(request, template_name, {'expert_list': expert_list})
+            num_of_result = len(expert_list)
+            return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
 
         else:
             result_list = ExpertInfo.objects.filter(
@@ -512,7 +503,8 @@ def advanced_expert_search(request):
             if company != '':
                 #print("排序！！")
                 expert_list = search_sort_helper(expert_list, company)
-            return render(request, template_name, {'expert_list': expert_list})
+            num_of_result = len(expert_list)
+            return render(request, template_name, {'num_of_result':num_of_result,'expert_list': expert_list})
 
 
 
@@ -523,74 +515,104 @@ def search_expert(request):
     if not q:
         error_msg = '请输入关键词'
         return render(request, 'experts/base.html', {'error_msg': error_msg})
+
+    expert_list = get_expert_list(q)
+    num_of_result = len(expert_list)
+    #client_list = get_client_list(q)
+    #project_list = get_project_list(q)
+    #print(len(expert_list), len(client_list), len(project_list))
+    return render(request, 'experts/search_expert_results.html', {'num_of_result':num_of_result,'q':q,'error_msg': error_msg,'expert_list': expert_list,})
+    #return render(request, 'experts/search_expert_results.html', {'q':q,'error_msg': error_msg,'expert_list': expert_list,'client_list':client_list,"project_list":project_list})
+
+def get_client_list(q):
+    client_list = []
+
+    result_list1 = Client.objects.filter( Q(cname__contains=q) |
+                                        Q(bc_name__contains=q) |
+                                        Q(fc_name__contains=q) |
+                                        Q(cpolicy__contains=q) |
+                                        Q(ctype__contains=q) |
+                                        Q(cinfo__contains=q) |
+                                        Q(cremark__contains=q)
+                                        )
+    client_list = list(set(result_list1))
+    print(client_list)
+    return client_list
+
+def get_project_list(q):
+    project_list = []
+    result_list1 = Project.objects.filter(Q(pname__contains=q) |
+                                            Q(cname__contains=q) |
+                                            Q(pm__contains=q) |
+                                            Q(pm_mobile__contains=q) |
+                                            Q(pm_wechat__contains=q) |
+                                            Q(pm_email__contains=q) |
+                                            Q(premark__contains=q) |
+                                            Q(pdetail__contains=q)
+                                          )
+    project_list = list(set(result_list1))
+    print(project_list)
+    return project_list
+
+def get_expert_list(q):
     expert_list = []
-    result_list1 =[]
+    result_list1 = []
     result_list2 = []
     result_list3 = []
+
     if isContainChinese(q):
         result_list1 = ExpertInfo.objects.filter(
-                                            Q(ename__contains=q) |
-                                            Q(esex__contains=q)|
-                                            Q(emobile__contains=q) |
-                                            Q(eemail__contains=q)|
-                                            Q(etrade__contains=q) |
-                                            Q(esubtrade__contains=q)|
+            Q(ename__contains=q) |
+            Q(emobile__contains=q) |
+            Q(eemail__contains=q) |
+            Q(etrade__contains=q) |
+            Q(esubtrade__contains=q) |
 
-
-                                            Q(elocation__contains=q) |
-                                            Q(estate__contains=q) |
-                                            Q(ecomefrom__contains=q) |
-                                            Q(eremark__contains=q) |
-                                            Q(addtime__contains=q)|
-                                            Q(ebackground__contains=q)
-                                         )
-
+            Q(elocation__contains=q) |
+            Q(ecomefrom__contains=q) |
+            Q(eremark__contains=q) |
+            Q(ebackground__contains=q)
+        )
 
         result_list2 = ExpertComments.objects.filter(
-                                                 Q(eproblem__contains=q) | Q(ecomment__contains=q))
+            Q(eproblem__contains=q) | Q(ecomment__contains=q))
 
         result_list3 = WorkExp.objects.filter(
-                                          Q(company__contains=q) |
-                                          Q(agency__contains=q) |
-                                          Q(position__contains=q) |
-                                          Q(duty__contains=q) |
-                                          Q(area__contains=q)
-                                          )
+            Q(company__contains=q) |
+            Q(agency__contains=q) |
+            Q(position__contains=q) |
+            Q(duty__contains=q)
+        )
 
     else:
 
         result_list1 = ExpertInfo.objects.filter(Q(ename__icontains=q) |
-                                                Q(esex__icontains=q)|
-                                                Q(emobile__icontains=q) |
-                                                Q(eemail__icontains=q)|
-                                                Q(etrade__icontains=q) |
-                                                Q(esubtrade__icontains=q)|
+                                                 Q(emobile__icontains=q) |
+                                                 Q(eemail__icontains=q) |
+                                                 Q(etrade__icontains=q) |
+                                                 Q(esubtrade__icontains=q) |
 
-
-                                                Q(elocation__icontains=q) |
-                                                Q(estate__icontains=q) |
-                                                Q(ecomefrom__icontains=q) |
-                                                Q(eremark__icontains=q) |
-                                                Q(ebackground__icontains=q) |
-                                                Q(addtime__icontains=q)
-                                                )
+                                                 Q(elocation__icontains=q) |
+                                                 Q(ecomefrom__icontains=q) |
+                                                 Q(eremark__icontains=q) |
+                                                 Q(ebackground__icontains=q)
+                                                 )
 
         result_list2 = ExpertComments.objects.filter(Q(eproblem__icontains=q) | Q(ecomment__icontains=q))
 
         result_list3 = WorkExp.objects.filter(
-                                              Q(company__icontains=q) |
-                                              Q(agency__icontains=q) |
-                                              Q(position__icontains=q) |
-                                              Q(duty__icontains=q) |
-                                              Q(area__icontains=q)
-                                            )
+            Q(company__icontains=q) |
+            Q(agency__icontains=q) |
+            Q(position__icontains=q) |
+            Q(duty__icontains=q)
+        )
 
     items = chain(result_list1, result_list2, result_list3)
-    #items = chain(result_list1, result_list2)
+    # items = chain(result_list1, result_list2)
     for item in items:
         if type(item) is ExpertInfo:
             expert_list.append(item)
-            #print(item, "========expert")
+            # print(item, "========expert")
         elif type(item) is ExpertComments:
             try:
                 expert = item.eid
@@ -598,7 +620,7 @@ def search_expert(request):
                 pass
             else:
                 expert_list.append(expert)
-            #print(expert, "=======comments")
+            # print(expert, "=======comments")
         else:
             try:
                 expert = item.eid
@@ -606,11 +628,11 @@ def search_expert(request):
                 pass
             else:
                 expert_list.append(expert)
-            #print(expert,"=====workexp")
+            # print(expert,"=====workexp")
     expert_list = list(set(expert_list))
 
     expert_list = search_sort_helper(expert_list, q)
-    return render(request, 'experts/search_expert_results.html', {'error_msg': error_msg,'expert_list': expert_list})
+    return expert_list
 
 def search_sort_helper(expert_list, q):
     new_list = []

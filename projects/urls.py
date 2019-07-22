@@ -15,4 +15,7 @@ urlpatterns = [
     path('projects/delete_project/<int:pid>/', views.delete_project, name='delete_project'),
     path('projects/delete_p2e/<int:pteid>/<int:pid>', views.delete_p2e, name='delete_p2e'),
 
+    path('projects/advanced_project_search/', views.advanced_project_search, name='advanced_project_search'),
+    path('projects/advanced_project/', views.advanced_project_form, name='advanced_project_form'),
+
 ]

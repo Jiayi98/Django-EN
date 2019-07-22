@@ -1,0 +1,65 @@
+{% extends "projects/project_base.html" %}
+{% block content %}
+    <br>
+    <h2>搜索结果</h2>
+    <input type="button" class="btn btn-info btn-sm"  value="返回组合搜索页面" onclick="location.href='/projects/advanced_project/'">
+<a class="col-sm-12">共{{ num_of_result }}条结果</a>
+
+
+<br><br>
+    {% if error_msg %}
+        <p>{{ error_msg }}</p>
+    {% endif %}
+
+    <table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size:11px;word-break:break-all" aline=center>
+	<caption></caption>
+   <thead>
+      <tr>
+          <th width="6%">项目</th>
+          <th width="8%">客户</th>
+          <th width="8%">项目负责人</th>
+        <th width="8%">我方对接人</th>
+          <th width="70%">截止时间</th>
+
+      </tr>
+   </thead>
+   <tbody>
+   {% for project in project_list %}
+      <tr>
+          <td><a href="{{ project.get_project_detail }}"> {{ project.pname }}</a></td>
+          <td>{{ project.cname }}</td>
+          <td>{{ project.pm }}</td>
+          <td>{{ project.person_in_charge }}</td>
+          <td>{{ project.pdeadline }}</td>
+      </tr>
+
+   {% empty %}
+                <div class="no-post">
+                <td>没有搜索到符合条件的专家</td>
+                </div>
+   {% endfor %}
+   </tbody>
+</table>
+
+    {% include "experts/pagination.html" with page=experts %}
+
+
+{% endblock content %}
+<!--
+
+    <br><br>
+    <h2>搜索结果</h2>
+    <br>
+
+    {% for expert in expert_list %}
+         <div>
+            <p> <a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a>
+            ——EID: {{ expert.eid }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp电话: {{ expert.emobile }}&nbsp&nbsp&nbsp//&nbsp&nbsp&nbsp行业: {{ expert.etrade }}</p>
+         </div>
+    {% empty %}
+        <div class="no-post">
+            没有搜索到符合条件的专家
+        </div>
+    {% endfor %}
+ {% include "experts/pagination.html" with page=expert_list %}
+-->
