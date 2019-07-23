@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
+
 def delete_client(request, cid):
     print("=============clients/views.delete======")
     template_name = 'clients/client_detail.html'

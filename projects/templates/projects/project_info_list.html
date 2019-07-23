@@ -1,7 +1,7 @@
 {% extends "projects/project_base.html" %}
 {% block content %}
     <br>
-    <h2>项目列表</h2>
+    <h3>项目列表</h3>
     <br>
 
 
@@ -32,5 +32,5 @@
    </tbody>
 </table>
 
-    {% include "experts/pagination.html" with page=projects %}
+    {% include "projects/pagination.html" with page=projects %}
 {% endblock content %}

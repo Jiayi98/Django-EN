@@ -5,23 +5,23 @@
       <div class="media">
 
         <div class="media-body">
-            <br><br>
-            <h1 class="page-name">{{ user.username }}的个人主页</h1>
+
+            <h3 class="page-name">个人中心</h3>
             <br>
-            <p class="text-secondary">{{ user.email }}</p>
-            <p class="text-secondary">{{ user.username }}</p>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'home' %}'">LeapTech</button>
+                <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'password_change' %}'">修改密码</button>
 
-
-
-
+            </div>
         </div>
 
       </div>
+        <br><br>
       <!-- FORM HERE -->
     </div>
     <div class="border-top pt-3">
         <small class="text-muted">
-            <a href="{% url 'password_change' %}">Change Password</a>
+            <p class="text-secondary">Welcome, {{ user.username }}</p>
         </small>
     </div>
 {% endblock content %}

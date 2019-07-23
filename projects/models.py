@@ -47,6 +47,9 @@ class Project(models.Model):
     def delete_project(self):
         return reverse('delete_project', args=[self.pid,])
 
+    def pm_contact_info_update(self):
+        return reverse('pm_contact_info_update', args=[self.pid,])
+
 class Project2Expert(models.Model):
     # B. Project: 一个项目有多个专家
     # A-B. Project2Experts：多对多

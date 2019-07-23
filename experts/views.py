@@ -14,6 +14,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from projects.models import Project,Project2Expert
 from clients.models import Client
+
+
 """
 def export_all_excel(request):
     print("==========views.export_all_excel========")
@@ -373,27 +375,29 @@ def workexp_detail_update(request, eid, expid):
     return render(request, template_name, {'workexp':exp,'expert': expert,'form': form,'result':result})
 
 def advanced_expert_form(request):
-
     return render(request, 'experts/advanced_expert_search.html')
 
 def advanced_expert_search(request):
+    # 对某字段进行限定 = 用户对该字段进行搜索
     template_name = 'experts/advanced_expert_search_result.html'
     eid = request.GET.get('eid')
     name = request.GET.get('name')
-    sex =request.GET.get('sex')
-    location =request.GET.get('location')
+    #sex =request.GET.get('sex')
+    #location =request.GET.get('location')
     trade = request.GET.get('trade')
     subtrade = request.GET.get('subtrade')
     background = request.GET.get('background')
     company = request.GET.get('company')
-    agency = request.GET.get('agency')
-    position = request.GET.get('position')
-    duty = request.GET.get('duty')
-    area = request.GET.get('area')
+    #agency = request.GET.get('agency')
+    #position = request.GET.get('position')
+    #duty = request.GET.get('duty')
+    #area = request.GET.get('area')
 
-    info_variables = [eid,name,sex,location,trade,subtrade,background]
+    #info_variables = [eid,name,sex,location,trade,subtrade,background]
+    info_variables = [eid, name, trade, subtrade, background]
     info_variables = [var for var in info_variables if var]
-    work_variables = [company,agency,position,duty,area]
+    #work_variables = [company,agency,position,duty,area]
+    work_variables = [company]
     work_variables = [var for var in work_variables if var]
 
     if len(info_variables) == 0 and len(work_variables) == 0:
@@ -408,104 +412,71 @@ def advanced_expert_search(request):
     elif len(work_variables) == 0:
         # 对工作经历无限制，通过对专家信息的条件限制筛选
         #print("对工作经历无限制，通过对专家信息的条件限制筛选")
+        #expert_list = ExpertInfo.objects.filter(ename__contains=name,esex__icontains=sex,etrade__contains=trade, esubtrade__contains=subtrade, elocation__contains=location, ebackground__contains=background)
         expert_list = ExpertInfo.objects.filter(
             ename__contains=name,
-            esex__icontains=sex,
             etrade__contains=trade,
             esubtrade__contains=subtrade,
-            elocation__contains=location,
             ebackground__contains=background
         )
-        #DEBUG
         num_of_result = len(expert_list)
         return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     elif len(info_variables) == 0:
         # 对专家个人信息无限制，通过对工作经历的条件限制筛选
         #print("对专家个人信息无限制，通过对工作经历的条件限制筛选")
-        work_list = WorkExp.objects.filter(
-            company__contains=company,
-            agency__contains=agency,
-            position__contains=position,
-            duty__contains=duty,
-            area__contains=area
-        )
-        # DEBUG
+        #work_list = WorkExp.objects.filter(company__contains=company,agency__contains=agency,position__contains=position,duty__contains=duty,area__contains=area)
+        work_list = WorkExp.objects.filter(company__contains=company)
         expert_list = [work.eid for work in work_list]
-        #print(len(expert_list))
+
         if company != '':
-            #print("排序！！")
+            # 搜索限定词中包括公司名，则以"公司限定搜索词"与专家公司名称相似度排序
             expert_list = search_sort_helper(expert_list, company)
         num_of_result = len(expert_list)
         return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     else:
-        # 对专家个人信息、工作经历都有条件限制，取交集进行筛选
+        # 先从所有专家中筛选出符合【专家信息表】中限定的结果集
+        result_list = ExpertInfo.objects.filter(
+            ename__contains=name,
+            etrade__contains=trade,
+            esubtrade__contains=subtrade,
+            ebackground__contains=background
+        )
+        # 再在该集合中继续选取符合【工作经历表】中限定的结果集
+        expert_list = []
+        for exp in result_list:
+            workexp = WorkExp.objects.filter(eid=exp.eid)
+            # stored为一个flag，在多条工作经历符合要求的情况下以避免重复添加该专家
+            stored = False
+            for work in workexp:
+                # 遍历每个专家的所有工作经历
+                if company in work_variables and (not work.company or company not in work.company):
+                    # 不加入结果集的两种情况：
+                    # 1）对公司进行限定，且公司名不包含限定搜索词；
+                    # 2）对公司进行限定，且该专家该条工作经历在数据库中公司名字段对应的值为空
+                    continue
+                if not stored:
+                    # 不曾被添加至结果集
+                    stored = True
+                    expert_list.append(exp)
+                    # 被加入结果集后可立即停止对该专家剩下的工作经历的搜索
+                    break
 
-        if len(info_variables) < len(work_variables):
-            # 对工作经历的条件更多
-            result_list = WorkExp.objects.filter(
-                company__contains=company,
-                agency__contains=agency,
-                position__contains=position,
-                duty__contains=duty,
-                area__contains=area
-            )
-            expert_list = []
-            for work in result_list:
-                exp = work.eid
-                if name in info_variables and name not in exp.ename:
-                    continue
-                if sex in info_variables and (not exp.esex or sex != exp.esex):
-                    continue
-                if location in info_variables and (not exp.elocation or location not in exp.elocation):
-                    continue
-                if trade in info_variables and (not exp.etrade or trade not in exp.etrade):
-                    continue
-                if subtrade in info_variables and (not exp.esubtrade or subtrade not in exp.esubtrade):
-                    continue
-                if background in info_variables and (not exp.ebackground or background not in exp.ebackground):
-                    continue
-                expert_list.append(exp)
-            # DEBUG
-            # print(len(expert_list))
-            num_of_result = len(expert_list)
-            return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
-
-        else:
-            result_list = ExpertInfo.objects.filter(
-                ename__contains=name,
-                esex__icontains=sex,
-                etrade__contains=trade,
-                esubtrade__contains=subtrade,
-                elocation__contains=location,
-                ebackground__contains=background
-            )
-            expert_list = []
-            for exp in result_list:
-                workexp = WorkExp.objects.filter(eid=exp.eid)
-                stored = False
-                for work in workexp:
-                    if company in work_variables and (not work.company or company not in work.company):
-                        continue
-                    if agency in work_variables and (not work.agency or agency not in work.agency):
-                        continue
-                    if position in work_variables and (not work.position or position not in work.position):
-                        continue
-                    if duty in work_variables and (not work.duty or duty not in work.duty):
-                        continue
-                    if area in work_variables and (not work.area or area not in work.area):
-                        continue
-                    if not stored:
-                        stored = True
-                        expert_list.append(exp)
-            # DEBUG
-            # workexp_list = [WorkExp.objects.filter(eid=expert.eid) for expert in expert_list]
-            # print(len(expert_list))
             if company != '':
-                #print("排序！！")
+                # 搜索限定词中包括公司名，则以"公司限定搜索词"与专家公司名称相似度排序
                 expert_list = search_sort_helper(expert_list, company)
             num_of_result = len(expert_list)
-            return render(request, template_name, {'num_of_result':num_of_result,'expert_list': expert_list})
 
+            experts = expert_list
+            paginator = Paginator(experts, 10)
+            page = request.GET.get('page')
+            try:
+                expert_list = paginator.page(page)
+            except PageNotAnInteger:
+                expert_list = paginator.page(1)
+            except EmptyPage:
+                expert_list = paginator.page(paginator.num_pages)
+
+            return render(request, template_name, {'page': page,'num_of_result':num_of_result,'expert_list': expert_list})
 
 
 def search_expert(request):

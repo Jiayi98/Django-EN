@@ -10,6 +10,7 @@ class MyUser(models.Model):
     class Meta:
         permissions = (
             ('can_view_contact_info', u'查看联系方式'),
+            ('can_view_pm_contact_info', u'查看项目经理联系方式'),
         )
 
     def __str__(self):

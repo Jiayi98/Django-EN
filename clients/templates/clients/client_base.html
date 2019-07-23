@@ -15,7 +15,63 @@
 
 </head>
 <body>
-   <header class="site-header">
+      <header class="site-header">
+       <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="height: 50px">
+        <a class="navbar-brand" href="{% url 'home' %}">LeapTech</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+{% if user.is_authenticated %}
+  <div class="collapse navbar-collapse" id="navbarsExample01">
+    <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">专家</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="{% url 'expertinfolist' %}">专家列表</a>
+                <a class="dropdown-item" href="{% url 'advanced_expert_form'%}">查找专家</a>
+                <a class="dropdown-item" href="{% url 'addexpert'%}">添加专家</a>
+                <a class="dropdown-item" href="{% url 'updateexpert' %}">更新专家</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">项目</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown02">
+                <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
+                <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
+                <a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">客户</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown03">
+                <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
+                <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
+        </li>
+    </ul>
+    <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
+        {% csrf_token %}
+      <input style="height: 35px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
+    </form>
+      {% endif %}
+      <ul>
+           {% if user.is_authenticated %}
+           <li class="nav-item" style="margin-top: 15px">
+               <button class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'logout' %}'">登出</button>
+           </li>
+           {% else %}
+           <li class="nav-item" style="margin-top: 15px">
+               <button class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'dashboard' %}'">登录</button>
+           </li>
+           {% endif %}
+       </ul>
+  </div>
+</nav>
+   </header>
+       <!--
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 45px">
          <ul class="container-fluid">
         <div class="navbar-header" style="margin-top: 15px">
@@ -87,7 +143,7 @@
             {% endif %}
         </ul>
      </nav>
-   </header>
+   </header>-->
 
     <main role="main" class="container-fluid">
       <div class="row">

@@ -11,6 +11,45 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
+"""
+def pm_contact_info(request,pid):
+    #template_name = 'projects/pm_contact_info.html'
+    template_name = 'projects/project_detail.html'
+    #try:
+    #    project = get_object_or_404(Project, pid=pid)
+    #except:
+    #    HttpResponseRedirect()
+    #else:
+    #    msg = 'success'
+    #    if request.user.has_perm('查看项目经理联系方式'):
+    #        # print("有权限")
+    #        # print("=============views.expert_contact_info======")
+                # template_name = 'projects/pm_contact_info.html'
+    #        msg = 'success'
+    #    else:
+    #        # print("无权限")
+    #        # template_name = 'projects/pm_info.html'
+    #        msg = "error"
+    return render(request, template_name, {'project': project})
+"""
+
+def pm_contact_info_update(request, pid):
+    template_name = 'projects/update_pm_contact_info.html'
+    object = get_object_or_404(Project, pid=pid)
+
+    if request.method == 'POST':
+        form = PMContactInfoUpdateDB(instance=object, data=request.POST)
+        if form.is_valid():
+            form.save()
+            myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=pid, cid=object.cid.cid)
+            #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
+            return HttpResponseRedirect(myurl)
+    else:
+        form = PMContactInfoUpdateDB(instance=object)
+
+    return render(request, template_name, {'project': object, 'form': form, })
+
+@login_required
 def delete_project(request, pid):
     print("=============project/views.delete======")
     template_name = 'projects/project_detail.html'
@@ -22,6 +61,7 @@ def delete_project(request, pid):
         result = '删除失败'
     return render(request, template_name,{'result':result})
 
+@login_required
 def delete_p2e(request, pteid, pid):
     print("=============project/views.delete======")
     template_name = 'projects/project_detail.html'
@@ -36,6 +76,7 @@ def delete_p2e(request, pteid, pid):
         result = '删除失败'
     return render(request, template_name,{'result':result})
 
+@login_required
 def project(request):
     return render(request, 'projects/project_base.html')
 

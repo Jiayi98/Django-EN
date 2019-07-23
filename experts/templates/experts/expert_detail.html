@@ -11,13 +11,13 @@
 {% if perms.experts.can_view_contact_info %}
     <h2>{{ expert.ename }}&nbsp&nbsp&nbsp
         <button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='{{ expert.contact_info }}'">联系方式</button>&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-success btn-sm"  value="修改专家信息" onclick="window.location.href='{{ expert.get_update_url }}'">
+        <input type="button" class="btn btn-info btn-sm"  value="修改专家信息" onclick="window.location.href='{{ expert.get_update_url }}'">
     </h2>
 {% else %}
     <h2>{{ expert.ename }}&nbsp&nbsp&nbsp
         <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='.'">无权限查看联系方式
         </button>
-        <input type="button" class="btn btn-success btn-sm"  value="修改专家信息" onclick="window.location.href='{{ expert.get_update_url }}'">
+        <input type="button" class="btn btn-info btn-sm"  value="修改专家信息" onclick="window.location.href='{{ expert.get_update_url }}'">
     </h2>
 {% endif %}
 <br>

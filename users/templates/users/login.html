@@ -1,18 +1,18 @@
-{% extends "experts/base.html" %}
+{% extends "users/base.html" %}
 {% load crispy_forms_tags %}
-{% block title %}Log In{% endblock %}
+{% block title %}登录{% endblock %}
 {% block content %}
-    <br>
-    <h2>Log In</h2>
-    <div class="content-section">
+
+    <h3 class="col-sm-10">Log In</h3>
+    <div class="col-sm-10 content-section">
         <form action="." method="post">
             {{ form.as_p }}
             {% csrf_token %}
-            <p><input class="btn btn-success btn-sm" type="submit" value="Log in"></p>
+            <p><input class="btn btn-success btn-sm" type="submit" value="Submit"></p>
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                <a class="ml-2" href="{% url 'password_reset' %}">Forgetten your password?</a>
+                <a class="ml-2" href="{% url 'password_reset' %}"> 忘记密码?</a>
             </small>
         </div>
     </div>

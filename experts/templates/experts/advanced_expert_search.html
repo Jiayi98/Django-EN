@@ -1,25 +1,18 @@
 {% extends "experts/base.html" %}
 {% block content %}
 <br><br>
-<h2>Advanced Search</h2>
+<h3 class="col-sm-12">组合搜索</h3>
 <br>
-                  <form method="get" action="{% url 'advanced_expert_search' %}" >
+                  <form class="col-sm-12" method="get" action="{% url 'advanced_expert_search' %}" >
                     {% csrf_token %}
                       <input type="search" name='eid' placeholder="ID">&nbsp&nbsp&nbsp
                       <input type="search" name='name' placeholder="姓名">&nbsp&nbsp&nbsp
-                      <input type="search"  name='sex' placeholder="性别:M/F">
                       <br><br>
-                      <input type="search" name='location' placeholder="城市">&nbsp&nbsp&nbsp
                       <input type="search"  name='trade' placeholder="行业">&nbsp&nbsp&nbsp
                       <input type="search"  name='subtrade' placeholder="子行业">
                       <br><br>
                       <input type="search"  name='company' placeholder="公司">&nbsp&nbsp&nbsp
-                      <input type="search"  name='agency' placeholder="部门">&nbsp&nbsp&nbsp
-                      <input type="search"  name='position' placeholder="职位">
-                      <br><br>
-                      <input type="search"  name='duty' placeholder="工作职责">&nbsp&nbsp&nbsp
                        <input type="search"  name='background' placeholder="背景">&nbsp&nbsp&nbsp
-                      <input type="search"  name='area' placeholder="专业领域">
                       <br><br>
                     <button type="submit" class="btn btn-success">搜索</button>
                   </form>

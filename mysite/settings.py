@@ -89,6 +89,7 @@ DATABASES = {
         'OPTIONS':{
             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",
             'charset':'utf8mb4',
+            'connect_timeout': 10,
         },
     }
 }
@@ -134,7 +135,8 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'expertinfolist'
+#LOGIN_REDIRECT_URL = 'expertinfolist'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_URL = 'logout'
 
