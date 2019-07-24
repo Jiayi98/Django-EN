@@ -32,6 +32,9 @@
                                 <option>企业</option>
                                 <option>其它</option>
                             </select>
+                    {% elif field.label == '咨费' %}
+                        <label style="font-weight: 700" class="sol-sm-2 control-label">咨费：</label>
+                        <input type="number" name='cfee' value=0.0>
                     {% else %}
 
                         <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>

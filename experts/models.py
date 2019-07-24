@@ -22,7 +22,7 @@ class ExpertInfo(models.Model):
     ebackground = models.TextField(blank=True, null=False)
     efee = models.FloatField(blank=True,null=False,default=0.0)
     eupdated_by = models.CharField(max_length=50, blank=True, null=True)
-    interview_num = models.IntegerField(blank=True,null=True)
+    interview_num = models.IntegerField(blank=True,null=True,default=0)
 
     class Meta:
         managed = True

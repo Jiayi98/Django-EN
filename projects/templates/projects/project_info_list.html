@@ -22,7 +22,7 @@
    {% for project in projects %}
       <tr>
           <td><a href="{{ project.get_project_detail }}"> {{ project.pname }}</a></td>
-          <td>{{ project.cname }}</td>
+          <td>{{ project.cid.cname }}</td>
           <td>{{ project.pm }}</td>
           <td>{{ project.person_in_charge }}</td>
           <td>{{ project.pdeadline }}</td>

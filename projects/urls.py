@@ -18,5 +18,5 @@ urlpatterns = [
     path('projects/advanced_project_search/', views.advanced_project_search, name='advanced_project_search'),
     path('projects/advanced_project/', views.advanced_project_form, name='advanced_project_form'),
 
-    path('projects/update_pm_contact_info/<int:pid>', views.pm_contact_info_update, name='pm_contact_info_update'),
 ]
+#     path('projects/update_pm_contact_info/<int:pid>', views.pm_contact_info_update, name='pm_contact_info_update'),

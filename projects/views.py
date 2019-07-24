@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from experts.models import ExpertInfo,WorkExp
-from clients.models import Client
+from clients.models import Client,BusinessContact
 from projects.models import Project
 from .forms import *
 
@@ -31,7 +31,7 @@ def pm_contact_info(request,pid):
     #        # template_name = 'projects/pm_info.html'
     #        msg = "error"
     return render(request, template_name, {'project': project})
-"""
+
 
 def pm_contact_info_update(request, pid):
     template_name = 'projects/update_pm_contact_info.html'
@@ -48,7 +48,7 @@ def pm_contact_info_update(request, pid):
         form = PMContactInfoUpdateDB(instance=object)
 
     return render(request, template_name, {'project': object, 'form': form, })
-
+"""
 @login_required
 def delete_project(request, pid):
     print("=============project/views.delete======")
@@ -98,9 +98,10 @@ def project_detail(request, pid, cid):
     project = get_object_or_404(Project, pid=pid)
     createtime = ' {year}-{mon}-{day}'.format(year=project.pcreatetime.year,mon=project.pcreatetime.month, day=project.pcreatetime.day)
     client = Client.objects.filter(cid=cid).first()
-    experts = get_object_or_404(Project, pid=pid).expertinfos.all()
+    experts = get_object_or_404(Project, pid=pid).expertinfos.all().distinct()
+
     p2es = Project2Expert.objects.filter(pid=pid)
-    return render(request, 'projects/project_detail.html', {'project': project, 'client': client, 'p2es': p2es,'createtime':createtime})
+    return render(request, 'projects/project_detail.html', {'experts':experts,'project': project, 'client': client, 'p2es': p2es,'createtime':createtime})
 
 
 
@@ -118,10 +119,11 @@ def add_p2e(request,pid):
         except:
             flag['status'] = 'error'
         else:
-            temp = Project2Expert.objects.filter(eid=expert,pid=project)
-            if temp.exists() == 0 and (not ename or expert.ename == ename):
+            if not ename or expert.ename == ename:
+                expert.interview_num = expert.interview_num + 1
+                expert.save()
+                temp = Project2Expert.objects.filter(eid=expert,pid=project)
                 new_obj = Project2Expert.objects.create(eid=expert,pid=project)
-                print('--------------->',new_obj.pteid)
                 myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
                 return HttpResponseRedirect(myurl)
                 #return render(request, 'projects/add_p2e.html', {"project": project, "form": form,"new_obj":new_obj})
@@ -215,7 +217,7 @@ def addProjectToDatabase(request):
 def update_project_detail(request,pid):
     template_name = 'projects/update_project_detail.html'
     project = get_object_or_404(Project, pid=pid)
-
+    bc_list = BusinessContact.objects.filter(cid=project.cid)
     if request.method == 'POST':
         form = ProjectUpdateForm(instance=project, data=request.POST)
         if form.is_valid():
@@ -227,7 +229,7 @@ def update_project_detail(request,pid):
     else:
         form = ProjectUpdateForm(instance=project)
 
-    return render(request, template_name, {'project': project, 'form': form, })
+    return render(request, template_name, {'bc_list':bc_list,'project': project, 'form': form, })
 
 def advanced_project_form(request):
     template_name = 'projects/advanced_project_search.html'
@@ -257,4 +259,83 @@ def advanced_project_search(request):
         pdetail__contains=pdetail)
 
         num_of_result = len(project_list)
+
+        if pname and not cname:
+            project_list = search_sort_pname_helper(project_list, pname)
+        elif cname and not pname:
+            project_list = search_sort_cname_helper(project_list, cname)
+        elif pname and cname:
+            project_list = search_sort_p_c_helper(project_list, pname ,cname)
         return render(request, template_name, {'num_of_result': num_of_result, 'project_list': project_list})
+
+
+def search_sort_pname_helper(proj_list, p):
+    new_list = []
+    for proj in proj_list:
+        index = get_pname_index(proj, p)
+        obj = [proj, index]
+        new_list.append(obj)
+
+    new_list = sorted(new_list, reverse=True, key=comparator)
+    # print(new_list)
+    projects = [elem[0] for elem in new_list]
+    return projects
+
+def get_pname_index(proj,p):
+    project_len = len(proj.pname)
+    str_count = len(proj.pname.split(p)) - 1
+    #print(str_count)
+    if(project_len == 0):
+        return 0
+    else:
+        index = str_count/project_len
+        return index
+
+def search_sort_cname_helper(proj_list, c):
+    new_list = []
+    for proj in proj_list:
+        index = get_index(proj, c)
+        obj = [proj, index]
+        new_list.append(obj)
+
+    new_list = sorted(new_list, reverse=True, key=comparator)
+    # print(new_list)
+    projects = [elem[0] for elem in new_list]
+    return projects
+
+def get_cname_index(proj,c):
+    client_len = len(proj.cname)
+    str_count = len(proj.cname.split(c)) - 1
+    #print(str_count)
+    if(client_len == 0):
+        return 0
+    else:
+        index = str_count/client_len
+        return index
+
+def search_sort_p_c_helper(proj_list, p,c):
+    new_list = []
+    for proj in proj_list:
+        index = get_p_c_index(proj, p,c)
+        obj = [proj, index]
+        new_list.append(obj)
+
+    new_list = sorted(new_list, reverse=True, key=comparator)
+    # print(new_list)
+    projects = [elem[0] for elem in new_list]
+    return projects
+
+def get_p_c_index(proj,p,c):
+    project_len = len(proj.pname)
+    client_len = len(proj.cname)
+    p_str_count = len(proj.pname.split(p)) - 1
+    c_str_count = len(proj.cname.split(c)) - 1
+    #print(str_count)
+    if(project_len == 0 and client_len == 0):
+        return 0
+    else:
+        index = (p_str_count+c_str_count)/(project_len+client_len)
+        return index
+
+def comparator(elem):
+    return elem[1]

@@ -28,23 +28,42 @@
                     {{ company }}
                 </p>
             </div>
+            <p class="col-sm-12">
+                <label style="font-weight: 700">开始时间-结束时间</label>(e.g YYYY-MM-DD hh:mm):
+                <input style="width: 150px" type="text" name='itv_stime' value="{{ object.itv_stime }}">
+                -
+                <input style="width: 150px" type="text" name='itv_etime' value="{{ object.itv_etime }}">
 
+            </p>
             <p class="col-sm-12">
                 <label style="font-weight: 700">访谈状态：</label>(1:已访谈|0:未访谈)
-                <input type="number" name='status' value="{{ object.status }}">
-            </p>
-            <p class="col-sm-12">
-                <label style="font-weight: 700">访谈时间：</label>(YYYY-MM-DD)
-                <input type="text" name='itv_stime' value="{{ object.itv_stime }}">
-            </p>
-            <p class="col-sm-12">
+                <input style="width: 50px" type="number" name='status' value="{{ object.status }}">
+                &nbsp
                 <label style="font-weight: 700">访谈时长(分钟)：</label>
-                <input type="number" name='itv_duration' value="{{ object.itv_duration }}">
+                <input style="width: 50px" type="number" name='itv_duration' value="{{ object.itv_duration }}">
+            </p>
+
+            <p class="col-sm-12">
+                <label style="font-weight: 700">专家付费：</label>
+                <input style="width: 50px" type="number" name='e_payment' value="{{ object.e_payment }}">
+               &nbsp
+                <label style="font-weight: 700">客户收费：</label>
+                <input style="width: 50px" type="number" name='c_payment' value="{{ object.c_payment }}">
+                &nbsp
+                <label style="font-weight: 700">咨费系数：</label>
+                <input style="width: 50px" type="number" name='fee_index' value="{{ object.fee_index }}">
+            </p>
+            <p class="col-sm-12">
+                <label style="font-weight: 700">约谈人：</label>
+                <input style="width: 150px" type="text" name='interviewer' value="{{ object.interviewer }}">
+                &nbsp
+                <label style="font-weight: 700">添加/修改人：</label>
+                <input style="width: 150px" type="text" name='recorder' value="{{ user.username }}">
             </p>
             <br>
             <div class="pull-right col-sm-12">
-                                <button type="submit" class="btn btn-success">添加</button>
-                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
 
             </div>
         </form>

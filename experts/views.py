@@ -258,6 +258,10 @@ def expert_detail(request, ename, eid):
     expert = get_object_or_404(ExpertInfo, eid=eid)
     pay = Payment.objects.filter(eid=expert)
     p2es = Project2Expert.objects.filter(eid=expert)
+    projects = set()
+    for p2e in p2es:
+        if p2e.pid not in projects:
+            projects.add(p2e.pid)
 
     if pay.exists() == 0:
         # 没有支付方式
@@ -269,7 +273,7 @@ def expert_detail(request, ename, eid):
     comments = ExpertComments.objects.filter(eid=eid)
     # 7.15添加修改了添加时间显示格式
     addtime = ' {year}年{mon}月{day}日'.format(year=expert.addtime.year,mon=expert.addtime.month, day=expert.addtime.day)
-    return render(request, 'experts/expert_detail.html', {'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments,'pay':pay,'p2es':p2es})
+    return render(request, 'experts/expert_detail.html', {'projects':projects,'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments,'pay':pay,'p2es':p2es})
     #return render(request, 'experts/expert_detail.html', {'expert':expert, 'comments':comments})
 
 

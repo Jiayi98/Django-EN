@@ -34,8 +34,8 @@
     <p>
         <label style="font-weight: 700">行业: </label>{{expert.etrade}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">子行业</label>: {{expert.esubtrade}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <label style="font-weight: 700">咨询费</label>: {{expert.efee}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">访谈次数</label>: {{expert.interview_num }}
+            <label style="font-weight: 700">咨询费</label>: {{expert.efee}} 元&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <label style="font-weight: 700">访谈次数</label>: {{expert.interview_num }} 次
     </p>
     <p><label style="font-weight: 700">备注: </label>{{expert.eremark}}</p>
     <p style="white-space: pre-line"><label style="font-weight: 700">背景信息：</label>
@@ -231,29 +231,61 @@
 
   </tbody>
 </table>
+
 <br>
-<h5 class="col-sm-10">项目列表</h5>
+<h5 class="col-sm-10">参与项目</h5>
 <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
                     <caption></caption>
                     <thead>
                     <tr>
-                        <th width="10%">项目ID</th>
-                        <th width="30%">项目名称</th>
+                        <th width="10%">项目ID-名称</th>
                         <th width="10%">项目经理</th>
+                        <th width="15%">项目对接人</th>
                         <th width="15%">项目发布时间</th>
                         <th width="15%">项目截止时间</th>
-                        <th width="10%"></th>
 
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in projects %}
+                    <tr class="info">
+                        <td><a href="{{ project.get_project_detail }}">{{ project.pid }}-{{ project.pname }}</a></td>
+                        <td>{{ project.pm}}</td>
+                        <td>{{ project.person_in_charge }}</td>
+                        <td>{{ project.pcreatetime }}</td>
+                        <td>{{ project.pdeadline }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+<br>
+<h5 class="col-sm-10">访谈记录</h5>
+<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+                    <caption></caption>
+                    <thead>
+                    <tr>
+                        <th width="10%">项目ID-名称</th>
+                        <th width="3%">状态</th>
+                        <th width="10%">开始时间</th>
+                        <th width="10%">结束时间</th>
+                        <th width="6%">访谈时长</th>
+                        <th width="6%">专家付费</th>
+                        <th width="6%">约谈人</th>
+                        <th width="6%"></th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for p2e in p2es %}
                     <tr class="info">
-                        <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}</a></td>
-                        <td>{{ p2e.pid.pname }}</td>
-                        <td>{{ p2e.pid.pm}}</td>
-                        <td>{{ p2e.pid.pcreatetime }}</td>
-                        <td>{{ p2e.pid.pdeadline }}</td>
+                        <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}-{{ p2e.pid.pname }}</td>
+                        <td>{{ p2e.status}}</td>
+                        <td>{{ p2e.itv_stime }}</td>
+                        <td>{{ p2e.itv_etime }}</td>
+                        <td>{{ p2e.itv_duration }} 分钟</td>
+                        <td>{{ p2e.e_payment }} 元</td>
+                        <td>{{ p2e.interviewer }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
@@ -295,103 +327,6 @@
                     </tbody>
                 </table>
 
-<!--<div class="panel-group" id="accordion">
-
-    <div class="panel panel-default">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<button class="btn btn-info" data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseOne">
-				    查看工作经历
-				</button>
-			</h4>
-		</div>
-		<div id="collapseOne" class="panel-collapse collapse in">
-			<div class="panel-body">
-				<table class="table table-condensed table-hover" width="100%">
-                    <caption><input type="button" class="btn btn-success btn-sm"  value="新建工作经历" onclick="window.location.href='{{ expert.add_workexp_url }}'"></caption>
-                    <thead>
-                    <tr>
-                        <th width="15%">时间</th>
-                        <th width="30%">公司/部门</th>
-                        <th width="10%">职位</th>
-                        <th width="45%">职责</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for exp in workexps %}
-                    <tr class="info">
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }}</td>
-                        <td>{{ exp.duty }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ exp.delete_workexp }}'">删除</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% if result.status == 'success'%}
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }} - {{ exp.duty }}</td>
-                        <td> {{ exp.area }}</td>
-                        <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
-                    {% endif %}
-                    </tbody>
-                </table>
-			</div>
-		</div>
-	</div>
-    <br>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<button class="btn btn-info" data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseTwo">
-				查看专家评论
-				</button>
-			</h4>
-		</div>
-		<div id="collapseTwo" class="panel-collapse collapse">
-			<div class="panel-body">
-				<table class="table table-condensed table-hover" style="table-layout: fixed">
-  <caption><input type="button" class="btn btn-success btn-sm"  value="新建Comment" onclick="window.location.href='{{ expert.add_comment_url }}'"></caption>
-  <thead>
-    <tr>
-        <th>问题</th>
-        <th>详情</th>
-        <th></th>
-
-    </tr>
-  </thead>
-  <tbody>
-  {% for comment in comments %}
-   <tr class="info">
-
-      <td>{{ comment.eproblem }}</td>
-      <td>{{ comment.ecomment }}</td>
-
-       <td>
-           <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
-           <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ comment.delete_comment }}'">删除</button>
-       </td>
-  </tr>
-  {% endfor %}
-  {% if result.status == 'success'%}
-            <td> {{ c.eproblem }} </td>
-            <td> {{ c.ecomment }} </td>
-
-  <td><button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ c.delete_comment_confirm }}'">确认删除</button></td>
-  {% endif %}
-  </tbody>
-</table>
-			</div>
-		</div>
-	</div>
-
-</div>-->
 
 
 {% endblock content %}

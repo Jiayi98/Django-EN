@@ -46,8 +46,10 @@
         <label style="font-weight: 700">主业务联系人: </label>{{client.bc_name}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">主财务联系人: </label>{{client.fc_name}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <label style="font-weight: 700">客户类型: </label>{{client.ctype}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <label style="font-weight: 700">咨费: </label>{{ client.cfee }} 元
+    </p>
+    <p style="white-space: pre-line">
         <label style="font-weight: 700">收费政策: </label>{{ client.cpolicy }}
-
     </p>
     <p style="white-space: pre-line">
         <label style="font-weight: 700">客户信息:</label>{{ client.cinfo }}
@@ -62,7 +64,7 @@
 
     </p>
    {% endfor %}-->
-
+<br>
 </div>
 <h5 class="col-sm-12">项目列表 &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="添加项目" onclick="window.location.href='{{ client.client_add_project }}'"></h5>
 <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
@@ -223,10 +225,8 @@
                         {% endif %}
                     </tr>
                     {% endfor %}
-
                     </tbody>
-                </table>
-
+</table>
 
 
 {% endblock content %}

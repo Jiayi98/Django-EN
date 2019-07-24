@@ -11,6 +11,7 @@ class Client(models.Model):
     ctype = models.CharField(max_length=50,blank=True,null=True,verbose_name='客户类型')
     cinfo = models.TextField(blank=True, null=True,verbose_name='客户介绍')
     cremark = models.TextField(blank=True, null=True,verbose_name='备注')
+    cfee = models.FloatField(blank=True,null=False,default=0.0,verbose_name='咨费')
 
     class Meta:
         managed = True

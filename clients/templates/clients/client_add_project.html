@@ -4,7 +4,7 @@
     <h3 class="col-sm-12">新建项目</h3>
     {% if result.status == 'error' %}
         <p class='col-sm-12' style="align-content: center;color: red;font-size: medium">
-           该项目已存在，请勿重复添加！
+           该客户已有同名项目！
         </p>
     {% endif %}
     <p>
@@ -19,15 +19,13 @@
             </p>
             <p>
             <div class="col-sm-12">
-                <label style="font-weight: 700" class="control-label">项目经理：</label>
-                <input type="text" name='pm'>&nbsp&nbsp&nbsp
-                <label style="font-weight: 700" class="control-label">性别：</label>
-                <input type="text" name='pm_gender'>&nbsp&nbsp&nbsp
-
-                <label style="font-weight: 700" class="control-label">电话：</label>
-                <input type="text" name='pm_mobile'>&nbsp&nbsp&nbsp
-                <label style="font-weight: 700" class="control-label">邮箱：</label>
-                <input type="text" name='pm_email'>
+                <label style="font-weight: 700" class="sol-sm-2 " for="pm"> 客户项目经理：</label>
+                            <select name="pm">
+                                <option>请选择</option>
+                                {% for bc in bc_list %}
+                                <option>{{ bc.bc_name }}</option>
+                                {% endfor %}
+                            </select>
             </div>
             </p>
             <p>
@@ -36,7 +34,7 @@
                 <input type="text" name='pdeadline'>
                 &nbsp&nbsp&nbsp
                 <label style="font-weight: 700" class="control-label">我方对接人：</label>
-                <input type="text" name='person_in_charge'>
+                <input style="width: 80px" type="text" name='person_in_charge'>
             </div>
             </p>
             <p class="col-sm-12" style="white-space: pre-line">
@@ -48,7 +46,7 @@
             </p>
 
             <div class="pull-right col-sm-10">
-                                <button type="submit" class="btn btn-success btn-sm">添加</button>
+                <button type="submit" class="btn btn-success btn-sm">添加</button>
                 <button type="reset" class="btn btn-warning btn-sm">重置</button>
             </div>
 

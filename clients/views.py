@@ -74,12 +74,13 @@ def client_detail(request, cid):
     fc_list = FinancialContact.objects.filter(cid=client)
 
     experts = []
-    if len(projects) > 0:
-        print("===========clients/views.client_detail/该客户有projects=========")
-        for project in projects:
-            experts += project.expertinfos.all()
-        return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts,'bc_list':bc_list,'fc_list':fc_list})
-    print("===========clients/views.client_detail/该客户无projects=========")
+    #if len(projects) > 0:
+    #    print("===========clients/views.client_detail/该客户有projects=========")
+    #    for project in projects:
+            # 获取与该客户合作过的所有专家
+    #        experts += project.expertinfos.all()
+    #   return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts,'bc_list':bc_list,'fc_list':fc_list})
+    #print("===========clients/views.client_detail/该客户无projects=========")
     return render(request, 'clients/client_detail.html', {'projects': projects, 'client': client, 'experts': experts,'bc_list':bc_list,'fc_list':fc_list})
 
 
@@ -88,13 +89,16 @@ def client_add_project(request, cid):
     print("==========clients/views.client_add_project()==============")
     form = ProjectForm()
     client = Client.objects.get(cid=cid)
+    bc_list = BusinessContact.objects.filter(cid=client)
     result = {}
     if request.method == "POST":
         pname = request.POST.get('pname')
         pm = request.POST.get('pm')
+        #之后需要删掉
         pm_mobile = request.POST.get('pm_mobile')
         pm_email = request.POST.get('pm_email')
         pm_gender = request.POST.get('pm_gender')
+        #
         pdeadline = request.POST.get('pdeadline')
         premark = request.POST.get('premark')
         try:
@@ -118,7 +122,7 @@ def client_add_project(request, cid):
                 new_project.save()
                 result['status'] = 'success'
                 myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
-                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                # myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
 
             else:
@@ -127,7 +131,7 @@ def client_add_project(request, cid):
     else:
         print("!!!!!!!!!!!GET!!!!!!!!")
         pass
-    return render(request, 'clients/client_add_project.html', {'form': form,'client':client,'result':result})
+    return render(request, 'clients/client_add_project.html', {'bc_list':bc_list,'form': form,'client':client,'result':result})
 
 
 @login_required
@@ -143,7 +147,6 @@ def addClientToDatabase(request):
         clientInfo_form = ClientForm(data=request.POST)
         if clientInfo_form.is_valid():
             new_client = clientInfo_form.save(commit=False)
-            # filter得到的是一个list，而不是一个object
             client = Client.objects.filter(cname=new_client.cname)
             if client.exists() == 0:
                 new_client = clientInfo_form.save()
@@ -156,10 +159,10 @@ def addClientToDatabase(request):
                 #myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
                 return HttpResponseRedirect(myurl)
             else:
-                #print("!!!!!!!!!!!This project already existed!!!!!!!!")
+                #print("!!!!!!!!!!!This client already existed!!!!!!!!")
                 c = client.first()
                 myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=c.cid)
-                #myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=c.cid)
                 return HttpResponseRedirect(myurl)
         else:
             print("=============views.addClientToDatabase======")
@@ -181,8 +184,9 @@ def update_client_detail(request,cid):
         if form.is_valid():
             form.save()
             result['status'] = 'success'
+            #Project.objects.filter()
             myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
-            # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+            # myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
             return HttpResponseRedirect(myurl)
         else:
             result['status'] = 'error'
@@ -240,9 +244,7 @@ def client_add_fc(request, cid):
         fc_email = request.POST.get('fc_email')
         fc_position = request.POST.get('fc_position')
         if form.is_valid():
-            #print("valid????")
             new_fc = form.save(commit=False)
-            # filter得到的是一个list，而不是一个object
             fc = FinancialContact.objects.filter(fc_name=new_fc.fc_name)
             if fc.exists() == 0:
                 new_fc = FinancialContact()
@@ -255,7 +257,7 @@ def client_add_fc(request, cid):
                 new_fc.save()
                 result['status'] = 'success'
                 myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
-                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                # myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
                 result['status'] = 'error'
@@ -280,7 +282,7 @@ def bc_detail_update(request, bc_id, cid):
                 form.save()
                 result['status'] = 'success'
                 myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
-                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                # myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
                 result['status'] = 'error'
@@ -303,7 +305,7 @@ def fc_detail_update(request, fc_id, cid):
                 form.save()
                 result['status'] = 'success'
                 myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
-                # myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                # myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
                 result['status'] = 'error'

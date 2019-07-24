@@ -12,10 +12,9 @@
         {% csrf_token %}
             <p class="sol-sm-12">
                 <label style="font-weight: 700">客户ID: {{ client.cid }}</label>
-    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 <label style="font-weight: 700" class="sol-sm-2 control-label">客户名称：</label>
-
-                    <input type="text" name='cname' value="{{ client.cname }}">
+                <input type="text" name='cname' value="{{ client.cname }}">
             </p>
 
         <p class="sol-sm-12">
@@ -26,7 +25,7 @@
                         <option>{{ bc.bc_name }}</option>
                     {% endfor %}
                 </select>
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <label style="font-weight: 700" class="sol-sm-2" for="fc">主财务联系人</label>
                 <select name="fc_name">
                     <option>请选择</option>
@@ -34,7 +33,7 @@
                         <option>{{ fc.fc_name }}</option>
                     {% endfor %}
                 </select>
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <label style="font-weight: 700" class="sol-sm-2 " for="ctype">客户类型：</label>
                 <select name="ctype">
                         <option>请选择</option>
@@ -43,13 +42,14 @@
                         <option>企业</option>
                         <option>其它</option>
                 </select>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <label style="font-weight: 700" class="sol-sm-2 control-label">咨费：</label>
+            <input type="number" name='cfee' value="{{ client.cfee }}">
 
         </p>
         <p class="sol-sm-12">
-
-                <label style="font-weight: 700" class="sol-sm-2 control-label">收费政策：</label>
-
-                    <textarea name='cpolicy' class="form-control" rows="5">{{ client.cpolicy }}</textarea>
+            <label style="font-weight: 700" class="sol-sm-2 control-label">收费政策：</label>
+            <textarea name='cpolicy' class="form-control" rows="5">{{ client.cpolicy }}</textarea>
         </p>
         </p>
             <p class="sol-sm-12">
@@ -66,9 +66,10 @@
         </p>
 
         <div class="pull-right col-sm-12">
-                             <button type="submit" class="btn btn-success btn-sm">更新</button>
-                 <button type="reset" class="btn btn-warning btn-sm">重置</button>
-        </div>
+            <button type="submit" class="btn btn-success btn-sm">更新</button>
+            <button type="reset" class="btn btn-warning btn-sm">重置</button>
+        </div> 
+
     </form>
 
 

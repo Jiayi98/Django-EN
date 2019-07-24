@@ -50,6 +50,8 @@ class Project(models.Model):
     def pm_contact_info_update(self):
         return reverse('pm_contact_info_update', args=[self.pid,])
 
+
+
 class Project2Expert(models.Model):
     # B. Project: 一个项目有多个专家
     # A-B. Project2Experts：多对多
@@ -61,14 +63,20 @@ class Project2Expert(models.Model):
     ename = models.CharField(max_length=50, blank=True, null=True, verbose_name='专家姓名')
     ecompany = models.CharField(max_length=150, blank=True, null=True, verbose_name = '专家公司')
     status = models.IntegerField(choices=[(1, '已访谈'), (0, '未访谈')], default=0, verbose_name='访谈状态')
-    # datefiled还是charfield？？？
     itv_stime = models.CharField(max_length=50, blank=True, null=True, verbose_name='访谈时间')
-    itv_duration = models.IntegerField(blank=True, null=False, default=0, verbose_name='访谈时常')
+    itv_etime = models.CharField(max_length=50, blank=True, null=True, verbose_name='访谈时间')
+    itv_duration = models.IntegerField(blank=True, null=False, default=0, verbose_name='访谈时长')
+    recorder = models.CharField(max_length=50, blank=True, null=True, verbose_name='录入人')
+    interviewer = models.CharField(max_length=50, blank=True, null=True, verbose_name='约谈人')
+    e_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='专家付费')
+    c_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='客户收费')
+    fee_index = models.FloatField(blank=True,null=False,default=0.0,verbose_name='咨费系数')
 
     class Meta:
         managed = True
+        ordering = ('-itv_stime',)
         db_table = 'p_e_relationship'
-        unique_together = ('pid', 'eid')
+
 
     def __str__(self):
         return "{}-{}".format(self.pname,self.ename)
