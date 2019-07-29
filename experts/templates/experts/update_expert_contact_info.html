@@ -1,30 +1,53 @@
 {% extends "experts/base.html" %}
 {% block content %}
-    <br>
-   <h1> 更新{{ expert.ename }}联系方式</h1>
-    <br>
-
-    <form action="{{ expert.expert_contact_info_update }}" method="post" name="expert_contact_info_update">
-        {% csrf_token %}
-        {% for field in form %}
-            {% if field.label == '*修改员工姓名' %}
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <input type='text' value='{{ user.username }}' name='eupdated_by' class="form-control">
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>更新 {{ expert.ename }}——联系方式</h5>
+    </div>
+    <div class="control-group" align="left">
+        <form action="{{ expert.expert_contact_info_update }}" method="post" name="expert_contact_info_update">
+            {% csrf_token %}
+            <!--{% for field in form %}
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label">{{ field.label }}：</label>
+                        <div class="col-3 control-group">
+                            {{ field }}
                         </div>
-            {% else %}
-            <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-            <div class="col-sm-10">
-                {{ field }}
+                    </div>
+            {% endfor %}
+            -->
+            <div class="form-group row">
+
+                <label for="emobile" class="col-1 col-form-label">电 话：</label>
+                <div class="col-3">
+                    <input type="text" id="emobile" name="emobile" class="form-control" value="{{expert.emobile}}" required>
+                </div>
             </div>
-            {% endif %}
-        {% endfor %}
-        <br>
-        <div class="pull-right col-sm-pull-11">
-            <button type="submit" class="btn btn-success">更新</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <button type="reset" class="btn btn-warning">重置</button>
-        </div>
-    </form>
+            <div class="form-group row">
+                <label for="eemail" class="col-1 col-form-label">邮 箱：</label>
+                <div class="col-3">
+                    <input type="text" id="eemail" name='eemail' class="form-control" value="{{expert.eemail}}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="eqq" class="col-1 col-form-label">微 信：</label>
+                <div class="col-3">
+                    <input type="text" id="eqq" name='eqq' class="form-control" value="{{expert.eqq}}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="eupdated_by" class="col-1 col-form-label">添加人：</label>
+                <div class="col-3">
+                    <input id="eupdated_by" type="text" name='eupdated_by' value="{{ user.username }}" class="form-control" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            </div>
+        </form>
+    </div>
 
 
-{% endblock content %}
+    {% endblock content %}

@@ -1,93 +1,74 @@
 {% extends "experts/base.html" %}
 
 {% block content %}
-    <br><br>
-    <h2>{{expert.ename}} - 工作经历</h2>
-    <br>
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>{{expert.ename}}——工作经历列表</h5>
+    </div>
     <input type="button" class="btn btn-info btn-sm"  value="返回专家信息" onclick="location.href='{% url 'expert_detail' expert.ename expert.eid%}'">
     <input type="button" class="btn btn-warning btn-sm"  value="新建工作经历" onclick="window.location.href='{{ expert.add_workexp_url }}'">
-    <br><br>
-<table class="table table-condensed table-hover" width="100%" style="font-size: 11px">
-  <caption></caption>
-  <thead>
-    <tr>
-        <th width="10%">时间</th>
-        <th width="8%">公司/部门</th>
-        <th width="8%">职位</th>
-        <th width="62%">职责</th>
-        <th width="8">领域</th>
-        <th width="4%"></th>
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="margin-top: 10px;font-size: 11px">
+            <caption></caption>
+            <thead style="background-color: whitesmoke">
+            <tr align="center">
+                <th width="10%">时间</th>
+                <th width="8%">公司/部门</th>
+                <th width="8%">职位</th>
+                <th width="62%">职责</th>
+                <th width="8">领域</th>
+                <th width="4%"></th>
 
-    </tr>
-  </thead>
-  <tbody>
-  {% for exp in workexps %}
-   <tr class="info">
-       <td>{{ exp.stime }} - {{ exp.etime }}</td>
-       <td>{{ exp.company }} - {{ exp.agency }}</td>
-       <td>{{ exp.position }}</td>
-       <td>{{ exp.duty }}</td>
-       <td> {{ exp.area }}</td>
-       <td>
-           <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
-           <!-- 模态框（Modal） -->
- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
-    <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exp in workexps %}
+            <tr class="info">
+                <td>{{ exp.stime }} - {{ exp.etime }}</td>
+                <td>{{ exp.company }} - {{ exp.agency }}</td>
+                <td>{{ exp.position }}</td>
+                <td>{{ exp.duty }}</td>
+                <td> {{ exp.area }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
+                    <!-- 模态框（Modal） -->
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
+                    <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label  class="control-label">确定要删除吗？</label>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  class="control-label">确定要删除吗？</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认</button>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认</button>
-                </div>
-            </div>
-        </div>
+                    </div>
+
+
+
+                </td>
+            </tr>
+            {% endfor %}
+            {% if result.status == 'success'%}
+            <td>{{ exp.stime }} - {{ exp.etime }}</td>
+            <td>{{ exp.company }} - {{ exp.agency }}</td>
+            <td>{{ exp.position }} - {{ exp.duty }}</td>
+            <td> {{ exp.area }}</td>
+            <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
+            {% endif %}
+            </tbody>
+        </table>
     </div>
-
-
-
-       </td>
-  </tr>
-  {% endfor %}
-  {% if result.status == 'success'%}
-        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-        <td>{{ exp.company }} - {{ exp.agency }}</td>
-        <td>{{ exp.position }} - {{ exp.duty }}</td>
-        <td> {{ exp.area }}</td>
-  <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
-  {% endif %}
-  </tbody>
-</table>
-<!--
-    {% for exp in workexps %}
-        <div class="work_experience">
-            <label class="sol-sm-2 control-label">时间： {{ exp.stime }} - {{ exp.etime }}</label>
-
-            <li> 公司/部门： {{ exp.company }} - {{ exp.agency }} </li>
-            <li> 职位/职责： {{ exp.position }} - {{ exp.duty }} </li>
-            <li> 领域： {{ exp.area }} </li>
-        </div>
-        <br>
-        <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>&nbsp&nbsp&nbsp
-        <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{{ exp.delete_workexp }}'">删除</button><br><br>
-    {% endfor %}
-    {% if result.status == 'success'%}
-            <label class="sol-sm-2 control-label">时间： {{ exp.stime }} - {{ exp.etime }}</label>
-
-            <li> 公司/部门： {{ exp.company }} - {{ exp.agency }} </li>
-            <li> 职位/职责： {{ exp.position }} - {{ exp.duty }} </li>
-            <li> 领域： {{ exp.area }} </li>
-            <br><br>
-            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button><br><br>
-    {% endif %}-->
+</div>
 {% endblock content %}

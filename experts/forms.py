@@ -13,7 +13,6 @@ class ExpertInfoForm(forms.ModelForm):
 
     elocation = forms.CharField(label='城市',max_length=150, required=False)
     eqq = forms.CharField(label='微信',max_length=50, required=False)
-    #ephoto = forms.CharField(max_length=20, required=False)
     estate = forms.IntegerField(label='级别',required=False)
     ecomefrom = forms.CharField(label='来源',required=False)
     eremark = forms.CharField(label='备注',required=False)
@@ -21,8 +20,7 @@ class ExpertInfoForm(forms.ModelForm):
     efee = forms.FloatField(label='咨询费',required=False)
     interview_num = forms.IntegerField(label='访谈次数',required=False)
     eupdated_by = forms.CharField(label='*录入员工姓名',max_length=50, required=True)
-    #admin_id = forms.IntegerField(required=False)
-    #addtime = forms.DateTimeField(initial=datetime.now())
+
 
     class Meta:
         model = ExpertInfo
@@ -82,7 +80,7 @@ class WorkexpForm(forms.ModelForm):
 
     class Meta:
         model = WorkExp
-        fields = ('stime', 'etime','company', 'agency', 'position', 'duty','area')
+        fields = ('company', 'agency', 'position','area','stime', 'etime','duty')
         #fields = ('ename','emobile','stime','etime',
         #          'company','agency','position','duty',
         #          'area','istonow')

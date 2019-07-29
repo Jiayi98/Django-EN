@@ -94,13 +94,7 @@
                         </td>
                     </tr>
                     {% endfor %}
-                    {% if result.status == 'success'%}
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }} - {{ exp.duty }}</td>
-                        <td> {{ exp.area }}</td>
-                        <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
-                    {% endif %}
+
                     </tbody>
 </table>
 <br>

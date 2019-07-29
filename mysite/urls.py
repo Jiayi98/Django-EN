@@ -48,8 +48,8 @@ urlpatterns = [
 
 
 
-    path('addcomment/<str:ename>/<str:emobile>/', experts_views.add_comment, name='add_comment'),
-    path('addworkexp/<str:ename>/<str:emobile>/', experts_views.add_workexp, name='add_workexp'),
+    path('addcomment/<int:eid>/<str:ename>/', experts_views.add_comment, name='add_comment'),
+    path('addworkexp/<int:eid>/<str:ename>/', experts_views.add_workexp, name='add_workexp'),
 
     path('addcomplete/', experts_views.addok, name='addcomplete'),
 

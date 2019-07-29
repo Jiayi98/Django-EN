@@ -48,8 +48,8 @@ def expertInfoUpdateToDatabase(request):
     #print("!!!!!!!!!!!UPDATE这里！!!!!!!!!")
     form = ExpertInfoFormUpdate()
     ename = request.POST["ename"]
-    expert_objs = ExpertInfo.objects.filter(ename=ename)
-    # 找到所有同名的专家
+    expert_objs = ExpertInfo.objects.filter(ename__contains=ename)
+    # 找到所有包含搜索词的专家
     #for obj in expert_objs:
     #    print(obj.eid)
     # 在update_expert.html中：

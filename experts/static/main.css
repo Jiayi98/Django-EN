@@ -1,11 +1,11 @@
 body {
-  background: #fafafa;
+  background: rgba(198, 201, 201, 0.46);
   color: #333333;
   margin-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #444444;
+  color: rgba(57, 59, 60, 0.86);
 }
 
 ul {
@@ -20,12 +20,10 @@ ul {
   color: #cbd5db;
 }
 
-.site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
-}
+
 
 .site-header .navbar-nav .nav-link.active {
-  font-weight: 500;
+  font-weight: bolder;
 }
 
 .content-section {
@@ -36,56 +34,12 @@ ul {
   margin-bottom: 20px;
 }
 
-.article-title {
-  color: #444444;
-}
 
-a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
-}
 
-.article-content {
-  white-space: pre-line;
+.site-header .navbar-nav ul li:hover{
+    background-color:#343a40;
+    color: white;
 }
-
-.article-img {
-  height: 65px;
-  width: 65px;
-  margin-right: 16px;
+.navbar {
+  min-height:20px ;
 }
-
-.article-metadata {
-  padding-bottom: 1px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid #e3e3e3
-}
-
-.article-metadata a:hover {
-  color: #333;
-  text-decoration: none;
-}
-
-.article-svg {
-  width: 25px;
-  height: 25px;
-  vertical-align: middle;
-}
-
-.account-img {
-  height: 125px;
-  width: 125px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-}
-
-.account-heading {
-  font-size: 2.5rem;
-}
-
-.navbar-nav > li > a{
-    padding-top:4px ;
-    padding-bottom:0 ;
-    height: 28px;
-}
-.navbar {min-height:20px ;}

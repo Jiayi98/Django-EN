@@ -1,0 +1,21 @@
+{% extends "clients/client_base.html" %}
+{% block content %}
+<div class="container-fluid" align="center">
+    <div class="control-group">
+        <h5>查找客户</h5>
+    </div>
+
+    <form class="form-horizontal" method="get" action="{% url 'advanced_client_search' %}">
+        {% csrf_token %}
+        <div class="control-group">
+        <input class="form-control col-md-8" style="height:32px" type="text" aria-label="Search" name='cname' placeholder="客户名称" required>
+       </div>
+        <div class="control-group col-md-8" style="margin-top: 10px" align="center">
+
+            <button type="submit" class="btn btn-success btn-sm">搜索</button>
+
+        </div>
+    </form>
+</div>
+{% endblock content %}
+

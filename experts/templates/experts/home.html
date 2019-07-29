@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- bootstrap的核心js文件 -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top" style="height: 43px">
+        <a class="navbar-brand" href="{% url 'home' %}"><strong> LeapTech</strong></a>
+
+    {% if user.is_authenticated %}
+        <div class="collapse navbar-collapse" id="navbarsExample01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown active" style="background-color: white;height: 42px">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bolder;color: darkslategray">专家</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="{% url 'expertinfolist' %}">专家列表</a>
+                        <a class="dropdown-item" href="{% url 'advanced_expert_form'%}">查找专家</a>
+                        <a class="dropdown-item" href="{% url 'addexpert'%}">添加专家</a>
+                        <a class="dropdown-item" href="{% url 'updateexpert' %}">更新专家</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">项目</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown02">
+                        <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
+                        <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
+                        <a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">客户</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown03">
+                        <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
+                        <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
+                {% csrf_token %}
+                <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
+            </form>
+            {% endif %}
+            <ul>
+                {% if user.is_authenticated %}
+                <li class="nav-item" style="margin-top: 15px">
+                    <button class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'logout' %}'">登出</button>
+                </li>
+                {% else %}
+                <li class="nav-item" style="margin-top: 15px">
+                    <button class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'dashboard' %}'">登录</button>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
+<br>
+
+<main role="main" class="container-fluid">
+
+    <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">信息管理查询系统</h1>
+      <p></p>
+      <p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a>
+      </p>
+    </div>
+  </div>
+     <div class="container marketing">
+
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+      <div class="col-md-4" align="center">
+        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image"
+          width="140" height="140">
+        <h5 style="color: #555555">专家</h5>
+          <p>
+          <a class="btn btn-secondary" href="{% url 'advanced_expert_form'%}" role="button">查找专家 &raquo;</a>
+        </p>
+      </div>
+      <!-- /.col-md-4 -->
+      <div class="col-md-4" align="center">
+        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image"
+          width="140" height="140">
+        <h5 style="color: #555555">项目</h5>
+
+          <p>
+          <a class="btn btn-secondary" href="{% url 'advanced_project_form' %}" role="button">查找项目 &raquo;</a>
+        </p>
+      </div>
+      <!-- /.col-md-4 -->
+      <div class="col-md-4" align="center">
+        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image"
+          width="140" height="140">
+        <h5 style="color: #555555">客户</h5>
+
+        <p>
+          <a class="btn btn-secondary" href="{% url 'advanced_client_form' %}" role="button">查找客户 &raquo;</a>
+        </p>
+      </div>
+      <!-- /.col-md-4 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-md-12">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+
+    </div>
+</div>
+</main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>

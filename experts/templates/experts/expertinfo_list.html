@@ -1,16 +1,14 @@
-{% extends "experts/base.html" %}
+{% extends "experts/home.html" %}
 {% block content %}
-    <br>
-    <h3>专家列表</h3>
-    <br>
-
-
-<!--<table class="table table-condensed table-striped" width="100%" style="font-size:10px; max-height:50px">-->
-<table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size:11px;word-break:break-all" aline=center>
-	<caption></caption>
-   <thead>
-      <tr>
-          <th width="6%">姓名</th>
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+<div align="center">
+    <h5>专家列表</h5>
+    <table class="table table-hover" border="1" align=center border="0" style="font-size:11px;word-break: break-all;border-color: lightgray" aline=center>
+	<caption>专家列表</caption>
+   <thead style="background-color: whitesmoke">
+      <tr align=center>
+          <th width="8%">ID</th>
+          <th width="8%">姓名</th>
           <th width="8%">行业</th>
           <th width="8%">公司</th>
           <th width="8%">职位</th>
@@ -21,16 +19,16 @@
    <tbody>
    {% for expert in experts %}
       <tr>
+          <td><a> {{ expert.eid }}</a></td>
           <td><a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a></td>
           <td>{{ expert.etrade }}</td>
           <td>{{ expert.get_company }}</td>
           <td>{{ expert.get_position }}</td>
           <td>{{ expert.ebackground }}</td>
       </tr>
-
     {% endfor %}
    </tbody>
 </table>
-
+</div>
     {% include "experts/pagination.html" with page=experts %}
 {% endblock content %}

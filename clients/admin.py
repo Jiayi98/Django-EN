@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Client,BusinessContact,FinancialContact
 
-# Register your models here.
+admin.site.register(Client)
+admin.site.register(BusinessContact)
+admin.site.register(FinancialContact)
+

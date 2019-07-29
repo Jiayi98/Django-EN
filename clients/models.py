@@ -51,6 +51,7 @@ class BusinessContact(models.Model):
     bc_gender = models.CharField(max_length=10,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     bc_mobile = models.CharField(max_length=50, blank=True, null=True)
     bc_email = models.CharField(max_length=150, blank=True, null=True)
+    bc_wechat = models.CharField(max_length=150, blank=True, null=True)
     bc_position = models.CharField(max_length=80, blank=True, null=True)
     cid = models.ForeignKey(Client, on_delete=models.CASCADE)
 
@@ -65,6 +66,7 @@ class FinancialContact(models.Model):
     fc_gender = models.CharField(max_length=10,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     fc_mobile = models.CharField(max_length=150, blank=True, null=True)
     fc_email = models.CharField(max_length=150, blank=True, null=True)
+    fc_wechat = models.CharField(max_length=150, blank=True, null=True)
     fc_position = models.CharField(max_length=80, blank=True, null=True)
     cid = models.ForeignKey(Client, on_delete=models.CASCADE)
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends "clients/client_base.html" %}
+{% block content %}
+
+    <h5>搜索结果</h5>
+    <a class="col-sm-12">共{{ num_of_result }}条结果</a>
+    <br><br>
+
+
+    <table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size:11px;word-break:break-all" aline=center>
+	<caption></caption>
+   <thead>
+      <tr>
+          <th width="20%">客户</th>
+          <th width="10%">客户类型</th>
+          <th width="10%">业务联系人</th>
+          <th width="10%">财务联系人</th>
+          <th width="20%">收费政策</th>
+          <th width="30%">客户信息</th>
+
+      </tr>
+   </thead>
+   <tbody>
+   {% for client in client_list %}
+      <tr>
+          <td><a href="{{ client.get_client_detail }}"> {{ client.cname }}</a></td>
+          <td>{{ client.ctype }}</td>
+          <td>{{ client.bc_name }}</td>
+          <td>{{ client.fc_name }}</td>
+          <td>{{ client.cpolicy }}</td>
+          <td>{{ client.cinfo }}</td>
+      </tr>
+
+   {% empty %}
+                <div class="no-post">
+                <td>没有搜索到符合条件的客户</td>
+                </div>
+   {% endfor %}
+   </tbody>
+</table>
+
+    {% include "experts/pagination.html" with page=experts %}
+
+
+{% endblock content %}

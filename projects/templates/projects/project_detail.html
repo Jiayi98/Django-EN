@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<br>
+<div class="container-fluid">
 {% if perms.projects.can_delete_project %}
     <h3 class="col-sm-10">{{ project.pname }}&nbsp&nbsp&nbsp
         <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
@@ -62,23 +62,24 @@
 
 </div>
 
-
-<br>
-<h5 class="col-sm-10">项目访谈 &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'"></h5>
+        <div class="control-group">
+<h5 class="col-sm-10">项目访谈 &nbsp
+    <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">
+</h5>
 <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
                     <caption></caption>
-                    <thead>
+                    <thead style="background-color: whitesmoke">
                     <tr>
                         <th width="6%">专家</th>
-                        <th width="10%">公司</th>
-                        <th width="3%">状态</th>
-                        <th width="10%">开始时间</th>
-                        <th width="10%">结束时间</th>
+                        <th width="20%">公司</th>
+                        <th width="4%">状态</th>
+                        <th width="8%">访谈日期</th>
+                        <th width="5%">开始时间</th>
+                        <th width="5%">结束时间</th>
                         <th width="6%">访谈时长</th>
-                        <th width="6%">专家付费</th>
-                        <th width="6%">客户收费</th>
+                        <th width="6%">计费时长</th>
                         <th width="6%">约谈人</th>
-                        <th width="6%"></th>
+                        <th width="10%"></th>
 
                     </tr>
                     </thead>
@@ -86,18 +87,23 @@
                     {% for p2e in p2es %}
                     {% if p2e.interviewer == user.username or user.username == 'admin' or perms.clients.can_view_business_contact %}
                     <tr class="info">
-                        <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.ename }}</a></td>
-                        <td>{{ p2e.ecompany }}</td>
-                        <td>{{ p2e.status}}</td>
+                        <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.eid.ename }}</a></td>
+                        <td>{{ p2e.get_expert_company }}</td>
+                        <td>{% if p2e.status == 1 %}
+                                已访谈
+                            {% else %}
+                                未访谈
+                            {% endif %}
+                        </td>
+                        <td>{{ p2e.itv_date }}</td>
                         <td>{{ p2e.itv_stime }}</td>
                         <td>{{ p2e.itv_etime }}</td>
                         <td>{{ p2e.itv_duration }} 分钟</td>
-                        <td>{{ p2e.e_payment }} 元</td>
-                        <td>{{ p2e.c_payment }} 元</td>
+                        <td>{{ p2e.itv_paid_duration }} 分钟</td>
                         <td>{{ p2e.interviewer }}</td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">X</button>
                             <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -129,14 +135,14 @@
 
                     </tbody>
                 </table>
-
-<br>
+        </div>
+    <div class="control-group">
 <h5 class="col-sm-10">合作专家 &nbsp&nbsp&nbsp
     <!--<input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">-->
 </h5>
 <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
                     <caption></caption>
-                    <thead>
+                    <thead style="background-color: whitesmoke">
                     <tr>
                         <th width="6%">ID</th>
                         <th width="6%">专家</th>
@@ -156,4 +162,6 @@
 
                     </tbody>
                 </table>
+        </div>
+</div>
 {% endblock content %}

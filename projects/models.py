@@ -7,21 +7,14 @@ from django.urls import reverse
 class Project(models.Model):
     # B. Project: 一个项目有多个专家,一个专家参与多个项目
     pid = models.AutoField(primary_key=True)
-    pname = models.CharField(max_length=50, blank=True, null=True, verbose_name='项目名称')
+    pname = models.CharField(max_length=150, blank=True, null=True, verbose_name='项目名称')
     cid = models.ForeignKey(Client, on_delete=models.CASCADE, to_field='cid')
-    cname = models.CharField(max_length=150, blank=True, null=True, verbose_name='客户名称')
     pm = models.CharField(max_length=50, blank=True, null=True, verbose_name='项目经理')
-    pm_mobile = models.CharField(max_length=50, blank=True, null=True)
-    pm_wechat = models.CharField(max_length=50, blank=True, null=True)
-    pm_email = models.CharField(max_length=150, blank=True, null=True)
-    pm_gender = models.CharField(max_length=50,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     pcreatetime = models.DateField(auto_now_add=True)
     pdeadline = models.CharField(max_length=50, blank=True, null=True)
     premark = models.TextField(blank=True,null=True)
     pdetail = models.TextField(blank=True,null=True)
-
     person_in_charge = models.CharField(max_length=50, blank=True, null=True, verbose_name='我方项目对接人')
-
     expertinfos = models.ManyToManyField(ExpertInfo, through='Project2Expert')
 
     class Meta:
@@ -37,11 +30,11 @@ class Project(models.Model):
         return reverse('project_detail',args=[self.pid,self.cid.cid])
 
     def add_p2e(self):
-        print("==========projects/models.add_p2e")
+        #print("==========projects/models.add_p2e")
         return reverse('add_p2e',args=[self.pid,])
 
     def update_project_detail(self):
-        print("==========projects/models.update_project_detail========")
+        #print("==========projects/models.update_project_detail========")
         return reverse('update_project_detail', args=[self.pid,])
 
     def delete_project(self):
@@ -50,31 +43,32 @@ class Project(models.Model):
     def pm_contact_info_update(self):
         return reverse('pm_contact_info_update', args=[self.pid,])
 
+    def get_client_name(self):
+        return self.cid.cname
 
 
 class Project2Expert(models.Model):
+    # 访谈信息表
     # B. Project: 一个项目有多个专家
     # A-B. Project2Experts：多对多
     pteid = models.AutoField(primary_key=True)
     pid = models.ForeignKey(Project, on_delete=models.CASCADE)
     eid = models.ForeignKey(ExpertInfo, on_delete=models.CASCADE)
-    # 添加的额外字段
-    pname = models.CharField(max_length=150, blank=True, null=True, verbose_name='项目名称')
-    ename = models.CharField(max_length=50, blank=True, null=True, verbose_name='专家姓名')
-    ecompany = models.CharField(max_length=150, blank=True, null=True, verbose_name = '专家公司')
     status = models.IntegerField(choices=[(1, '已访谈'), (0, '未访谈')], default=0, verbose_name='访谈状态')
-    itv_stime = models.CharField(max_length=50, blank=True, null=True, verbose_name='访谈时间')
-    itv_etime = models.CharField(max_length=50, blank=True, null=True, verbose_name='访谈时间')
+    itv_date = models.CharField(max_length=50, blank=True, null=True, verbose_name='访谈日期')
+    itv_stime = models.CharField(max_length=50, blank=True, null=True, verbose_name='开始时间')
+    itv_etime = models.CharField(max_length=50, blank=True, null=True, verbose_name='结束时间')
     itv_duration = models.IntegerField(blank=True, null=False, default=0, verbose_name='访谈时长')
+    itv_paid_duration = models.IntegerField(blank=True, null=False, default=0, verbose_name='计费时长')
     recorder = models.CharField(max_length=50, blank=True, null=True, verbose_name='录入人')
     interviewer = models.CharField(max_length=50, blank=True, null=True, verbose_name='约谈人')
-    e_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='专家付费')
-    c_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='客户收费')
+    e_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='专家付费总额')
+    c_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='客户收费总额')
     fee_index = models.FloatField(blank=True,null=False,default=0.0,verbose_name='咨费系数')
 
     class Meta:
         managed = True
-        ordering = ('-itv_stime',)
+        ordering = ('-itv_date', '-itv_stime',)
         db_table = 'p_e_relationship'
 
 
@@ -84,3 +78,7 @@ class Project2Expert(models.Model):
     def update_p2e_url(self):
         print("==========projects/models.update_p2e_url()")
         return reverse('update_p2e_detail', args=[self.pteid,])
+
+    def get_expert_company(self):
+        # 返回最近一条工作经历的公司名
+        return self.eid.get_company()

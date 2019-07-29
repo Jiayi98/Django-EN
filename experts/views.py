@@ -16,17 +16,11 @@ from projects.models import Project,Project2Expert
 from clients.models import Client
 
 
-"""
-def export_all_excel(request):
-    print("==========views.export_all_excel========")
-    exp = ExpertInfo()
-    alert_text = exp.export_excel(None)
-    return HttpResponse(alert_text)
-"""
+
 
 # Create your views here.
 def base(request):
-    return render(request, 'experts/base.html')
+    return render(request, 'experts/home.html')
 
 @login_required
 def expert_contact_info(request, ename, eid):
@@ -123,20 +117,9 @@ def addExpert(request):
     #return HttpResponseRedirect('/addcomplete/')
     return render(request, 'experts/addexpert.html', {'form': form, 'error':error})
 
-"""
-@login_required
-def addComment(request):
-    formI = ExpertInfoFormUpdate()
-    ename = request.POST.get("ename")
-    expert_objs = ExpertInfo.objects.filter(ename=ename)
-
-    return render(request, 'experts/addcomment.html', {'formI': formI, 'expert_objs': expert_objs})
-    #return render(request, 'experts/addcomment.html', {'formC': formC,'formI':formI,'expert_objs':expert_objs})
-"""
-
 
 @login_required
-def add_comment(request,ename,emobile):
+def add_comment(request,eid,ename):
     #print("!!!!!!!!!!!!!!!!!!!", ename, emobile)
     formC = CommentForm(data=request.POST)
     eproblem = request.POST.get("eproblem")
@@ -144,7 +127,7 @@ def add_comment(request,ename,emobile):
     result = {}
 
     try:
-        expert = ExpertInfo.objects.get(ename=ename, emobile=emobile)
+        expert = ExpertInfo.objects.get(eid=eid)
         #47.94.224.242:1973
         #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
         myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
@@ -165,6 +148,8 @@ def add_comment(request,ename,emobile):
             # 47.94.224.242:1973
             myurl = 'http://127.0.0.1:8000/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
             #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename, eid=eid)
+            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
             result['status'] = 'success'
             return HttpResponseRedirect(myurl)
     return render(request, 'experts/addcomment_confirm.html', {"expert":expert,"formC":formC,'result':result, 'myurl':myurl})
@@ -188,7 +173,7 @@ def addWorkexp(request):
 
 
 @login_required
-def add_workexp(request,ename,emobile):
+def add_workexp(request,eid,ename):
     #print("===================views.py-add_workexp=========", ename, emobile)
     formW = WorkexpForm(data=request.POST)
 
@@ -199,10 +184,8 @@ def add_workexp(request,ename,emobile):
     position = request.POST.get("position")
     duty = request.POST.get("duty")
     area = request.POST.get("area")
-    #istonow = request.POST.get("istonow")
     try:
-        expert = ExpertInfo.objects.get(ename=ename, emobile=emobile)
-        #print(expert.eid)
+        expert = ExpertInfo.objects.get(eid=eid)
     except:
         print("=============views.add_workexp======")
         print("!!!!!!!!!!!This expert not exist!!!!!!!!")
@@ -221,13 +204,13 @@ def add_workexp(request,ename,emobile):
             newExp.position = position
             newExp.duty = duty
             newExp.area = area
-            #newExp.istonow = istonow
             newExp.save()
             # 47.94.224.242:1973
-            #url = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
-            url = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
-            return HttpResponseRedirect(url)
-            #return HttpResponseRedirect('/addcomplete/')
+            #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
+            #myurl = 'http://127.0.0.1:8000/{eid}/{ename}/workexpdetail'.format(eid=expert.eid, ename=expert.ename)
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename, eid=eid)
+            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
+            return HttpResponseRedirect(myurl)
     return render(request, 'experts/addworkexp_confirm.html', {"formW":formW})
 
 
@@ -277,25 +260,31 @@ def expert_detail(request, ename, eid):
     #return render(request, 'experts/expert_detail.html', {'expert':expert, 'comments':comments})
 
 
+
+
 def expert_detail_update(request, ename, eid):
+    error = ""
     template_name = 'experts/expert_detail_update.html'
     object = get_object_or_404(ExpertInfo, eid=eid)
+
     if request.method == 'POST':
         form = ExpertInfoFormUpdateDB(instance=object, data=request.POST)
         if form.is_valid():
             form.save()
-            # if is_ajax(), we just return the validated form, so the modal will close
             myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename,eid=eid)
             #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
+        else:
+            error = "error"
+            print("=======expert_detail_update/ form is invalid=========")
     else:
         form = ExpertInfoFormUpdateDB(instance=object)
 
-    return render(request, template_name, {'expert':object,'form': form,})
+    return render(request, template_name, {'expert':object,'form': form,'error':error})
 
-# 7.15 修改联系方式
+
 def expert_contact_info_update(request, ename, eid):
-    print('==================views.expert_contact_info_update===============')
+    #print('==================views.expert_contact_info_update===============')
     template_name = 'experts/update_expert_contact_info.html'
     object = get_object_or_404(ExpertInfo, eid=eid)
 
@@ -303,9 +292,8 @@ def expert_contact_info_update(request, ename, eid):
         form = ContactInfoFormUpdateDB(instance=object, data=request.POST)
         if form.is_valid():
             form.save()
-            # if is_ajax(), we just return the validated form, so the modal will close
-            myurl = "http://127.0.0.1:8000/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
-            #myurl = "http://47.94.224.242:1973/expert_contact_info/{ename}/{eid}/".format(ename=ename, eid=eid)
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=ename, eid=eid)
+            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
     else:
         form = ContactInfoFormUpdateDB(instance=object)
@@ -338,6 +326,9 @@ def comment_detail_update(request, eid, cmtid):
             #print("=============form is valid =============", form.is_valid())
             form.save()
             result['status'] = 'success'
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
+            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
+            return HttpResponseRedirect(myurl)
     else:
         form = CommentFormUpdateDB(instance=comment)
 
@@ -366,9 +357,10 @@ def workexp_detail_update(request, eid, expid):
         form = WorkexpFormUpdateDB(instance=exp, data=request.POST)
         if form.is_valid():
             form.save()
-            # if is_ajax(), we just return the validated form, so the modal will close
-            #print("成功")
             result['status'] = 'success'
+            myurl = "http://127.0.0.1:8000/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
+            # myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
+            return HttpResponseRedirect(myurl)
         else:
             print("=============views.py中workexp_detail_update()============")
             print("表单无效")
@@ -386,24 +378,29 @@ def advanced_expert_search(request):
     template_name = 'experts/advanced_expert_search_result.html'
     eid = request.GET.get('eid')
     name = request.GET.get('name')
-    #sex =request.GET.get('sex')
-    #location =request.GET.get('location')
+
     trade = request.GET.get('trade')
     subtrade = request.GET.get('subtrade')
     background = request.GET.get('background')
     company = request.GET.get('company')
-    #agency = request.GET.get('agency')
-    #position = request.GET.get('position')
-    #duty = request.GET.get('duty')
-    #area = request.GET.get('area')
 
-    #info_variables = [eid,name,sex,location,trade,subtrade,background]
     info_variables = [eid, name, trade, subtrade, background]
     info_variables = [var for var in info_variables if var]
-    #work_variables = [company,agency,position,duty,area]
+    #print(trade,type(trade),type(subtrade),type(background),type(company))
     work_variables = [company]
     work_variables = [var for var in work_variables if var]
-
+    # 避免出现Nonetype
+    if not name:
+        name = ''
+    if not trade:
+        trade = ''
+    if not subtrade:
+        subtrade = ''
+    if not background:
+        background = ''
+    if not company:
+        company = ''
+    print(info_variables, work_variables)
     if len(info_variables) == 0 and len(work_variables) == 0:
         # 没有任何限制，直接获取所有专家
         expert_list = ExpertInfo.objects.all()
@@ -437,7 +434,30 @@ def advanced_expert_search(request):
             expert_list = search_sort_helper(expert_list, company)
         num_of_result = len(expert_list)
         return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
+    elif company:
+        #print("对工作经历限制，再通过对专家信息的条件限制筛选")
+        result_list = WorkExp.objects.filter(company__contains=company)
+        expert_list = []
+
+        for workexp in result_list:
+            expert = workexp.eid
+            if name in info_variables and (not expert.ename or name not in expert.ename):
+                continue
+            if trade in info_variables and (not expert.etrade or trade not in expert.etrade):
+                continue
+            if subtrade in info_variables and (not expert.esubtrade or trade not in expert.esubtrade):
+                continue
+            if background in info_variables and (not expert.ebackground or background not in expert.ebackground):
+                continue
+            if expert not in expert_list:
+                expert_list.append(expert)
+
+        expert_list = search_sort_helper(expert_list, company)
+        num_of_result = len(expert_list)
+        experts = expert_list
+        return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     else:
+        #print("通过对专家信息的条件限制筛选，对工作经历有限制")
         # 先从所有专家中筛选出符合【专家信息表】中限定的结果集
         result_list = ExpertInfo.objects.filter(
             ename__contains=name,
@@ -445,6 +465,7 @@ def advanced_expert_search(request):
             esubtrade__contains=subtrade,
             ebackground__contains=background
         )
+        #print(result_list)
         # 再在该集合中继续选取符合【工作经历表】中限定的结果集
         expert_list = []
         for exp in result_list:
@@ -454,33 +475,35 @@ def advanced_expert_search(request):
             for work in workexp:
                 # 遍历每个专家的所有工作经历
                 if company in work_variables and (not work.company or company not in work.company):
+                    #print(company, work.company,company not in work.company)
                     # 不加入结果集的两种情况：
                     # 1）对公司进行限定，且公司名不包含限定搜索词；
                     # 2）对公司进行限定，且该专家该条工作经历在数据库中公司名字段对应的值为空
                     continue
                 if not stored:
+                    #print(company, work.company, company not in work.company)
                     # 不曾被添加至结果集
                     stored = True
                     expert_list.append(exp)
                     # 被加入结果集后可立即停止对该专家剩下的工作经历的搜索
                     break
 
-            if company != '':
-                # 搜索限定词中包括公司名，则以"公司限定搜索词"与专家公司名称相似度排序
-                expert_list = search_sort_helper(expert_list, company)
+        if company != '':
+            # 搜索限定词中包括公司名，则以"公司限定搜索词"与专家公司名称相似度排序
+            expert_list = search_sort_helper(expert_list, company)
             num_of_result = len(expert_list)
 
-            experts = expert_list
-            paginator = Paginator(experts, 10)
-            page = request.GET.get('page')
-            try:
-                expert_list = paginator.page(page)
-            except PageNotAnInteger:
-                expert_list = paginator.page(1)
-            except EmptyPage:
-                expert_list = paginator.page(paginator.num_pages)
+        experts = expert_list
+        paginator = Paginator(experts, 10)
+        page = request.GET.get('page')
+        try:
+            expert_list = paginator.page(page)
+        except PageNotAnInteger:
+            expert_list = paginator.page(1)
+        except EmptyPage:
+            expert_list = paginator.page(paginator.num_pages)
 
-            return render(request, template_name, {'page': page,'num_of_result':num_of_result,'expert_list': expert_list})
+        return render(request, template_name, {'page': page,'num_of_result':num_of_result,'expert_list': expert_list})
 
 
 def search_expert(request):

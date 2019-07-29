@@ -1,332 +1,313 @@
 {% extends "experts/base.html" %}
-
-<script>
-    function openWin()
-    {
-        window.location.href("{{ expert.get_comment_url }}")
-    }
-</script>
 {% block content %}
-<br>
-{% if perms.experts.can_view_contact_info %}
-    <h2>{{ expert.ename }}&nbsp&nbsp&nbsp
-        <button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='{{ expert.contact_info }}'">联系方式</button>&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-info btn-sm"  value="修改专家信息" onclick="window.location.href='{{ expert.get_update_url }}'">
-    </h2>
-{% else %}
-    <h2>{{ expert.ename }}&nbsp&nbsp&nbsp
-        <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='.'">无权限查看联系方式
-        </button>
-        <input type="button" class="btn btn-info btn-sm"  value="修改专家信息" onclick="window.location.href='{{ expert.get_update_url }}'">
-    </h2>
-{% endif %}
-<br>
-<div class="col-sm-10" style="position: center">
-    <p>
-        <label style="font-weight: 700">EID: </label>{{expert.eid}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">性别: </label>{{expert.esex}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">地区: </label>{{expert.elocation}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">评级: </label>{{expert.estate}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">来源: </label>{{expert.ecomefrom}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">添加时间:</label>{{ addtime }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">添加人/修改人:</label>{{ expert.eupdated_by }}
-    </p>
-    <p>
-        <label style="font-weight: 700">行业: </label>{{expert.etrade}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">子行业</label>: {{expert.esubtrade}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <label style="font-weight: 700">咨询费</label>: {{expert.efee}} 元&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">访谈次数</label>: {{expert.interview_num }} 次
-    </p>
-    <p><label style="font-weight: 700">备注: </label>{{expert.eremark}}</p>
-    <p style="white-space: pre-line"><label style="font-weight: 700">背景信息：</label>
-        {{expert.ebackground }}
-    </p>
-
-</div>
-
-<!--<table class="table table-bordered" style="table-layout: fixed" style="font-size:10px;">
-  <caption></caption>
-  <thead>
-    <tr>
-        <th>EID</th>
-        <td>{{ expert.eid }}</td>
-        <th>性别</th>
-        <td>{{ expert.esex }}</td>
-        <th>生日</th>
-        <td>{{ expert.ebirthday }}</td>
-    </tr>
-    <tr>
-
-        <th>行业</th>
-        <td>{{ expert.etrade }}</td>
-        <th>子行业</th>
-        <td>{{ expert.esubtrade }}</td>
-        <th>地区</th>
-        <td>{{ expert.elocation }}</td>
-    </tr>
-    <tr>
-        <th>评级</th>
-        <td>{{ expert.estate }}</td>
-        <th>来源</th>
-        <td>{{ expert.ecomefrom }}</td>
-        <th>备注</th>
-        <td>{{ expert.eremark }}</td>
-    </tr>
-    <tr>
-        <th>添加时间</th>
-        <td>{{ expert.addtime }}</td>
-    </tr>
-  </thead>
-
-</table>-->
-<br>
-<h5>工作经历 &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="新建工作经历" onclick="window.location.href='{{ expert.add_workexp_url }}'"></h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead>
-                    <tr>
-                        <th width="10%">时间</th>
-                        <th width="8%">公司/部门</th>
-                        <th width="8%">职位</th>
-                        <th width="70%">职责</th>
-                        <th width="4%"></th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for exp in workexps %}
-                    <tr class="info">
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }}</td>
-                        <td>{{ exp.get_duty }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
-
-                          <!-- 模态框（Modal） -->
- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
-    <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label  class="control-label">确定要删除吗？</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认</button>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid">
+      <div class="control-group">
+        <h5>{{ expert.ename }}&nbsp
+            <input type="button" class="btn btn-info btn-sm"  value="编辑" onclick="window.location.href='{{ expert.get_update_url }}'">
+        </h5>
     </div>
-
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% if result.status == 'success'%}
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }} - {{ exp.duty }}</td>
-                        <td> {{ exp.area }}</td>
-                        <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <tr>
+                <td>EID：{{expert.eid}}</td>
+                <td>性别：{{expert.esex}}</td>
+                <td>地区：{{expert.elocation}}</td>
+                <td>来源：
+                    {% if not expert.ecomefrom %}
+                    未知
+                    {% else %}
+                    {{ expert.ecomefrom }}
+                    {% endif %}</td>
+                <td>添加时间：{{ addtime }}</td>
+            </tr>
+            <tr>
+                <td>行业：{{expert.etrade}}</td>
+                <td>子行业：{{expert.esubtrade}}</td>
+                <td>咨询费：{{expert.efee}}</td>
+                <td>访谈次数：
+                    {% if not expert.interview_num %}
+                    0次
+                    {% else %}
+                    {{ expert.interview_num }}次
                     {% endif %}
-                    </tbody>
-                </table>
-<h5>Comments &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="新建Comment" onclick="window.location.href='{{ expert.add_comment_url }}'"></caption>
-  </h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px">
-    <caption></caption>
-    <thead>
-    <tr>
-        <th width="26%">问题</th>
-        <th width="60%">详情</th>
-        <th width="4%"></th>
-
-    </tr>
-  </thead>
-  <tbody>
-  {% for comment in comments %}
-   <tr class="info">
-
-      <td>{{ comment.eproblem }}</td>
-      <td style="white-space: pre-line">{{ comment.ecomment }}</td>
-
-       <td>
-           <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
-
-
-
-<!-- 模态框（Modal） -->
- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCommentModal">删除</button>
-    <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label  class="control-label">确定要删除吗？</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ comment.delete_comment_confirm }}'">确认</button>
-                </div>
-            </div>
-        </div>
+                </td>
+                <td>添加人/修改人：
+                    {% if not expert.eupdated_by %}
+                    未知
+                    {% else %}
+                    {{ expert.eupdated_by }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <caption>个人信息</caption>
+            <tr>
+                <td style="white-space: pre-line">
+                    背景信息：
+                    {{expert.ebackground }}
+                </td>
+            </tr>
+            <tr>
+                <td style="white-space: pre-line;">
+                    备注：
+                    {{expert.eremark}}
+                </td>
+            </tr>
+        </table>
     </div>
 
+    <div class="control-group">
+        {% if perms.experts.can_view_contact_info %}
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <caption>联系方式
+                <a style="color:steelblue" href="{{ expert.expert_contact_info_update }}">编辑</a>
+            </caption>
+            <tbody>
+            <tr style="background-color: lightsteelblue">
+                <td>电话：{{ expert.emobile }}</td>
+                <td>邮箱：{{ expert.eemail}}</td>
+                <td>微信：{{ expert.eqq }}</td>
+                <td>修改/添加人：{{ expert.eupdated_by }}</td>
+            </tr>
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
 
+    <div class="control-group">
+        <h5>工作经历 &nbsp
+            <input type="button" class="btn btn-success btn-sm"  value="新建" onclick="window.location.href='{{ expert.add_workexp_url }}'"></h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>工作经历</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="10%">时间</th>
+                <th width="15%">公司/部门</th>
+                <th width="10%">职位</th>
+                <th width="50%">职责</th>
+                <th width="11%"></th>
 
+            </tr>
+            </thead>
+            <tbody>
+            {% for exp in workexps %}
+            <tr class="info">
+                <td>{{ exp.stime }}-{{ exp.etime }}</td>
+                <td>{{ exp.company }} / {{ exp.agency }}</td>
+                <td>{{ exp.position }}</td>
+                <td>{{ exp.duty }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
 
+                    <!-- 模态框（Modal） -->
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
+                    <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
-       </td>
-  </tr>
-  {% endfor %}
-  {% if result.status == 'success'%}
-            <td> {{ c.eproblem }} </td>
-            <td style="white-space: pre-line"> {{ c.ecomment }} </td>
-
-  <td><button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ c.delete_comment_confirm }}'">确认删除</button></td>
-  {% endif %}
-  </tbody>
-</table>
-<br>
-<h5>支付方式 &nbsp&nbsp&nbsp </h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px">
-    <caption></caption>
-    <thead>
-    <tr>
-        <th width="23%">支付宝</th>
-        <th width="25%">银行账号</th>
-        <th width="25%">微信支付</t>
-        <th width="25%">备注</th>
-        <th width="2%"></th>
-    </tr>
-  </thead>
-  <tbody>
-
-   <tr class="info">
-
-      <td>{{ pay.alipay }}</td>
-      <td>{{ pay.bank }}</td>
-       <td>{{ pay.wechat }}</td>
-      <td>{{ pay.eremark }}</td>
-
-       <td>
-           <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ pay.get_payment_update }}'">编辑</button>
-       </td>
-  </tr>
-
-  </tbody>
-</table>
-
-<br>
-<h5 class="col-sm-10">参与项目</h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead>
-                    <tr>
-                        <th width="10%">项目ID-名称</th>
-                        <th width="10%">项目经理</th>
-                        <th width="15%">项目对接人</th>
-                        <th width="15%">项目发布时间</th>
-                        <th width="15%">项目截止时间</th>
-
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for project in projects %}
-                    <tr class="info">
-                        <td><a href="{{ project.get_project_detail }}">{{ project.pid }}-{{ project.pname }}</a></td>
-                        <td>{{ project.pm}}</td>
-                        <td>{{ project.person_in_charge }}</td>
-                        <td>{{ project.pcreatetime }}</td>
-                        <td>{{ project.pdeadline }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-
-<br>
-<h5 class="col-sm-10">访谈记录</h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead>
-                    <tr>
-                        <th width="10%">项目ID-名称</th>
-                        <th width="3%">状态</th>
-                        <th width="10%">开始时间</th>
-                        <th width="10%">结束时间</th>
-                        <th width="6%">访谈时长</th>
-                        <th width="6%">专家付费</th>
-                        <th width="6%">约谈人</th>
-                        <th width="6%"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for p2e in p2es %}
-                    <tr class="info">
-                        <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}-{{ p2e.pid.pname }}</td>
-                        <td>{{ p2e.status}}</td>
-                        <td>{{ p2e.itv_stime }}</td>
-                        <td>{{ p2e.itv_etime }}</td>
-                        <td>{{ p2e.itv_duration }} 分钟</td>
-                        <td>{{ p2e.e_payment }} 元</td>
-                        <td>{{ p2e.interviewer }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
-                            <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  class="control-label">确定要删除吗？</label>
                                         </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid p2e.pid.pid %}'">确认</button>
-                                        </div>
-                                    </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认</button>
                                 </div>
                             </div>
-                            {% if result == '删除失败' %}
-                                {{ result }}
-                            {% endif %}
+                        </div>
+                    </div>
 
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% if result.status == 'success'%}
-                        <td>{{ exp.stime }} - {{ exp.etime }}</td>
-                        <td>{{ exp.company }} - {{ exp.agency }}</td>
-                        <td>{{ exp.position }} - {{ exp.duty }}</td>
-                        <td> {{ exp.area }}</td>
-                        <td>            <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='{{ exp.delete_workexp_confirm }}'">确认删除</button></td>
+                </td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="control-group">
+        <h5>Comments &nbsp
+            <input type="button" class="btn btn-success btn-sm"  value="新建" onclick="window.location.href='{{ expert.add_comment_url }}'"></caption>
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px">
+            <caption>评论</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="26%">问题</th>
+                <th width="64%">详情</th>
+                <th width="11%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+            <tr>
+
+                <td>{{ comment.eproblem }}</td>
+                <td style="white-space: pre-line">{{ comment.ecomment }}</td>
+
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
+                    <!-- 模态框（Modal） -->
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCommentModal">删除</button>
+                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  class="control-label">确定要删除吗？</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ comment.delete_comment_confirm }}'">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="control-group">
+        <h5>支付方式</h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px">
+            <caption>支付方式</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="23%">支付宝</th>
+                <th width="25%">银行账号</th>
+                <th width="25%">微信支付</th>
+                <th width="25%">备注</th>
+                <th width="2%"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>{{ pay.alipay }}</td>
+                <td>{{ pay.bank }}</td>
+                <td>{{ pay.wechat }}</td>
+                <td>{{ pay.remark }}</td>
+
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ pay.get_payment_update }}'">编辑</button>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="control-group">
+        <h5>参与项目</h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>参与项目</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="10%">项目ID-名称</th>
+                <th width="10%">项目经理</th>
+                <th width="15%">项目对接人</th>
+                <th width="15%">项目发布时间</th>
+                <th width="15%">项目截止时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+            <tr class="info">
+                <td><a href="{{ project.get_project_detail }}">{{ project.pid }}-{{ project.pname }}</a></td>
+                <td>{{ project.pm}}</td>
+                <td>{{ project.person_in_charge }}</td>
+                <td>{{ project.pcreatetime }}</td>
+                <td>{{ project.pdeadline }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="control-group">
+        <h5>访谈记录</h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>访谈记录</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="10%">项目ID-名称</th>
+                <th width="3%">状态</th>
+                <th width="10%">访谈日期</th>
+                <th width="10%">开始时间</th>
+                <th width="10%">结束时间</th>
+                <th width="6%">访谈时长</th>
+                <th width="6%">计费时长</th>
+                <th width="5%">约谈人</th>
+                <th width="11%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p2e in p2es %}
+            <tr class="info">
+                {% if p2e.interviewer == user.username or user.username == 'admin' or perms.clients.can_view_business_contact %}
+                <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}-{{ p2e.pid.pname }}</td>
+                <td>{{ p2e.status}}</td>
+                <td>{{ p2e.date }}</td>
+                <td>{{ p2e.itv_stime }}</td>
+                <td>{{ p2e.itv_etime }}</td>
+                <td>{{ p2e.itv_duration }} 分钟</td>
+                <td>{{ p2e.itv_paid_duration }} 分钟</td>
+                <td>{{ p2e.interviewer }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
+                    <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid p2e.pid.pid %}'">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if result == '删除失败' %}
+                    {{ result }}
                     {% endif %}
-                    </tbody>
-                </table>
 
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
 
-
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock content %}

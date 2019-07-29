@@ -1,40 +1,33 @@
 {% extends "experts/base.html" %}
 {% block content %}
-    <br>
-   <h1> 更新{{ expert.ename }}-Comment</h1>
-    {% if result.status == 'success' %}
-        <p style="align-content: center;color: green;font-size: medium">
-            <!--<input type="button" class="btn btn-success" value="修改成功，返回专家信息" onclick="window.location.href='{% url 'expertinfolist' %}'"></a>-->
-            <input type="button" class="btn btn-success btn-sm"  value="修改成功,返回评论列表" onclick="location.href='{% url 'comment_detail' expert.eid expert.ename %}'">
-        </p>
-    {% endif %}
-    <br>
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>更新{{expert.ename}}——Comment</h5>
+    </div>
+    <div class="control-group" align="left">
+        <form action="." class="form-horizontal" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="eproblem" class="col-2 col-form-label">问题：</label>
+                <div class="col-10">
+                    <textarea id="eproblem" name='eproblem' class="form-control" rows="3" required>{{ comment.eproblem }}</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ecomment" class="col-2 col-form-label">详情：</label>
+                <div class="col-10">
+                    <textarea id="ecomment" name='ecomment' class="form-control" rows="5" required>{{ comment.ecomment }}</textarea>
+                </div>
+            </div>
 
-    <form action="{{ comment.get_comment_update_url }}" method="post" name="comment_detail_update">
-        {% csrf_token %}
-        {% for field in form %}
-                {% if field.label == '问题' %}
-                    <div class="form-group">
-                        <label>{{ field.label }}</label>
-                        <div class="col-sm-10">
-                            <textarea name='eproblem' class="form-control" rows="3">{{ field.value }}</textarea>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="form-group">
-                        <label>{{ field.label }}</label>
-                        <div class="col-sm-10">
-                            <textarea name='ecomment' class="form-control" rows="5">{{ field.value }}</textarea>
-                        </div>
-                    </div>
-                {% endif %}
-        {% endfor %}
 
-        <div class="pull-right col-sm-pull-11">
-                             <button type="submit" class="btn btn-success">更新</button>
-                 <button type="reset" class="btn btn-warning">重置</button>
-        </div>
-    </form>
-
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock content %}

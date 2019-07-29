@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{% static 'experts/main.css' %}">
-
+</head>
 <body>
       <header class="site-header">
-       <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="height: 50px">
-        <a class="navbar-brand" href="{% url 'home' %}">LeapTech</a>
+       <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="height: 43px">
+        <a class="navbar-brand" href="{% url 'home' %}"><strong>LeapTech</strong></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -31,8 +31,8 @@
                 <a class="dropdown-item" href="{% url 'updateexpert' %}">更新专家</a>
             </div>
         </li>
-        <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">项目</a>
+        <li class="nav-item dropdown active" style="background-color: white;height: 42px">
+            <a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bolder;color: darkslategray">项目</a>
             <div class="dropdown-menu" aria-labelledby="dropdown02">
                 <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
                 <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
@@ -52,7 +52,7 @@
     </ul>
     <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
         {% csrf_token %}
-      <input style="height: 35px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
+      <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
     </form>
       {% endif %}
       <ul>
@@ -68,7 +68,7 @@
        </ul>
   </div>
 </nav>
-      </header>
+      </header><br>
 <!--</head>
 <body>
  <header class="site-header">

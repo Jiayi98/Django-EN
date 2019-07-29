@@ -53,19 +53,19 @@ class ExpertInfoFormUpdateDB(forms.ModelForm):
             field.widget.attrs.update({"class":"form-control"})
 
 class ContactInfoFormUpdateDB(forms.ModelForm):
-    ename = forms.CharField(label='姓名',max_length=50, required=True)
+    #ename = forms.CharField(label='姓名',max_length=50, required=True)
 
-    emobile = forms.CharField(label='电话(多个电话请用分号隔开)',max_length=50, required=False)
+    emobile = forms.CharField(label='电话',max_length=50, required=False)
     eemail = forms.CharField(label='邮箱',max_length=80, required=False)
     eqq = forms.CharField(label='微信',max_length=50, required=False)
-    eupdated_by = forms.CharField(label='*修改员工姓名', max_length=50, required=True)
+    eupdated_by = forms.CharField(label='*修改人', max_length=50, required=True)
     #admin_id = forms.IntegerField(required=False)
     #addtime = forms.DateTimeField(initial=datetime.now())
 
     class Meta:
         model = ExpertInfo
         #fields = ('ename',)
-        fields = ('ename','emobile','eemail','eqq','eupdated_by')
+        fields = ('emobile','eemail','eqq','eupdated_by')
 
     def __init__(self, *args, **kwargs):
         super(ContactInfoFormUpdateDB, self).__init__(*args, **kwargs)
@@ -98,11 +98,10 @@ class WorkexpFormUpdateDB(forms.ModelForm):
     position = forms.CharField(label='职位',max_length=50, required=False)
     duty = forms.CharField(label='职责',max_length=50, required=False)
     area = forms.CharField(label='领域',max_length=50, required=False)
-    #istonow = forms.IntegerField(label='结束时间',required=False)
 
     class Meta:
         model = WorkExp
-        fields = ('stime','etime','company','agency','position','duty','area')
+        fields = ('company','agency','position','area','stime','etime','duty')
 
     def __init__(self, *args, **kwargs):
         super(WorkexpFormUpdateDB, self).__init__(*args, **kwargs)

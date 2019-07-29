@@ -1,32 +1,31 @@
 {% extends "experts/base.html" %}
-
-
 {% block content %}
-    <br>
-    <h3>搜索结果</h3>
-    <!--<input type="button" class="btn btn-info btn-sm"  value="返回专家列表" onclick="location.href='/expertinfolist/'">
-    <br><br>-->
-    <a class="col-sm-12">共{{ num_of_result }}条结果</a>
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>搜索结果</h5>
+    </div>
+    <a>共{{ num_of_result }}条结果</a>&nbsp
 
     {% if error_msg %}
-        <p>{{ error_msg }}</p>
+    <p>{{ error_msg }}</p>
     {% endif %}
-
-    <table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="word-break:break-all" aline=center>
-	    <caption></caption>
-        <thead>
-            <tr>
+    <div class="control-group">
+    <table class="table table-hover" border="1" align=center border="0" style="font-size:11px;word-break: break-all;border-color: lightgray" aline=center>
+            <caption></caption>
+   <thead style="background-color: whitesmoke">
+      <tr align=center>
+                <th width="6%">ID</th>
                 <th width="6%">姓名</th>
                 <th width="8%">行业</th>
                 <th width="8%">公司</th>
                 <th width="8%">职位</th>
                 <th width="70%">背景</th>
-
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             {% for expert in expert_list %}
             <tr>
+                <td style="font-size:11px">{{ expert.eid }}</td>
                 <td style="font-size:11px"><a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a></td>
                 <td style="font-size:11px">{{ expert.etrade }}</td>
                 <td style="font-size:11px">{{ expert.get_company }}</td>
@@ -34,150 +33,14 @@
                 <td style="font-size:11px">{{ expert.ebackground }}</td>
             </tr>
             {% empty %}
-                <div class="no-post">
+            <div class="no-post">
                 <td>没有搜索到符合条件的专家</td>
+            </div>
             {% endfor %}
 
-        </tbody>
-    </table>
-<!--<div class="panel-group" id="accordion">
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-light">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a style="color: #333333" data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseOne">
-					专家
-				</a>
-			</h4>
-		</div>
-		<div id="collapseOne" class="panel-collapse collapse in">
-			<div class="panel-body">
-				<table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="word-break:break-all" aline=center>
-	    <caption></caption>
-        <thead>
-            <tr>
-                <th width="6%">姓名</th>
-                <th width="8%">行业</th>
-                <th width="8%">公司</th>
-                <th width="8%">职位</th>
-                <th width="70%">背景</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for expert in expert_list %}
-            <tr>
-                <td style="font-size:11px"><a href="{{ expert.get_absolute_url }}"> {{ expert.ename }}</a></td>
-                <td style="font-size:11px">{{ expert.etrade }}</td>
-                <td style="font-size:11px">{{ expert.get_company }}</td>
-                <td style="font-size:11px">{{ expert.get_position }}</td>
-                <td style="font-size:11px">{{ expert.ebackground }}</td>
-            </tr>
-            {% empty %}
-                <div class="no-post">
-                <td>没有搜索到符合条件的专家</td>
-            {% endfor %}
-
-        </tbody>
-    </table>
-			</div>
-		</div>
-	</div>
-        </li>
-        <li class="list-group-item list-group-item-light">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a style="color: #333333" data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseTwo">
-					项目
-				</a>
-			</h4>
-        </div>
-		<div id="collapseTwo" class="panel-collapse collapse">
-			<div class="panel-body">
-				<table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size:11px;word-break:break-all" aline=center>
-	            <caption></caption>
-                <thead>
-                <tr>
-                    <th width="20%">项目</th>
-                    <th width="20%">客户</th>
-                    <th width="8%">项目负责人</th>
-                    <th width="8%">我方对接人</th>
-                    <th width="44%">截止时间</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                    {% for project in project_list %}
-                    <tr>
-                        <td><a href="{{ project.get_project_detail }}"> {{ project.pname }}</a></td>
-                        <td>{{ project.cname }}</td>
-                        <td>{{ project.pm }}</td>
-                        <td>{{ project.person_in_charge }}</td>
-                        <td>{{ project.pdeadline }}</td>
-                    </tr>
-
-                    {% empty %}
-                        <div class="no-post">
-                        <td>没有搜索到符合条件的项目</td>
-                    {% endfor %}
-
-                </tbody>
-                </table>
-			</div>
-		</div>
-	</div>
-        </li>
-        <li class="list-group-item list-group-item-light">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a style="color: #333333" data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseThree">
-					客户
-				</a>
-			</h4>
-		</div>
-		<div id="collapseThree" class="panel-collapse collapse">
-			<div class="panel-body">
-				<table class="table table-striped" align=center width=778 border=1 bordercolordark=white bordercolorlight=black cellpadding=3 cellspacing=0 style="font-size: 11px;word-break:break-all" aline=center>
-	            <caption></caption>
-                <thead>
-                <tr>
-                    <th width="20%">客户</th>
-                    <th width="10%">客户类型</th>
-                    <th width="10%">业务联系人</th>
-                    <th width="10%">财务联系人</th>
-                    <th width="20%">收费政策</th>
-                    <th width="30%">客户信息</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                    {% for client in client_list %}
-                    <tr>
-                        <td><a href="{{ client.get_client_detail }}"> {{ client.cname }}</a></td>
-                        <td>{{ client.ctype }}</td>
-                        <td>{{ client.bc_name }}</td>
-                        <td>{{ client.fc_name }}</td>
-                        <td>{{ client.cpolicy }}</td>
-                        <td>{{ client.cinfo }}</td>
-                    </tr>
-
-                    {% empty %}
-                        <div class="no-post">
-                        <td>没有搜索到符合条件的客户</td>
-                    {% endfor %}
-
-                </tbody>
-                </table>
-			</div>
-		</div>
-	</div>
-        </li>
+            </tbody>
+        </table>
+    </div>
 </div>
--->
+
 {% endblock content %}

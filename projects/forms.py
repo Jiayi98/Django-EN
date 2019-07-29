@@ -23,17 +23,13 @@ class ProjectForm(forms.ModelForm):
     pname = forms.CharField(max_length=50,label='项目名称',required=False)
     cid = forms.IntegerField(label='客户ID',required=False)
     pm = forms.CharField(max_length=50,required=False,label='客户项目经理')
-    pm_mobile = forms.CharField(max_length=50,label='项目经理电话',required=False)
-    pm_wechat = forms.CharField(max_length=50, label='项目经理微信', required=False)
-    pm_email = forms.CharField(max_length=50,label='项目经理邮箱',required=False)
-    pm_gender = forms.CharField(max_length=50, label='项目经理性别(M/F)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
     pdetail = forms.CharField(max_length=250, label='详情',required=False)
     person_in_charge = forms.CharField(max_length=50,required=False,label='我方项目对接人')
     class Meta:
         model = Project
-        fields = ('pname','cid','pm','pm_mobile','pm_wechat','pm_email','pm_gender','pdeadline','premark','pdetail','person_in_charge')
+        fields = ('pname','cid','pm','pdeadline','premark','pdetail','person_in_charge')
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -45,10 +41,6 @@ class ProjectUpdateForm(forms.ModelForm):
     # 该表单用于更新项目信息
     pname = forms.CharField(max_length=50, label='项目名称', required=False)
     pm = forms.CharField(max_length=50, required=False, label='客户项目经理')
-    #pm_mobile = forms.CharField(max_length=50, label='项目经理电话', required=False)
-    #pm_wechat = forms.CharField(max_length=50, label='项目经理微信', required=False)
-    #pm_email = forms.CharField(max_length=50, label='项目经理邮箱', required=False)
-    #pm_gender = forms.CharField(max_length=50, label='项目经理性别(M/F)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
     pdetail = forms.CharField(max_length=250, label='详情', required=False)
@@ -57,7 +49,6 @@ class ProjectUpdateForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ('pname','pm','pdeadline','premark','pdetail','person_in_charge')
-        #fields = ('pname','pm','pm_mobile','pm_wechat','pm_email','pm_gender','pdeadline','premark','pdetail','person_in_charge')
 
     def __init__(self, *args, **kwargs):
         super(ProjectUpdateForm, self).__init__(*args, **kwargs)
@@ -65,26 +56,12 @@ class ProjectUpdateForm(forms.ModelForm):
             field = self.base_fields[field_name]
             field.widget.attrs.update({"class": "form-control"})
 
-class PMContactInfoUpdateDB(forms.ModelForm):
-    # 该表单用于更新项目经理联系方式
-    pm_mobile = forms.CharField(max_length=50, label='项目经理电话', required=False)
-    pm_wechat = forms.CharField(max_length=50, label='项目经理微信', required=False)
-    pm_email = forms.CharField(max_length=50, label='项目经理邮箱', required=False)
 
-    class Meta:
-        model = Project
-        fields = ('pm_mobile','pm_wechat','pm_email')
-
-    def __init__(self, *args, **kwargs):
-        super(PMContactInfoUpdateDB, self).__init__(*args, **kwargs)
-        for field_name in self.base_fields:
-            field = self.base_fields[field_name]
-            field.widget.attrs.update({"class": "form-control"})
 
 class P2EForm(forms.ModelForm):
     # 该表单用于添加访谈时查询专家
     eid = forms.IntegerField(label='专家ID',required=True)
-    ename = forms.CharField(max_length=150, label='专家姓名',required=False)
+    ename = forms.CharField(max_length=50, label='专家姓名',required=False)
 
 
     class Meta:
@@ -101,20 +78,18 @@ class P2EForm(forms.ModelForm):
 class Project2ExpertForm(forms.ModelForm):
     # 该表单用于添加/更新p_e_relationship表中的单条访谈记录
     status = forms.IntegerField(label='访谈状态',required=False)
-    # datefiled还是charfield？？？
-    itv_stime = forms.CharField(label='访谈开始时间(YYYY-MM-DD Hrs)', required=False)
-    itv_etime = forms.CharField(label='访谈结束时间(YYYY-MM-DD Hrs)', required=False)
+    itv_date = forms.CharField(label='访谈日期(YYYY-MM-DD)', required=False)
+    itv_stime = forms.CharField(label='开始时间(hh-mm)', required=False)
+    itv_etime = forms.CharField(label='结束时间(hh-mm)', required=False)
     itv_duration = forms.IntegerField(label='访谈时长(min)',required=False)
-
+    itv_paid_duration = forms.IntegerField(label='计费时长(min)',required=False)
     recorder = forms.CharField(label='录入人',required=False)
     interviewer = forms.CharField(label='约谈人',required=False)
-    e_payment = forms.FloatField(label='专家付费',required=False)
-    c_payment = forms.FloatField(label='客户收费',required=False)
     fee_index = forms.FloatField(label='咨费系数',required=False)
 
     class Meta:
         model = Project2Expert
-        fields = ('status','itv_stime', 'itv_etime', 'itv_duration', 'e_payment', 'c_payment', 'fee_index', 'interviewer', 'recorder')
+        fields = ('status','itv_date','itv_stime', 'itv_etime', 'itv_duration','itv_paid_duration', 'fee_index', 'interviewer', 'recorder')
 
     def __init__(self, *args, **kwargs):
         super(Project2ExpertForm, self).__init__(*args, **kwargs)

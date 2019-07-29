@@ -1,32 +1,61 @@
 {% extends "experts/base.html" %}
-    {% block content %}
-        <br>
-        <input type="button" class="btn btn-info"  value="返回上一步" onclick="javascript:history.go(-1);">
-        <br><br>
-        <h1>增加工作经历</h1>
-        <br>
+{% block content %}
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>添加工作经历</h5>
+    </div>
+    <div class="control-group" align="left">
         <form action="." class="form-horizontal" method="post">
             {% csrf_token %}
-            {% for field in formW %}
-                {% if field.label == '职责' %}
-                    <label>{{ field.label }}</label>
-                    <div class="col-sm-10">
-                        <textarea name='duty' class="form-control" rows="3"></textarea>
-                    </div>
-                {% else %}
-                    <div class="form-group">
-                        <label>{{ field.label }}</label>
-                        <div class="col-sm-10">
-                            {{ field }}
-                        </div>
-                    </div>
-                {% endif %}
-            <br>
-            {% endfor %}
-            <div class="pull-right col-sm-pull-11">
-                                <button type="submit" class="btn btn-success">添加</button>
-                <button type="reset" class="btn btn-warning">重置</button>
+            <div class="form-group row">
+                <label for="company" class="col-2 col-form-label">*公司：</label>
+                <div class="col-10">
+                    <input type="text" id="company" name='company' class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="agency" class="col-2 col-form-label">部门：</label>
+                <div class="col-10">
+                    <input type="text" id="agency" name='agency' class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="position" class="col-2 col-form-label">职位：</label>
+                <div class="col-10">
+                    <input type="text" id="position" name='position' class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="stime" class="col-2 col-form-label">*开始时间：</label>
+                <div class="col-10">
+                    <input type="text" id="stime" name='stime' class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="etime" class="col-2 col-form-label">结束时间：</label>
+                <div class="col-10">
+                    <input type="text" id="etime" name='etime' class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="area" class="col-2 col-form-label">领域：</label>
+                <div class="col-10">
+                    <input type="text" id="area" name='area' class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="duty" class="col-2 col-form-label">职责：</label>
+                <div class="col-10">
+                    <textarea id="duty" name='duty' class="form-control" rows="5"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
             </div>
         </form>
-
-    {% endblock content %}
+    </div>
+</div>
+{% endblock content %}
