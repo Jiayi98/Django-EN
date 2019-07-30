@@ -1,32 +1,64 @@
 {% extends "clients/client_base.html" %}
-    {% block content %}
-        <br>
-        <h3 class='col-sm-12'>财务联系人</h3>
-        <br>
-        {% if result.status == 'error' %}
-        <p class='col-sm-12' style="align-content: center;color: red;font-size: medium">
-           操作失败，请重新操作！
-        </p>
+{% block content %}
+
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>财务联系人</h5>
+    </div>
+    {% if result.status == 'error' %}
+    <div class="alert alert-danger" role="alert">
+        操作失败，请重新操作！请确认必填项！
+    </div>
     {% endif %}
-        <form class='col-sm-12' method="post">
+    <div class="control-group">
+        <form method="post">
             {% csrf_token %}
-            <br>
-            {% for field in form %}
-                <div class="form-group">
-                        <label class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            {{ field }}
-                        </div>
+
+            <div class="form-group row">
+                <label for="fc_name" class="col-1 col-form-label">*姓名：</label>
+                <div class="col-3">
+                    <input type="text" id="fc_name" name='fc_name' class="form-control" value="{{ fc.fc_name }}" required>
                 </div>
-            {% endfor %}
-            <div class="pull-right col-sm-10">
-                 <button type="submit" class="btn btn-success">提交</button>
-                <button type="reset" class="btn btn-warning">重置</button>
+                <label for="fc_gender" class="col-1 col-form-label">性别：</label>
+                <div class="col-3">
+                    <select id="fc_gender" name='fc_gender' class="form-control" required>
+                        <option selected>请选择</option>
+                        <option>M</option>
+                        <option>F</option>
+                    </select>
+                </div>
+                <label for="fc_position" class="col-1 col-form-label">职位：</label>
+                <div class="col-3">
+                    <input type="text" id="fc_position" name='fc_position' class="form-control" value="{{ fc.fc_position }}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="fc_mobile" class="col-1 col-form-label">电话：</label>
+                <div class="col-3">
+                    <input type="text" id="fc_mobile" name='fc_mobile' class="form-control" value="{{ fc.fc_mobile }}">
+                </div>
+                <label for="fc_wechat" class="col-1 col-form-label">微信：</label>
+                <div class="col-3">
+                    <input type="text" id="fc_wechat" name='fc_wechat' class="form-control" value="{{ fc.fc_wechat }}">
+                </div>
+                <label for="fc_email" class="col-1 col-form-label">邮箱：</label>
+                <div class="col-3">
+                    <input type="text" id="fc_email" name='fc_email' class="form-control" value="{{ fc.fc_email }}">
+                </div>
             </div>
 
-            <!--{{ form.as_p }}-->
-            <!--<input type="reset">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="add">-->
-        </form>
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            </div>
 
-    {% endblock content %}
+
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+
+
 

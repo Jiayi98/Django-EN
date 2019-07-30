@@ -22,13 +22,14 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown02">
                         <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
                         <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
-                        <a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>
+                        <!--<a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>-->
                     </div>
                 </li>
                 <li class="nav-item dropdown active" style="background-color: white;height: 42px">
                     <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bolder;color: darkslategray">客户</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown03">
                         <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
+                        <a class="dropdown-item" href="{% url 'advanced_client_form' %}">查找客户</a>
                         <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
                     </div>
                 </li>
@@ -36,10 +37,10 @@
                     <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
+            <!--<form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
                 {% csrf_token %}
                 <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
-            </form>
+            </form>-->
             {% endif %}
             <ul>
                 {% if user.is_authenticated %}
@@ -58,18 +59,17 @@
 
 <div align="center">
 <h5>客户列表</h5>
-<table class="table table-hover" align=center border="1" style="font-size:11px;table-layout:fixed;" aline=center>
+<table class="table table-hover" align=center border="1" style="font-size:11px;table-layout: fixed">
 	<caption>客户列表</caption>
    <thead style="background-color: whitesmoke">
       <tr align=center>
           <th width="10%">ID</th>
-          <th width="20%">客户</th>
+          <th width="20%">客户名称</th>
           <th width="10%">客户类型</th>
-          <th width="10%">业务</th>
-          <th width="10%">财务</th>
-          <th width="20%">收费政策</th>
+          <th width="10%">业务联系人</th>
+          <th width="10%">财务联系人</th>
           <th width="30%">客户信息</th>
-
+          <th width="20%">收费政策</th>
       </tr>
    </thead>
    <tbody>
@@ -80,8 +80,8 @@
           <td>{{ client.ctype }}</td>
           <td>{{ client.bc_name }}</td>
           <td>{{ client.fc_name }}</td>
-          <td style="overflow:scroll;white-space:nowrap;">{{ client.cpolicy }}</td>
           <td style="overflow:scroll;white-space:nowrap;">{{ client.cinfo }}</td>
+          <td style="overflow:scroll;white-space:nowrap;">{{ client.cpolicy }}</td>
       </tr>
 
     {% endfor %}

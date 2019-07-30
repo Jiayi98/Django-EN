@@ -10,7 +10,7 @@ class Project(models.Model):
     pname = models.CharField(max_length=150, blank=True, null=True, verbose_name='项目名称')
     cid = models.ForeignKey(Client, on_delete=models.CASCADE, to_field='cid')
     pm = models.CharField(max_length=50, blank=True, null=True, verbose_name='项目经理')
-    pcreatetime = models.DateField(auto_now_add=True)
+    pcreatetime = models.CharField(max_length=50, blank=True, null=True)
     pdeadline = models.CharField(max_length=50, blank=True, null=True)
     premark = models.TextField(blank=True,null=True)
     pdetail = models.TextField(blank=True,null=True)

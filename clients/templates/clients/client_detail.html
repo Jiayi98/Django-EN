@@ -2,61 +2,85 @@
 
 
 {% block content %}
-<br>
-{% if perms.clients.can_delete_client %}
-    <h3 class="col-sm-10">{{ client.cname }}&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
-        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClient">删除</button>
-        <div class="modal fade" id="deleteClient" tabindex="-1" role="dialog" aria-labelledby="deleteClientLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+<div class="container-fluid">
+    <div class="control-group">
+        {% if perms.clients.can_delete_client %}
+        <h5>{{ client.cname }}&nbsp
+            <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClient">删除</button>
+            <div class="modal fade" id="deleteClient" tabindex="-1" role="dialog" aria-labelledby="deleteClientLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label  style="color: red" class="control-label">确定要删除吗？</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                        <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ client.delete_client }}'">确认</button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ client.delete_client }}'">确认</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </h3>
-    {% if result == '删除失败' %}
-        {{ result }}
-    {% endif %}
-{% else %}
-    <h3>{{ client.cname }}&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
 
-    </h3>
-{% endif %}
-<br>
-<div class="col-sm-12" style="position: center">
-    <p>
-        <label style="font-weight: 700"> 客户ID: </label>{{ client.cid}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700"> 客户名称: </label>{{ client.cname}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">主业务联系人: </label>{{client.bc_name}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">主财务联系人: </label>{{client.fc_name}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">客户类型: </label>{{client.ctype}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">咨费: </label>{{ client.cfee }} 元
-    </p>
-    <p style="white-space: pre-line">
-        <label style="font-weight: 700">收费政策: </label>{{ client.cpolicy }}
-    </p>
-    <p style="white-space: pre-line">
-        <label style="font-weight: 700">客户信息:</label>{{ client.cinfo }}
-    </p>
-    <p style="white-space: pre-line">
-        <label style="font-weight: 700">备注:</label>{{ client.cremark }}
-    </p>
+            {% if result == '删除失败' %}
+            <div class="alert alert-danger" role="alert">
+                {{ result }}
+            </div>
+            {% endif %}
+        </h5>
+        {% else %}
+        <h5>{{ client.cname }}&nbsp
+            <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
+        </h5>
+        {% endif %}
+    </div>
+
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <tr>
+                <td>客户ID：{{ client.cid}}</td>
+                <td>客户名称：{{ client.cname}}</td>
+                <td>客户类型：{{client.ctype}}</td>
+
+            </tr>
+
+            <tr>
+                <td>主业务联系人：{{client.bc_name}}</td>
+                <td>主财务联系人：{{client.fc_name}}</td>
+                <td>咨费: </label>{{ client.cfee }} 元</td>
+
+            </tr>
+        </table>
+    </div>
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <caption>客户信息</caption>
+            <tr>
+                <td style="white-space: pre-line">收费政策：
+                    {{ client.cpolicy }}
+                </td>
+            </tr>
+            <tr>
+                <td style="white-space: pre-line">客户信息：
+                    {{ client.cinfo }}
+                </td>
+            </tr>
+            <tr>
+                <td style="white-space: pre-line">备注：
+                    {{  client.cremark }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <!--
     {% for p2e in p2es %}
     <p>
@@ -64,163 +88,171 @@
 
     </p>
    {% endfor %}-->
-<br>
-</div>
-<h5 class="col-sm-12">项目列表 &nbsp&nbsp&nbsp<input type="button" class="btn btn-success btn-sm"  value="添加项目" onclick="window.location.href='{{ client.client_add_project }}'"></h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead class="thead-inverse">
-                    <tr>
-                        <th width="10%">项目ID</th>
-                        <th width="20%">项目名称</th>
-                        <th width="10%">项目经理</th>
-                        <th width="15%">项目发布时间</th>
-                        <th width="15%">项目截止时间</th>
-                        <th width="20%"></th>
+    <div class="control-group">
+        <h5>项目列表 &nbsp
+            <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_project }}'">
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>项目列表</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="10%">项目ID</th>
+                <th width="20%">项目名称</th>
+                <th width="10%">客户对接人</th>
+                <th width="10%">项目经理</th>
+                <th width="15%">项目发布时间</th>
+                <th width="15%">项目截止时间</th>
+                <th width="6%"></th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for project in projects %}
-                    <tr class="info">
-                        <td><a href="{{ project.get_project_detail }}">{{ project.pid }}</a></td>
-                        <td>{{ project.pname }}</td>
-                        <td>{{ project.pm}}</td>
-                        <td>{{ project.pcreatetime }}</td>
-                        <td>{{ project.pdeadline }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ project.update_project_detail }}'">修改</button>
+            </tr>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.pid }}</td>
+                <td><a href="{{ project.get_project_detail }}">{{ project.pname }}</a></td>
+                <td>{{ project.pm}}</td>
+                <td>{{ project.person_in_charge }}</td>
+                <td>{{ project.pcreatetime }}</td>
+                <td>{{ project.pdeadline }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ project.update_project_detail }}'">修改</button>
 
-                        </td>
-                    </tr>
-                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
 
-                    </tbody>
-</table>
-<br>
+            </tbody>
+        </table>
+    </div>
 
+    <div class="control-group">
+        <h5>业务联系人 &nbsp
+            {% if perms.clients.can_view_business_contact %}
+            <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_bc }}'">
+            {% endif %}
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>业务联系人列表</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="10%">姓名</th>
+                <th width="5%">性别</th>
+                <th width="15%">电话</th>
+                <th width="15%">微信</th>
+                <th width="15%">邮箱</th>
+                <th width="10%">职位</th>
+                <th width="12%"></th>
 
-<h5 class="col-sm-12">业务联系人列表 &nbsp&nbsp&nbsp
-    {% if perms.clients.can_view_business_contact %}
-    <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_bc }}'">
-    {% endif %}
-</h5>
-<table class="table" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead class="thead-inverse">
-                    <tr>
-                       <th width="10%">姓名</th>
-                        <th width="5%">性别</th>
-                        <th width="10%">电话</th>
-                        <th width="15%">邮箱</th>
-                        <th width="10%">职位</th>
-                        <th width="20%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for bc in bc_list %}
+            <tr class="info">
+                <td>{{ bc.bc_name }}</td>
+                <td>{{ bc.bc_gender }}</td>
+                {% if perms.clients.can_view_business_contact %}
+                <td>{{ bc.bc_mobile}}</td>
+                <td>{{ fc.fc_wechat}}</td>
+                <td>{{ bc.bc_email }}</td>
+                <td>{{ bc.bc_position }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{% url 'bc_detail_update' bc.bc_id client.cid %}'">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClientBC">删除</button>
+                    <div class="modal fade" id="deleteClientBC" tabindex="-1" role="dialog" aria-labelledby="deleteClientBCLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for bc in bc_list %}
-                    <tr class="info">
-                        <td>{{ bc.bc_name }}</td>
-                        <td>{{ bc.bc_gender }}</td>
-                        {% if perms.clients.can_view_business_contact %}
-                        <td>{{ bc.bc_mobile}}</td>
-                        <td>{{ bc.bc_email }}</td>
-                        <td>{{ bc.bc_position }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{% url 'bc_detail_update' bc.bc_id client.cid %}'">修改</button>
-                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClientBC">删除</button>
-                            <div class="modal fade" id="deleteClientBC" tabindex="-1" role="dialog" aria-labelledby="deleteClientBCLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label style="color: red;font-weight: 700" class="control-label">确定要删除吗？</label>
                                         </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label style="color: red;font-weight: 700" class="control-label">确定要删除吗？</label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_client_bc' bc.bc_id client.cid %}'">确认</button>
-                                        </div>
-                                    </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_client_bc' bc.bc_id client.cid %}'">确认</button>
                                 </div>
                             </div>
-                            {% if result == '删除失败' %}
-                                {{ result }}
-                            {% endif %}
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
+                        </div>
+                    </div>
+                    {% if result == '删除失败' %}
+                    {{ result }}
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
 
-                    </tbody>
-                </table>
-<br>
-<h5 class="col-sm-12">财务联系人列表 &nbsp&nbsp&nbsp
-    {% if perms.clients.can_view_business_contact %}
-    <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_fc }}'">
-    {% endif %}
-</h5>
-<table class="table thead-inverse table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead>
-                    <tr>
-                        <th width="10%">姓名</th>
-                        <th width="5%">性别</th>
-                        <th width="10%">电话</th>
-                        <th width="15%">邮箱</th>
-                        <th width="10%">职位</th>
-                        <th width="20%"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for fc in fc_list %}
-                    <tr class="info">
-                        <td>{{ fc.fc_name }}</td>
-                        {% if perms.clients.can_view_financial_contact %}
-                        <td>{{ fc.fc_gender }}</td>
-                        <td>{{ fc.fc_mobile}}</td>
-                        <td>{{ fc.fc_email }}</td>
-                        <td>{{ fc.fc_position }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{% url 'fc_detail_update' fc.fc_id client.cid %}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClientFC">删除</button>
-                            <div class="modal fade" id="deleteClientFC" tabindex="-1" role="dialog" aria-labelledby="deleteClientFCLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </tbody>
+        </table>
+    </div>
+    <div class="control-group">
+        <h5>财务联系人 &nbsp
+            {% if perms.clients.can_view_business_contact %}
+            <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_fc }}'">
+            {% endif %}
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>财务联系人列表</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                 <th width="10%">姓名</th>
+                <th width="5%">性别</th>
+                <th width="15%">电话</th>
+                <th width="15%">微信</th>
+                <th width="15%">邮箱</th>
+                <th width="10%">职位</th>
+                <th width="12%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fc in fc_list %}
+            <tr class="info">
+                <td>{{ fc.fc_name }}</td>
+                <td>{{ fc.fc_gender }}</td>
+                {% if perms.clients.can_view_financial_contact %}
+                <td>{{ fc.fc_mobile}}</td>
+                <td>{{ fc.fc_wechat}}</td>
+                <td>{{ fc.fc_email }}</td>
+                <td>{{ fc.fc_position }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{% url 'fc_detail_update' fc.fc_id client.cid %}'">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClientFC">删除</button>
+                    <div class="modal fade" id="deleteClientFC" tabindex="-1" role="dialog" aria-labelledby="deleteClientFCLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label style="color: red;font-weight: 700" class="control-label">确定要删除吗？</label>
                                         </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label style="color: red;font-weight: 700" class="control-label">确定要删除吗？</label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_client_fc' fc.fc_id client.cid %}'">确认</button>
-                                        </div>
-                                    </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_client_fc' fc.fc_id client.cid %}'">确认</button>
                                 </div>
                             </div>
-                            {% if result == '删除失败' %}
-                                {{ result }}
-                            {% endif %}
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-</table>
+                        </div>
+                    </div>
+                    {% if result == '删除失败' %}
+                    {{ result }}
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
 
-{% endblock content %}
+        {% endblock content %}

@@ -58,12 +58,12 @@ class ClientUpdateForm(forms.ModelForm):
 
 class BCForm(forms.ModelForm):
     # 该表单用于添加/更新客户业务联系人信息
-    bc_name = forms.CharField(label='业务联系人姓名',max_length=50, required=False)
-    bc_gender = forms.CharField(label='业务联系人性别(M/F)',max_length=10, required=False)
-    bc_mobile = forms.CharField(label='业务联系人电话',max_length=50, required=False)
-    bc_wechat = forms.CharField(label='业务联系人微信', max_length=50, required=False)
-    bc_email = forms.CharField(label='业务联系人邮箱',max_length=50, required=False)
-    bc_position = forms.CharField(label='业务联系人职位',max_length=50, required=False)
+    bc_name = forms.CharField(label='姓名',max_length=50, required=False)
+    bc_gender = forms.CharField(label='性别',max_length=10, required=False)
+    bc_mobile = forms.CharField(label='电话',max_length=50, required=False)
+    bc_wechat = forms.CharField(label='微信', max_length=50, required=False)
+    bc_email = forms.CharField(label='邮箱',max_length=50, required=False)
+    bc_position = forms.CharField(label='职位',max_length=50, required=False)
 
     class Meta:
         model = BusinessContact
@@ -78,12 +78,12 @@ class BCForm(forms.ModelForm):
 
 class FCForm(forms.ModelForm):
     # 该表单用于添加/更新客户财务联系人信息
-    fc_name = forms.CharField(label='财务联系人姓名',max_length=50, required=False)
-    fc_gender = forms.CharField(label='财务联系人性别(M/F)',max_length=10, required=False)
-    fc_mobile = forms.CharField(label='财务联系人电话',max_length=50, required=False)
-    fc_wechat = forms.CharField(label='财务联系人微信', max_length=50, required=False)
-    fc_email = forms.CharField(label='财务联系人邮箱',max_length=50, required=False)
-    fc_position = forms.CharField(label='财务联系人职位',max_length=50, required=False)
+    fc_name = forms.CharField(label='姓名',max_length=50, required=False)
+    fc_gender = forms.CharField(label='性别',max_length=10, required=False)
+    fc_mobile = forms.CharField(label='电话',max_length=50, required=False)
+    fc_wechat = forms.CharField(label='微信', max_length=50, required=False)
+    fc_email = forms.CharField(label='邮箱',max_length=50, required=False)
+    fc_position = forms.CharField(label='职位',max_length=50, required=False)
 
     class Meta:
         model = FinancialContact

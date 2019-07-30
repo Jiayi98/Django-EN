@@ -1,10 +1,24 @@
 {% extends "experts/base.html" %}
 {% block content %}
 <div class="container-fluid">
+
+
+
+
+    <div class="control-group" align="left" style="margin-bottom: 10px">
+        <dis class="control-group">
+            <form class="form-inline" method="get" action="{% url 'search_expert' %}">
+                {% csrf_token %}
+
+                <input style="height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
+                    &nbsp<button type="submit" class="btn btn-warning btn-sm">搜索</button>
+            </form>
+        </div>
+    </dis>
     <div class="control-group">
         <h5>查找专家</h5>
     </div>
-    <div class="control-group" align="left">
+        <div class="control-group" align="left">
         <form class="form-horizontal" method="get" action="{% url 'advanced_expert_search' %}">
             {% csrf_token %}
             <div class="form-group row">
@@ -42,6 +56,7 @@
             </div>
         </form>
     </div>
+
 </div>
 {% endblock content %}
 

@@ -22,14 +22,15 @@ class ProjectForm(forms.ModelForm):
     # 该表单用于添加项目信息
     pname = forms.CharField(max_length=50,label='项目名称',required=False)
     cid = forms.IntegerField(label='客户ID',required=False)
-    pm = forms.CharField(max_length=50,required=False,label='客户项目经理')
-    pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
+    pm = forms.CharField(max_length=50,required=False,label='客户对接人')
+    pcreatetime = forms.CharField(max_length=50, label='开始日期(YYYY-MM-DD)', required=False)
+    pdeadline = forms.CharField(max_length=50, label='结束日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
     pdetail = forms.CharField(max_length=250, label='详情',required=False)
-    person_in_charge = forms.CharField(max_length=50,required=False,label='我方项目对接人')
+    person_in_charge = forms.CharField(max_length=50,required=False,label='项目经理')
     class Meta:
         model = Project
-        fields = ('pname','cid','pm','pdeadline','premark','pdetail','person_in_charge')
+        fields = ('pname','cid','pm','pcreatetime','pdeadline','premark','pdetail','person_in_charge')
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -41,6 +42,7 @@ class ProjectUpdateForm(forms.ModelForm):
     # 该表单用于更新项目信息
     pname = forms.CharField(max_length=50, label='项目名称', required=False)
     pm = forms.CharField(max_length=50, required=False, label='客户项目经理')
+    pcreatetime = forms.CharField(max_length=50, label='开始日期(YYYY-MM-DD)', required=False)
     pdeadline = forms.CharField(max_length=50, label='项目截止日期(YYYY-MM-DD)', required=False)
     premark = forms.CharField(max_length=250, label='备注',required=False)
     pdetail = forms.CharField(max_length=250, label='详情', required=False)
@@ -48,7 +50,7 @@ class ProjectUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ('pname','pm','pdeadline','premark','pdetail','person_in_charge')
+        fields = ('pname','pm','person_in_charge','pcreatetime','pdeadline','premark','pdetail')
 
     def __init__(self, *args, **kwargs):
         super(ProjectUpdateForm, self).__init__(*args, **kwargs)

@@ -3,165 +3,174 @@
 
 {% block content %}
 <div class="container-fluid">
-{% if perms.projects.can_delete_project %}
-    <h3 class="col-sm-10">{{ project.pname }}&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
-        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">删除</button>
-        <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="deleteProjectLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    <div class="control-group">
+        {% if perms.projects.can_delete_project %}
+        <h5>{{ project.pname }}&nbsp
+            <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">删除</button>
+            <div class="modal fade" id="deleteProject" tabindex="-1" role="dialog" aria-labelledby="deleteProjectLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label  style="color: red" class="control-label">确定要删除吗？</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                        <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ project.delete_project }}'">确认</button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ project.delete_project }}'">确认</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </h3>
-    {% if result == '删除失败' %}
-        {{ result }}
-    {% endif %}
-    </h3>
-{% else %}
-    <h3>{{ project.pname }}&nbsp&nbsp&nbsp
-        <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
-    </h3>
-{% endif %}
-<br>
-<div class="col-sm-10" style="position: center">
-    <p>
-        <label style="font-weight: 700">PID: </label>{{project.pid}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">客户ID-名称: </label><a href="{{ project.cid.get_client_detail }}"> {{project.cid}}</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">客户: </label> {{project.pm}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            {% if result == '删除失败' %}
+            {{ result }}
+            {% endif %}
+        </h5>
+        {% else %}
+        <h5>{{ project.pname }}&nbsp&nbsp&nbsp
+            <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
+        </h5>
+        {% endif %}
+    </div>
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <tr>
+                <td>项目ID：{{project.pid}}</td>
+                <td>客户ID-名称：<a href="{{ project.cid.get_client_detail }}"> {{project.cid}}</a></td>
+                <td>客户对接人：{{project.pm}}</td>
+            </tr>
 
-    </p>
-    <p>
-        <label style="font-weight: 700">我方对接人: </label> {{ project.person_in_charge }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">项目发布时间: </label> {{ createtime }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <label style="font-weight: 700">项目截止日期: </label> {{project.pdeadline}}
-    </p>
-    <p style="white-space: pre-line">
-        <label style="font-weight: 700">项目详情: </label>
-            {{ project.pdetail }}
-    </p>
-    <p style="white-space: pre-line">
-        <label style="font-weight: 700">备注: </label>
-            {{ project.premark }}
-    </p>
+            <tr>
+                <td>项目经理：{{ project.person_in_charge }}</td>
+                <td>开始日期：{{ createtime }}</td>
+                <td>结束日期：{{project.pdeadline}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="control-group">
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
+            <caption>项目信息</caption>
+            <tr>
+                <td style="white-space: pre-line">详情：
+                    {{ project.pdetail }}
+                </td>
+            </tr>
+            <tr>
+                <td style="white-space: pre-line">备注：
+                    {{ project.premark }}
+                </td>
+            </tr>
+        </table>
+    </div>
 
-</div>
+    <div class="control-group">
+        <h5>项目访谈 &nbsp
+            <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>项目访谈列表</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="6%">专家</th>
+                <th width="20%">公司</th>
+                <th width="4%">状态</th>
+                <th width="8%">访谈日期</th>
+                <th width="5%">开始时间</th>
+                <th width="5%">结束时间</th>
+                <th width="6%">访谈时长</th>
+                <th width="6%">计费时长</th>
+                <th width="6%">约谈人</th>
+                <th width="10%"></th>
 
-        <div class="control-group">
-<h5 class="col-sm-10">项目访谈 &nbsp
-    <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">
-</h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead style="background-color: whitesmoke">
-                    <tr>
-                        <th width="6%">专家</th>
-                        <th width="20%">公司</th>
-                        <th width="4%">状态</th>
-                        <th width="8%">访谈日期</th>
-                        <th width="5%">开始时间</th>
-                        <th width="5%">结束时间</th>
-                        <th width="6%">访谈时长</th>
-                        <th width="6%">计费时长</th>
-                        <th width="6%">约谈人</th>
-                        <th width="10%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p2e in p2es %}
+            {% if p2e.interviewer == user.username or user.username == 'admin' or perms.clients.can_view_business_contact %}
+            <tr class="info">
+                <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.eid.ename }}</a></td>
+                <td>{{ p2e.get_expert_company }}</td>
+                <td>{% if p2e.status == 1 %}
+                    已访谈
+                    {% else %}
+                    未访谈
+                    {% endif %}
+                </td>
+                <td>{{ p2e.itv_date }}</td>
+                <td>{{ p2e.itv_stime }}</td>
+                <td>{{ p2e.itv_etime }}</td>
+                <td>{{ p2e.itv_duration }} 分钟</td>
+                <td>{{ p2e.itv_paid_duration }} 分钟</td>
+                <td>{{ p2e.interviewer }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">X</button>
+                    <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for p2e in p2es %}
-                    {% if p2e.interviewer == user.username or user.username == 'admin' or perms.clients.can_view_business_contact %}
-                    <tr class="info">
-                        <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.eid.ename }}</a></td>
-                        <td>{{ p2e.get_expert_company }}</td>
-                        <td>{% if p2e.status == 1 %}
-                                已访谈
-                            {% else %}
-                                未访谈
-                            {% endif %}
-                        </td>
-                        <td>{{ p2e.itv_date }}</td>
-                        <td>{{ p2e.itv_stime }}</td>
-                        <td>{{ p2e.itv_etime }}</td>
-                        <td>{{ p2e.itv_duration }} 分钟</td>
-                        <td>{{ p2e.itv_paid_duration }} 分钟</td>
-                        <td>{{ p2e.interviewer }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">X</button>
-                            <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  style="color: red" class="control-label">确定要删除吗？</label>
                                         </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                                            <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid project.pid %}'">确认</button>
-                                        </div>
-                                    </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid project.pid %}'">确认</button>
                                 </div>
                             </div>
-                            {% if result == '删除失败' %}
-                                {{ result }}
-                            {% endif %}
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
+                    {% if result == '删除失败' %}
+                    {{ result }}
                     {% endif %}
-                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
 
-                    </tbody>
-                </table>
-        </div>
+            </tbody>
+        </table>
+    </div>
+
     <div class="control-group">
-<h5 class="col-sm-10">合作专家 &nbsp&nbsp&nbsp
-    <!--<input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">-->
-</h5>
-<table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-                    <caption></caption>
-                    <thead style="background-color: whitesmoke">
-                    <tr>
-                        <th width="6%">ID</th>
-                        <th width="6%">专家</th>
-                        <th width="10%">访谈次数</th>
-                        <th width="10%">咨询费</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for expert in experts %}
-                    <tr class="info">
-                        <td>{{ expert.eid }}</td>
-                        <td><a href="{{ expert.get_absolute_url }}">{{ expert.ename }}</a></td>
-                        <td>{{ expert.interview_num }}</td>
-                        <td>{{ expert.efee }}</td>
-                    </tr>
-                    {% endfor %}
+        <h5>合作专家 &nbsp
+            <!--<input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">-->
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
+            <caption>合作专家列表</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="6%">ID</th>
+                <th width="6%">专家</th>
+                <th width="10%">访谈次数</th>
+                <th width="10%">咨询费</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for expert in experts %}
+            <tr class="info">
+                <td>{{ expert.eid }}</td>
+                <td><a href="{{ expert.get_absolute_url }}">{{ expert.ename }}</a></td>
+                <td>{{ expert.interview_num }}</td>
+                <td>{{ expert.efee }}</td>
+            </tr>
+            {% endfor %}
 
-                    </tbody>
-                </table>
-        </div>
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock content %}

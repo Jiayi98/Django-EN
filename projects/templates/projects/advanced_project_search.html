@@ -1,18 +1,43 @@
 {% extends "projects/project_base.html" %}
 {% block content %}
-<br>
-<h3 class="col-sm-12">查找项目</h3>
-<br>
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>查找项目</h5>
+    </div>
+    <div class="control-group" align="left">
+        <form method="get" action="{% url 'advanced_project_search' %}" >
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="pid" class="col-2 col-form-label">I D：</label>
+                <div class="col-2">
+                    <input type="search" id="pid" name='pid' class="form-control">
+                </div>
 
-                  <form class="col-sm-12" method="get" action="{% url 'advanced_project_search' %}" >
-                    {% csrf_token %}
-                      <input class="col-sm-2" type="search" name='pid' placeholder="ID">&nbsp&nbsp&nbsp
-                      <input class="col-sm-4" type="search" name='pname' placeholder="项目名">&nbsp&nbsp&nbsp
-                      <br><br>
-                      <input class="col-sm-6" style="width: 150px" type="search"  name='cremark' placeholder="项目备注">&nbsp&nbsp&nbsp
-                       <input class="col-sm-6" style="width: 150px" type="search"  name='cdetail' placeholder="项目详情">&nbsp&nbsp&nbsp
-                      <br><br>
-                    <button type="submit" class="btn btn-success">搜索</button>
-                  </form>
+            </div>
+            <div class="form-group row">
+                <label for="pname" class="col-2 col-form-label">项目名称：</label>
+                <div class="col-10">
+                    <input type="search" id="pname" name='pname' class="form-control" >
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="cremark" class="col-2 col-form-label">项目备注：</label>
+                <div class="col-10">
+                    <input type="search" id="cremark" name='cremark' class="form-control" >
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="cdetail" class="col-2 col-form-label">项目详情：</label>
+                <div class="col-10">
+                    <input type="search" id="cdetail" name='cdetail' class="form-control" >
+                </div>
+            </div>
+
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">搜索</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock content %}
 

@@ -110,6 +110,7 @@ def client_add_project(request, cid):
     if request.method == "POST":
         pname = request.POST.get('pname')
         pm = request.POST.get('pm')
+        pcreatetime = request.POST.get('pcreatetime')
         pdeadline = request.POST.get('pdeadline')
         premark = request.POST.get('premark')
 
@@ -120,7 +121,7 @@ def client_add_project(request, cid):
             new_project.pname = pname
             new_project.cname = client.cname
             new_project.pm = pm
-
+            new_project.pcreatetime = pcreatetime
             new_project.pdeadline = pdeadline
             new_project.premark = premark
             new_project.save()
@@ -320,7 +321,7 @@ def fc_detail_update(request, fc_id, cid):
             form = FCForm(instance=object)
 
 
-    return render(request, template_name, {'bc': object, 'form': form, 'result': result, })
+    return render(request, template_name, {'fc': object, 'form': form, 'result': result, })
 
 """
 搜索客户

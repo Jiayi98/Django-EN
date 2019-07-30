@@ -63,12 +63,11 @@ def project_info_list(request):
 
 def project_detail(request, pid, cid):
     project = get_object_or_404(Project, pid=pid)
-    createtime = ' {year}-{mon}-{day}'.format(year=project.pcreatetime.year,mon=project.pcreatetime.month, day=project.pcreatetime.day)
     client = Client.objects.filter(cid=cid).first()
     experts = get_object_or_404(Project, pid=pid).expertinfos.all().distinct()
 
     p2es = Project2Expert.objects.filter(pid=pid)
-    return render(request, 'projects/project_detail.html', {'experts':experts,'project': project, 'client': client, 'p2es': p2es,'createtime':createtime})
+    return render(request, 'projects/project_detail.html', {'experts':experts,'project': project, 'client': client, 'p2es': p2es,'createtime':project.pcreatetime})
 
 
 
@@ -131,6 +130,7 @@ def addProjectToDatabase(request):
         pname = request.POST.get('pname')
         pm = request.POST.get('pm')
         pdeadline = request.POST.get('pdeadline')
+        pcreatetime = request.POST.get('pcreatetime')
         premark = request.POST.get('premark')
         person_in_charge = request.POST.get('person_in_charge')
         pdetail = request.POST.get('pdetail')
@@ -149,6 +149,7 @@ def addProjectToDatabase(request):
                 new_project.pname = pname
                 new_project.pm = pm
                 new_project.pdeadline = pdeadline
+                new_project.pcreatetime = pcreatetime
                 new_project.premark = premark
                 new_project.pdetail = pdetail
                 new_project.person_in_charge = person_in_charge

@@ -19,7 +19,7 @@ class ExpertInfoFormUpdate(forms.ModelForm):
 
 class ExpertInfoFormUpdateDB(forms.ModelForm):
     ename = forms.CharField(label='姓名',max_length=50, required=True)
-    esex = forms.CharField(label='性别(F/M)',max_length=2, required=False)
+    esex = forms.CharField(label='性别',max_length=10, required=False)
     #emobile = forms.CharField(label='电话(多个电话请用分号隔开)',max_length=50, required=False)
     #eemail = forms.CharField(label='邮箱',max_length=80, required=False)
     etrade = forms.CharField(label='行业',max_length=150, required=False)

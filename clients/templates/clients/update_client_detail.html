@@ -1,76 +1,97 @@
 {% extends "projects/project_base.html" %}
 {% block content %}
-    <br>
-   <h3 class="col-sm-12"> 更新{{ client.cname }}信息</h3>
-    {% if result.status == 'error' %}
-        <p class='col-sm-12' style="align-content: center;color: red;font-size: medium">
-           操作失败，请重新操作！
-        </p>
-    {% endif %}
-<br>
-    <form class="col-sm-12" action="{{ client.update_client_detail }}" method="post" name="update_client_detail">
-        {% csrf_token %}
-            <p class="sol-sm-12">
-                <label style="font-weight: 700">客户ID: {{ client.cid }}</label>
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                <label style="font-weight: 700" class="sol-sm-2 control-label">客户名称：</label>
-                <input type="text" name='cname' value="{{ client.cname }}">
-            </p>
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>更新 {{ client.cname }}</h5>
+    </div>
+    <div class="control-group">
+        {% if result.status == 'error' %}
+        <div class="alert alert-danger" role="alert">
+            添加失败请重新添加
+        </div>
+        {% endif %}
+    </div>
+    <div class="control-group">
+        <form action="{{ client.update_client_detail }}" method="post" name="update_client_detail">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-2">客户ID：</label>
+                <div class="col-2">
+                    {{ client.cid }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="cname" class="col-2 col-form-label">*客户名称：</label>
+                <div class="col-6">
+                    <input type="text" id="cname" name='cname' class="form-control" value="{{ client.cname }}" required>
+                </div>
+            </div>
 
-        <p class="sol-sm-12">
-            <label style="font-weight: 700" class="sol-sm-2" for="bc">主业务联系人</label>
-                <select name="bc_name">
-                    <option>请选择</option>
-                    {% for bc in bc_list %}
+            <div class="form-group row">
+                <label for="bc_name" class="col-2 col-form-label">*主业务联系人：</label>
+                <div class="col-2">
+                    <select id="bc_name" name='bc_name' class="form-control" required>
+                        <option>请选择</option>
+                        {% for bc in bc_list %}
                         <option>{{ bc.bc_name }}</option>
-                    {% endfor %}
-                </select>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <label style="font-weight: 700" class="sol-sm-2" for="fc">主财务联系人</label>
-                <select name="fc_name">
-                    <option>请选择</option>
-                    {% for fc in fc_list %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <label for="fc_name" class="col-2 col-form-label">主财务联系人：</label>
+                <div class="col-2">
+                    <select id="fc_name" name='fc_name' class="form-control">
+                        <option>请选择</option>
+                        {% for fc in fc_list %}
                         <option>{{ fc.fc_name }}</option>
-                    {% endfor %}
-                </select>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <label style="font-weight: 700" class="sol-sm-2 " for="ctype">客户类型：</label>
-                <select name="ctype">
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ctype" class="col-2 col-form-label">*客户类型：</label>
+                <div class="col-2">
+                    <select id="ctype" name='ctype' class="form-control" required>
                         <option>请选择</option>
                         <option>咨询公司</option>
                         <option>投资机构</option>
                         <option>企业</option>
                         <option>其它</option>
-                </select>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <label style="font-weight: 700" class="sol-sm-2 control-label">咨费：</label>
-            <input type="number" name='cfee' value="{{ client.cfee }}">
+                    </select>
+                </div>
+                <label for="cfee" class="col-2 col-form-label">咨费：</label>
+                <div class="col-2">
+                    <input type="number" id="cfee" name='cfee' class="form-control" value="{{ client.cfee }}">
+                </div>
+            </div>
 
-        </p>
-        <p class="sol-sm-12">
-            <label style="font-weight: 700" class="sol-sm-2 control-label">收费政策：</label>
-            <textarea name='cpolicy' class="form-control" rows="5">{{ client.cpolicy }}</textarea>
-        </p>
-        </p>
-            <p class="sol-sm-12">
+            <div class="form-group row">
+                <label for="cinfo" class="col-2 col-form-label">*客户信息：</label>
+                <div class="col-10">
+                    <textarea id="cinfo" name='cinfo' class="form-control" row="5">{{ client.cinfo }}</textarea>
+                </div>
+            </div>
 
-                <label style="font-weight: 700" class="sol-sm-2 control-label">客户信息：</label>
+            <div class="form-group row">
+                <label for="cpolicy" class="col-2 col-form-label">收费政策：</label>
+                <div class="col-10">
+                    <textarea id="cpolicy" name='cpolicy' class="form-control" row="5">{{ client.cpolicy }}</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="cremark" class="col-2 col-form-label">备注：</label>
+                <div class="col-10">
+                    <textarea id="cremark" name='cremark' class="form-control" row="5">{{ client.cremark }}</textarea>
+                </div>
+            </div>
 
-                    <textarea name='cinfo' class="form-control" rows="5">{{ client.cinfo }}</textarea>
-        </p>
-         <p class="sol-sm-12">
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            </div>
 
-                <label style="font-weight: 700" class="sol-sm-2 control-label">备注：</label>
-
-                    <textarea name='cremark' class="form-control" rows="5">{{ client.cremark }}</textarea>
-        </p>
-
-        <div class="pull-right col-sm-12">
-            <button type="submit" class="btn btn-success btn-sm">更新</button>
-            <button type="reset" class="btn btn-warning btn-sm">重置</button>
-        </div> 
-
-    </form>
-
+        </form>
+    </div>
+</div>
 
 {% endblock content %}

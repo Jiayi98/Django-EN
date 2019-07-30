@@ -27,8 +27,8 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">专家</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="{% url 'expertinfolist' %}">专家列表</a>
                 <a class="dropdown-item" href="{% url 'advanced_expert_form'%}">查找专家</a>
+                <a class="dropdown-item" href="{% url 'expertinfolist' %}">专家列表</a>
                 <a class="dropdown-item" href="{% url 'addexpert'%}">添加专家</a>
                 <a class="dropdown-item" href="{% url 'updateexpert' %}">更新专家</a>
             </div>
@@ -38,13 +38,14 @@
             <div class="dropdown-menu" aria-labelledby="dropdown02">
                 <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
                 <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
-                <a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>
+                <!--<a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>-->
             </div>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">项目</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
                 <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
+                <a class="dropdown-item" href="{% url 'advanced_client_form' %}">查找客户</a>
                 <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
             </div>
         </li>
@@ -52,10 +53,10 @@
             <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
         </li>
     </ul>
-    <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
+    <!--<form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
         {% csrf_token %}
       <input style="height: 35px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
-    </form>
+    </form>-->
       {% endif %}
       <ul>
            {% if user.is_authenticated %}

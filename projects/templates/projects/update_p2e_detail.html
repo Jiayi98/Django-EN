@@ -1,60 +1,93 @@
 {% extends "projects/project_base.html" %}
     {% block content %}
-        <br>
-       <!-- <input type="button" class="btn btn-info"  value="返回上一步" onclick="javascript:history.go(-1);">
-        <br><br>-->
-        <h3 class="col-sm-12"> 设置访谈信息</h3>
-        <br>
+      <div class="container-fluid">
+    <div class="control-group">
+        <h5> 访谈信息</h5>
+    </div>
+          <div class="control-group">
         <form method="post">
             {% csrf_token %}
-            <div class="col-sm-12">
-                <p>
-                    <label style="font-weight: 700">项目名称：</label>
-                    {{ project.pname }}
-                </p>
-                <p>
-                    <label style="font-weight: 700">专家ID-姓名：</label>
-                    {{ expert }}
-                    &nbsp&nbsp&nbsp
-                    <label style="font-weight: 700">专家公司：</label>
-                    {{ expert.get_company }}
-                </p>
+
+            <div class="form-group row">
+                <label class="col-2">项目名称：</label>
+                <div class="col-2">
+                    <a href="{{ project.get_project_detail }}">{{ project.pname }}</a>
+                </div>
             </div>
-            <p class="col-sm-12">
-                <label style="font-weight: 700">访谈日期</label>(YYYY-MM-DD):
-                <input style="width: 150px" type="text" name='itv_date' value="{{ object.itv_date }}">
-                <label style="font-weight: 700">开始时间-结束时间</label>(e.g 16:30-17:30):
-                <input style="width: 150px" type="text" name='itv_stime' value="{{ object.itv_stime }}">
+            <div class="form-group row">
+                <label class="col-2">专家ID-姓名：</label>
+                <div class="col-2">
+                    <a href="{{ expert.get_absolute_url }}">{{ expert }}</a>
+                </div>
+                <label class="col-2">专家公司：</label>
+                <div class="col-6">
+                    <a>{{ expert.get_company }}</a>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="itv_date" class="col-2 col-form-label">*访谈日期：</label>
+                <div class="col-2">
+                    <input type="text" id="itv_date" name='itv_date' class="form-control" value="{{ object.itv_date }}" placeholder="YYYY-MM-DD" required>
+                </div>
+
+                <label class="col-2 col-form-label">*开始时间-结束时间：</label>
+                <div class="col-1">
+                    <input type="text"name='itv_stime' class="form-control" value="{{ object.itv_stime }}" placeholder="hh:mm" required>
+                </div>
                 -
-                <input style="width: 150px" type="text" name='itv_etime' value="{{ object.itv_etime }}">
+                <div class="col-1">
+                    <input type="text" name='itv_etime' class="form-control" value="{{ object.itv_etime }}" placeholder="hh:mm" required>
+                </div>
+            </div>
 
-            </p>
-            <p class="col-sm-12">
-                <label style="font-weight: 700">访谈状态：</label>(1:已访谈|0:未访谈)
-                <input style="width: 50px" type="number" name='status' value="{{ object.status }}">
-                &nbsp
-                <label style="font-weight: 700">访谈时长(分钟)：</label>
-                <input style="width: 50px" type="number" name='itv_duration' value="{{ object.itv_duration }}">
-                &nbsp
-                <label style="font-weight: 700">计费时长(分钟)：</label>
-                <input style="width: 50px" type="number" name='itv_duration' value="{{ object.itv_paid_duration }}">
-                &nbsp
-                <label style="font-weight: 700">咨费系数：</label>
-                <input style="width: 50px" type="number" name='fee_index' value="{{ object.fee_index }}">
-            </p>
-            <p class="col-sm-12">
-                <label style="font-weight: 700">约谈人：</label>
-                <input style="width: 150px" type="text" name='interviewer' value="{{ object.interviewer }}">
-                &nbsp
-                <label style="font-weight: 700">添加/修改人：</label>
-                <input style="width: 150px" type="text" name='recorder' value="{{ user.username }}">
-            </p>
-            <br>
-            <div class="pull-right col-sm-12">
-                <button type="submit" class="btn btn-success btn-sm">提交</button>
-                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            <div class="form-group row">
+                <label for="status" class="col-2 col-form-label">*访谈状态：</label>
+                <div class="col-2">
+                    <input type="number" id="status" name='status' class="form-control" placeholder="1:已访谈|0:未访谈" required>
+                </div>
+
+                <label for="fee_index" class="col-2 col-form-label">*咨费系数：</label>
+                <div class="col-2">
+                    <input type="number" id="fee_index" name='fee_index' class="form-control" value="{{ object.fee_index }}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="itv_duration" class="col-2 col-form-label">*访谈时长(分钟)：</label>
+                <div class="col-2">
+                    <input type="number" id="itv_duration" name='itv_duration' class="form-control" value="{{ object.itv_duration }}" required>
+                </div>
+
+                <label for="itv_paid_duration" class="col-2 col-form-label">*计费时长(分钟)：</label>
+                <div class="col-2">
+                    <input type="number" id="itv_paid_duration" name='itv_paid_duration' class="form-control" value="{{ object.itv_paid_duration }}" required>
+                </div>
+
 
             </div>
+
+             <div class="form-group row">
+                <label for="interviewer" class="col-2 col-form-label">*约谈人：</label>
+                <div class="col-2">
+                    <input type="text" id="interviewer" name='interviewer' class="form-control" value="{{ object.interviewer }}" required>
+                </div>
+
+                <label for="recorder" class="col-2 col-form-label">添加/修改人：</label>
+                <div class="col-2">
+                    <input type="text" id="recorder" name='recorder' class="form-control" value="{{ user.username }}">
+                </div>
+
+
+            </div>
+
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            </div>
+
         </form>
+          </div>
+      </div>
 
     {% endblock content %}

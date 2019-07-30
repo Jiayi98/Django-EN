@@ -1,44 +1,69 @@
 {% extends "projects/project_base.html" %}
 {% block content %}
-    <br>
-   <h1 class="pull-right col-sm-12"> 更新{{ project.pname }}信息</h1>
-    <br>
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>更新 {{project.pname}}</h5>
+    </div>
+    <div class="control-group" align="left">
+        <form action="{{ project.update_project_detail }}" method="post" name="update_project_detail">
+            {% csrf_token %}
 
-    <form class="pull-right col-sm-12" action="{{ project.update_project_detail }}" method="post" name="update_project_detail">
-        {% csrf_token %}
-        {% for field in form %}
-            {% if field.label == '备注' %}
-                <label style="font-weight: 700" class="sol-sm-2 control-label">备注：</label>
-                <div class="col-sm-10" style="white-space: pre-line">
-                    <textarea name='premark' class="form-control" rows="5"></textarea>
+            <div class="form-group row">
+                <label for="pname" class="col-2 col-form-label">*项目名称：</label>
+                <div class="col-6">
+                    <input type="text" id="pname" name='pname' class="form-control" value="{{ project.pname }}">
                 </div>
-            {% elif field.label == '详情' %}
-                <label style="font-weight: 700" class="sol-sm-2 control-label">详情：</label>
-                <div class="col-sm-10" style="white-space: pre-line">
-                    <textarea name='pdetail' class="form-control" rows="5"></textarea>
+            </div>
+            <div class="form-group row">
+                <label for="pm" class="col-2 col-form-label">*客户对接人：</label>
+                <div class="col-2">
+                    <select id="pm" name='pm' class="form-control" required>
+                        <option selected>请选择</option>
+                        {% for bc in bc_list %}
+                        <option>{{ bc.bc_name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-            {% elif field.label == '客户项目经理' %}
-                <label style="font-weight: 700" class="sol-sm-2 control-label" for="pm"> 客户项目经理：</label>
-                            <select name="pm">
-                                <option>请选择</option>
-                                {% for bc in bc_list %}
-                                <option>{{ bc.bc_name }}</option>
-                                {% endfor %}
-                            </select>
-                <br>
-            {% else %}
-                <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
-                <div class="col-sm-10">
-                    {{ field }}
-                </div>
-            {% endif %}
-        {% endfor %}
-        <br>
-        <div class="pull-right col-sm-12">
-                             <button type="submit" class="btn btn-success">更新</button>
-                 <button type="reset" class="btn btn-warning">重置</button>&nbsp&nbsp
-        </div>
-    </form>
 
+                <label for="person_in_charge" class="col-2 col-form-label">项目经理：</label>
+                <div class="col-2">
+                    <input type="text" id="person_in_charge" name='person_in_charge' class="form-control" value="{{ project.person_in_charge }}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="pcreatetime" class="col-2 col-form-label">*开始日期：</label>
+                <div class="col-2">
+                    <input type="text" id="pcreatetime" name='pcreatetime' class="form-control" value="{{ project.pcreatetime }}">
+                </div>
+
+                <label for="pdeadline" class="col-2 col-form-label">结束日期：</label>
+                <div class="col-2">
+                    <input type="text" id="pdeadline" name='pdeadline' class="form-control" value="{{ project.pdeadline }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="pdetail" class="col-2 col-form-label">详情：</label>
+                <div class="col-10">
+                    <textarea id="pdetail" name='pdetail' class="form-control" row="5">{{ project.pdetail }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="premark" class="col-2 col-form-label">备注：</label>
+                <div class="col-10">
+                    <textarea id="premark" name='premark' class="form-control" row="5">{{ project.premark }}</textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 {% endblock content %}

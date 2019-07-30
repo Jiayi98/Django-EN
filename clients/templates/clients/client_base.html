@@ -38,13 +38,14 @@
             <div class="dropdown-menu" aria-labelledby="dropdown02">
                 <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
                 <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
-                <a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>
+                <!--<a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>-->
             </div>
         </li>
         <li class="nav-item dropdown active" style="background-color: white;height: 42px">
             <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bolder;color: darkslategray">客户</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
                 <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
+                <a class="dropdown-item" href="{% url 'advanced_client_form' %}">查找客户</a>
                 <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
             </div>
         </li>
@@ -52,10 +53,10 @@
             <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
         </li>
     </ul>
-    <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
+    <!--<form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
         {% csrf_token %}
       <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
-    </form>
+    </form>-->
       {% endif %}
       <ul>
            {% if user.is_authenticated %}

@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top" style="height: 43px">
         <a class="navbar-brand" href="{% url 'home' %}"><strong> LeapTech</strong></a>
 
-    {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbarsExample01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown active" style="background-color: white;height: 42px">
@@ -38,13 +38,14 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown02">
                         <a class="dropdown-item" href="{% url 'project_info_list' %}">项目列表</a>
                         <a class="dropdown-item" href="{% url 'advanced_project_form' %}">查找项目</a>
-                        <a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>
+                        <!--<a class="dropdown-item" href="{% url 'add_project' %}">添加项目</a>-->
                     </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">客户</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown03">
                         <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
+                        <a class="dropdown-item" href="{% url 'advanced_client_form' %}">查找客户</a>
                         <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
                     </div>
                 </li>
@@ -52,10 +53,10 @@
                     <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
+            <!--<form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
                 {% csrf_token %}
                 <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
-            </form>
+            </form>-->
             {% endif %}
             <ul>
                 {% if user.is_authenticated %}
@@ -76,71 +77,54 @@
 <main role="main" class="container-fluid">
 
     <div class="jumbotron">
-    <div class="container">
-      <h1 class="display-3">信息管理查询系统</h1>
-      <p></p>
-      <p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a>
-      </p>
-    </div>
-  </div>
-     <div class="container marketing">
+        <div class="container">
+            <h1 class="display-3">信息管理查询系统</h1>
+            <p>
+                <div class="row">
+                    <div class="col-md-2" align="center">
 
-    <!-- Three columns of text below the carousel -->
-    <div class="row">
-      <div class="col-md-4" align="center">
-        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image"
-          width="140" height="140">
-        <h5 style="color: #555555">专家</h5>
-          <p>
-          <a class="btn btn-secondary" href="{% url 'advanced_expert_form'%}" role="button">查找专家 &raquo;</a>
-        </p>
-      </div>
-      <!-- /.col-md-4 -->
-      <div class="col-md-4" align="center">
-        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image"
-          width="140" height="140">
-        <h5 style="color: #555555">项目</h5>
+                        <a class="btn btn-info" href="{% url 'advanced_expert_form'%}" role="button">查找专家 &raquo;</a>
 
-          <p>
-          <a class="btn btn-secondary" href="{% url 'advanced_project_form' %}" role="button">查找项目 &raquo;</a>
-        </p>
-      </div>
-      <!-- /.col-md-4 -->
-      <div class="col-md-4" align="center">
-        <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image"
-          width="140" height="140">
-        <h5 style="color: #555555">客户</h5>
+                    </div>
+                    <div class="col-md-2" align="center">
 
-        <p>
-          <a class="btn btn-secondary" href="{% url 'advanced_client_form' %}" role="button">查找客户 &raquo;</a>
-        </p>
-      </div>
-      <!-- /.col-md-4 -->
-    </div>
-    <!-- /.row -->
+                            <a class="btn btn-info" href="{% url 'advanced_project_form' %}" role="button">查找项目 &raquo;</a>
 
-    <div class="row">
-        <div class="col-md-12">
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-          {% block content %}{% endblock %}
+                    </div>
+                    <div class="col-md-2" align="center">
+
+                            <a class="btn btn-info" href="{% url 'advanced_client_form' %}" role="button">查找客户 &raquo;</a>
+
+                    </div>
+                </div>
+            </p>
+
         </div>
-
     </div>
-</div>
+    <div class="container marketing">
+
+
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
+
+        </div>
+    </div>
 </main>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>

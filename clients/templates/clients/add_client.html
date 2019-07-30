@@ -1,57 +1,73 @@
 {% extends "clients/client_base.html" %}
-    {% block content %}
-        <br>
-        <h3 class='col-sm-12'>新增客户</h3>
-        <br>
-        <form class='col-sm-12' action="/addClientToDatabase/" method="post" name="addClientToDatabase">
-            {% csrf_token %}
-            <br>
-            {% for field in form %}
-                <div class="form-group">
-                    {% if field.label == '客户信息' %}
-                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <textarea name='cinfo' class="form-control" rows="5"></textarea>
-                        </div>
-                    {% elif field.label == '收费政策' %}
-                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <textarea name='cpolicy' class="form-control" rows="5"></textarea>
-                        </div>
-                    {% elif field.label == '备注' %}
-                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            <textarea name='cremark' class="form-control" rows="5"></textarea>
-                        </div>
-                    {% elif field.label == '客户类型' %}
-                        <label style="font-weight: 700" class="sol-sm-2 " for="ctype">客户类型：</label>
-                            <select name="ctype">
-                                <option>请选择</option>
-                                <option>咨询公司</option>
-                                <option>投资机构</option>
-                                <option>企业</option>
-                                <option>其它</option>
-                            </select>
-                    {% elif field.label == '咨费' %}
-                        <label style="font-weight: 700" class="sol-sm-2 control-label">咨费：</label>
-                        <input type="number" name='cfee' value=0>
-                    {% else %}
-
-                        <label style="font-weight: 700" class="sol-sm-2 control-label">{{ field.label }}：</label>
-                        <div class="col-sm-10">
-                            {{ field }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            <div class="pull-right col-sm-10">
-                <button type="submit" class="btn btn-success">添加</button>
-                <button type="reset" class="btn btn-warning">重置</button>
+{% block content %}
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>添加客户</h5>
+    </div>
+    <div class="control-group">
+    <form action="/addClientToDatabase/" method="post" name="addClientToDatabase">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="cname" class="col-2 col-form-label">*客户名称：</label>
+            <div class="col-6">
+                <input type="text" id="cname" name='cname' class="form-control" required>
             </div>
+        </div>
 
-            <!--{{ form.as_p }}-->
-            <!--<input type="reset">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="add">-->
-        </form>
+        <div class="form-group row">
+            <label for="bc_name" class="col-2 col-form-label">*主业务联系人：</label>
+            <div class="col-2">
+                <input type="text" id="bc_name" name='bc_name' class="form-control" placeholder="业务联系人姓名" required>
+            </div>
+            <label for="fc_name" class="col-2 col-form-label">主财务联系人：</label>
+            <div class="col-2">
+                <input type="text" id="fc_name" name='fc_name' class="form-control" placeholder="财务联系人姓名">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ctype" class="col-2 col-form-label">*客户类型：</label>
+            <div class="col-2">
+                <select id="ctype" name='ctype' class="form-control" required>
+                    <option>请选择</option>
+                    <option>咨询公司</option>
+                    <option>投资机构</option>
+                    <option>企业</option>
+                    <option>其它</option>
+                </select>
+            </div>
+            <label for="cfee" class="col-2 col-form-label">咨费：</label>
+            <div class="col-2">
+                <input type="number" id="cfee" name='cfee' class="form-control" value=0>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="cinfo" class="col-2 col-form-label">*客户信息：</label>
+            <div class="col-10">
+                <textarea id="cinfo" name='cinfo' class="form-control" row="5" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="cpolicy" class="col-2 col-form-label">*收费政策：</label>
+            <div class="col-10">
+                <textarea id="cpolicy" name='cpolicy' class="form-control" row="5" required></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="cremark" class="col-2 col-form-label">备注：</label>
+            <div class="col-10">
+                <textarea id="cremark" name='cremark' class="form-control" row="5"></textarea>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <button type="submit" class="btn btn-success btn-sm">提交</button>
+            &nbsp
+            <button type="reset" class="btn btn-warning btn-sm">重置</button>
+        </div>
+
+    </form>
 
     {% endblock content %}
 

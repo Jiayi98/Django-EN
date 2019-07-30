@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container-fluid">
     <div class="control-group">
-        <h5>增加专家</h5>
+        <h5>添加专家</h5>
     </div>
     <div class="control-group" align="left">
         <form method="post" class="form-horizontal">
@@ -178,9 +178,10 @@
                     <input type="text" id="elocation" name='elocation' class="form-control">
                 </div>
 
-                <label for="esex" class="col-1 col-form-label">性别：</label>
+                <label for="esex" class="col-1 col-form-label">*性别：</label>
                 <div class="col-2">
-                    <select id="esex" name='esex' class="form-control">
+                    <select id="esex" name='esex' class="form-control" required>
+                            <option selected>请选择</option>
                             <option>M</option>
                             <option>F</option>
                         </select>

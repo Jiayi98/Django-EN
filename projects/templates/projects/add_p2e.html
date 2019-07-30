@@ -1,31 +1,38 @@
 {% extends "projects/project_base.html" %}
-    {% block content %}
-        <br>
-        <input type="button" class="btn btn-info btn-sm"  value="返回上一步" onclick="location.href='{% url 'project_detail' project.pid project.cid.cid %}'">
-        <br><br>
-        <h5 class="col-sm-12">添加访谈记录</h5>
-
+{% block content %}
+<div class="container-fluid">
+    <div class="control-group">
+        <h5>添加访谈记录</h5>
+    </div>
+    <div class="control-group">
         <form action="." method="post">
             {% csrf_token %}
-            <p>
-                <div class="col-sm-12">
-                    <label style="font-weight: 700">*专家ID：</label>
-                    <input type="number" name='eid' value=0>
-                    &nbsp&nbsp&nbsp
-                    <label style="font-weight: 700">专家姓名：</label>
-                    <input type="text" name='ename' placeholder="选填">
-                    {% if flag.status == 'error' %}
-                        &nbsp&nbsp&nbsp
-                        <button type="reset" class="btn btn-danger btn-sm">ID不存在/ID与姓名不匹配</button>
-                    {% endif %}
-
+            <div class="form-group row">
+                <label for="eid" class="col-2 col-form-label">*专家ID：</label>
+                <div class="col-2">
+                    <input type="text" id="eid" name='eid' class="form-control" placeholder="必填" required>
                 </div>
-            </p>
-            <div class="pull-right col-sm-12">
-                 <button type="submit" class="btn btn-success">提交</button>
-                <button type="reset" class="btn btn-warning">重置</button>
 
+                <label for="ename" class="col-2 col-form-label">专家姓名：</label>
+                <div class="col-2">
+                    <input type="text" id="ename" name='ename' class="form-control" placeholder="选填">
+                </div>
+            </div>
+            <div class="control-group">
+                {% if flag.status == 'error' %}
+                <div class="alert alert-danger" role="alert">
+                    <a>ID不存在 或 ID与姓名不匹配</a>
+                </div>
+                {% endif %}
+            </div>
+
+
+            <div class="control-group">
+                <button type="submit" class="btn btn-success btn-sm">提交</button>
+                &nbsp
+                <button type="reset" class="btn btn-warning btn-sm">重置</button>
             </div>
         </form>
-
-    {% endblock content %}
+    </div>
+</div>
+{% endblock content %}
