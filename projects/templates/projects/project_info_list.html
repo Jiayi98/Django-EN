@@ -27,9 +27,13 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">客户</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown03">
+                        {% if perms.users.can_view_client_info %}
                         <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
                         <a class="dropdown-item" href="{% url 'advanced_client_form' %}">查找客户</a>
+                        {% endif %}
+                        {% if perms.users.can_add_client %}
                         <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
+                        {% endif %}
                     </div>
                 </li>
                 <li class="nav-item">

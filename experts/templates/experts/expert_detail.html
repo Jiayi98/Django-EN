@@ -3,7 +3,9 @@
 <div class="container-fluid">
       <div class="control-group">
         <h5>{{ expert.ename }}&nbsp
+            {% if perms.experts.can_change_expert %}
             <input type="button" class="btn btn-info btn-sm"  value="编辑" onclick="window.location.href='{{ expert.get_update_url }}'">
+            {% endif %}
         </h5>
     </div>
     <div class="control-group">
@@ -58,10 +60,12 @@
     </div>
 
     <div class="control-group">
-        {% if perms.experts.can_view_contact_info %}
+        {% if perms.users.can_view_expert_contact_info %}
         <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
             <caption>联系方式
+                {% if perms.users.can_change_expert_contact_info %}
                 <a style="color:steelblue" href="{{ expert.expert_contact_info_update }}">编辑</a>
+                {% endif %}
             </caption>
             <tbody>
             <tr style="background-color: lightsteelblue">
@@ -101,6 +105,7 @@
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ exp.get_workexp_update_url }}'">修改</button>
 
                     <!-- 模态框（Modal） -->
+                    {% if perms.users.can_delete_expert_workexp %}
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteWorkexpModal">删除</button>
                     <div class="modal fade" id="deleteWorkexpModal" tabindex="-1" role="dialog" aria-labelledby="deleteWorkexpModalLabel">
                         <div class="modal-dialog" role="document">
@@ -123,7 +128,7 @@
                             </div>
                         </div>
                     </div>
-
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -155,6 +160,7 @@
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
                     <!-- 模态框（Modal） -->
+                    {% if perms.users.can_delete_expert_comments %}
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCommentModal">删除</button>
                     <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel">
                         <div class="modal-dialog" role="document">
@@ -177,6 +183,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -262,8 +269,8 @@
             <tbody>
             {% for p2e in p2es %}
             <tr class="info">
-                {% if p2e.interviewer == user.username or user.username == 'admin' or perms.clients.can_view_business_contact %}
-                <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}-{{ p2e.pid.pname }}</td>
+                {% if p2e.interviewer == user.username or perms.users.can_view_all_project_interview %}
+                <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}-{{ p2e.pid.pname }}</a></td>
                 <td>{{ p2e.status}}</td>
                 <td>{{ p2e.date }}</td>
                 <td>{{ p2e.itv_stime }}</td>

@@ -35,7 +35,9 @@
         </h5>
         {% else %}
         <h5>{{ project.pname }}&nbsp&nbsp&nbsp
+            {% if perms.projects.can_change_project %}
             <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
+            {% endif %}
         </h5>
         {% endif %}
     </div>
@@ -43,7 +45,8 @@
         <table class="table table-condensed table-hover" width="100%" style="font-size:10px;table-layout: auto">
             <tr>
                 <td>项目ID：{{project.pid}}</td>
-                <td>客户ID-名称：<a href="{{ project.cid.get_client_detail }}"> {{project.cid}}</a></td>
+                <td>客户ID-名称：{% if perms.users.can_view_client_info %}<a href="{{ project.cid.get_client_detail }}">{% endif %} {{project.cid}}</a>
+                </td>
                 <td>客户对接人：{{project.pm}}</td>
             </tr>
 
@@ -72,7 +75,9 @@
 
     <div class="control-group">
         <h5>项目访谈 &nbsp
+            {% if perms.users.can_add_project_interview_1 %}
             <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">
+            {% endif %}
         </h5>
         <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
             <caption>项目访谈列表</caption>
@@ -93,7 +98,7 @@
             </thead>
             <tbody>
             {% for p2e in p2es %}
-            {% if p2e.interviewer == user.username or user.username == 'admin' or perms.clients.can_view_business_contact %}
+            {% if p2e.interviewer == user.username or perms.users.can_view_all_project_interview %}
             <tr class="info">
                 <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.eid.ename }}</a></td>
                 <td>{{ p2e.get_expert_company }}</td>
@@ -109,9 +114,12 @@
                 <td>{{ p2e.itv_duration }} 分钟</td>
                 <td>{{ p2e.itv_paid_duration }} 分钟</td>
                 <td>{{ p2e.interviewer }}</td>
+                 {% if perms.users.can_change_all_project_interview or perms.users.can_change_project_interview %}
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">X</button>
+
+                    {% if perms.users.can_delete_project_interview %}
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
                     <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -134,9 +142,12 @@
                         </div>
                     </div>
                     {% if result == '删除失败' %}
-                    {{ result }}
+                        {{ result }}
+                    {% endif %}
+
                     {% endif %}
                 </td>
+                {% endif %}
             </tr>
             {% endif %}
             {% endfor %}

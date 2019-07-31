@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container-fluid">
     <div class="control-group">
-        {% if perms.clients.can_delete_client %}
+        {% if perms.users.can_delete_client_info %}
         <h5>{{ client.cname }}&nbsp
             <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClient">删除</button>
@@ -38,7 +38,9 @@
         </h5>
         {% else %}
         <h5>{{ client.cname }}&nbsp
-            <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
+            {% if perms.users.can_change_client_info %}
+                <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
+            {% endif %}
         </h5>
         {% endif %}
     </div>
@@ -55,8 +57,11 @@
             <tr>
                 <td>主业务联系人：{{client.bc_name}}</td>
                 <td>主财务联系人：{{client.fc_name}}</td>
-                <td>咨费: </label>{{ client.cfee }} 元</td>
-
+                <td>
+                    {% if perms.users.can_view_cfee %}
+                    咨费：{{ client.cfee }} 元
+                    {% endif %}
+                </td>
             </tr>
         </table>
     </div>
@@ -90,7 +95,9 @@
    {% endfor %}-->
     <div class="control-group">
         <h5>项目列表 &nbsp
+            {% if perms.projects.can_add_project %}
             <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_project }}'">
+            {% endif %}
         </h5>
         <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
             <caption>项目列表</caption>
@@ -115,10 +122,11 @@
                 <td>{{ project.person_in_charge }}</td>
                 <td>{{ project.pcreatetime }}</td>
                 <td>{{ project.pdeadline }}</td>
+                {% if perms.projects.can_change_project %}
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ project.update_project_detail }}'">修改</button>
-
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
 
@@ -128,7 +136,7 @@
 
     <div class="control-group">
         <h5>业务联系人 &nbsp
-            {% if perms.clients.can_view_business_contact %}
+            {% if perms.users.can_add_client_bc_fc %}
             <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_bc }}'">
             {% endif %}
         </h5>
@@ -151,13 +159,16 @@
             <tr class="info">
                 <td>{{ bc.bc_name }}</td>
                 <td>{{ bc.bc_gender }}</td>
-                {% if perms.clients.can_view_business_contact %}
+                {% if perms.users.can_view_client_bc_fc_contact %}
                 <td>{{ bc.bc_mobile}}</td>
                 <td>{{ fc.fc_wechat}}</td>
                 <td>{{ bc.bc_email }}</td>
                 <td>{{ bc.bc_position }}</td>
+                {% if perms.users.can_change_client_bc_fc_contact %}
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{% url 'bc_detail_update' bc.bc_id client.cid %}'">修改</button>
+
+                    {% if perms.users.can_delete_client_bc_fc_contact %}
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClientBC">删除</button>
                     <div class="modal fade" id="deleteClientBC" tabindex="-1" role="dialog" aria-labelledby="deleteClientBCLabel">
                         <div class="modal-dialog" role="document">
@@ -181,9 +192,12 @@
                         </div>
                     </div>
                     {% if result == '删除失败' %}
-                    {{ result }}
+                        {{ result }}
+                    {% endif %}
+
                     {% endif %}
                 </td>
+                {% endif %}
                 {% endif %}
             </tr>
             {% endfor %}
@@ -193,7 +207,7 @@
     </div>
     <div class="control-group">
         <h5>财务联系人 &nbsp
-            {% if perms.clients.can_view_business_contact %}
+            {% if perms.users.can_add_client_bc_fc %}
             <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_fc }}'">
             {% endif %}
         </h5>
@@ -215,13 +229,16 @@
             <tr class="info">
                 <td>{{ fc.fc_name }}</td>
                 <td>{{ fc.fc_gender }}</td>
-                {% if perms.clients.can_view_financial_contact %}
+                {% if perms.users.can_view_client_bc_fc_contact %}
                 <td>{{ fc.fc_mobile}}</td>
                 <td>{{ fc.fc_wechat}}</td>
                 <td>{{ fc.fc_email }}</td>
                 <td>{{ fc.fc_position }}</td>
+                {% if perms.users.can_change_client_bc_fc_contact %}
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{% url 'fc_detail_update' fc.fc_id client.cid %}'">修改</button>
+
+                    {% if perms.users.can_delete_client_bc_fc_contact %}
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClientFC">删除</button>
                     <div class="modal fade" id="deleteClientFC" tabindex="-1" role="dialog" aria-labelledby="deleteClientFCLabel">
                         <div class="modal-dialog" role="document">
@@ -245,9 +262,12 @@
                         </div>
                     </div>
                     {% if result == '删除失败' %}
-                    {{ result }}
+                        {{ result }}
+                    {% endif %}
+
                     {% endif %}
                 </td>
+                {% endif %}
                 {% endif %}
             </tr>
             {% endfor %}

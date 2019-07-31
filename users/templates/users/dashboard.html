@@ -1,27 +1,94 @@
 {% extends "users/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="col-sm-12" class="content-section">
-      <div class="media">
+<div class="container-fluid">
+
+    <div class="media">
 
         <div class="media-body">
 
             <h3 class="page-name">个人中心</h3>
             <br>
             <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'home' %}'">LeapTech</button>
+                <button type="button" class="list-group-item list-group-item-action" onclick="location.href='.'">Welcome, {{ user.username }}</button>
                 <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'password_change' %}'">修改密码</button>
 
+{{ user.get_group_permissions }}
+                <div class="control-group">
+                    <table class="table table table-hover" border="1" width="100%" style="font-size:10px;table-layout: auto">
+                        <caption></caption>
+                        <thead style="background-color: whitesmoke">
+                        <tr style="text-align: center">
+                            <th><strong>权限明细</strong></th>
+                            <th>添加</th>
+                            <th>删除</th>
+                            <th>更改</th>
+                            <th>查看</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="text-align: center">
+                            <td>专家基本信息</td>
+                            <td>{% if not perms.experts.can_add_expert %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.experts.can_delete_expert %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.experts.can_change_expert %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.experts.can_view_expert %} - {% else %} 有权限 {% endif %}</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <td>专家联系方式</td>
+                            <td>{% if not perms.users.can_change_expert_contact_info %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_change_expert_contact_info %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_change_expert_contact_info %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_view_expert_contact_info %} - {% else %} 有权限 {% endif %}</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <td>项目基本信息</td>
+                            <td>{% if not perms.projects.can_add_project %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.projects.can_delete_project %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.projects.can_change_project %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.projects.can_view_project %} - {% else %} 有权限 {% endif %}</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <td>项目访谈信息</td>
+                            <td>{% if not perms.users.can_add_project_interview_1 %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_delete_project_interview %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if perms.users.can_change_project_interview %} 部分权限 {% elif perms.users.can_change_all_project_interview%} 有权限 {% else %} - {% endif %}</td>
+                            <td>{% if perms.users.can_view_project_interview %} 部分权限 {% elif perms.users.can_view_all_project_interview%} 有权限 {% else %} - {% endif %}</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <td>客户基本信息</td>
+                            <td>{% if not perms.users.can_add_client_info %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_delete_client_info %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_change_client_info %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_view_client_info %} - {% else %} 有权限 {% endif %}</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <td>客户联系方式</td>
+                            <td>{% if not perms.users.can_add_client_bc_fc %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_delete_client_bc_fc_contact %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_change_client_bc_fc_contact %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_view_client_bc_fc_contact %} - {% else %} 有权限 {% endif %}</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <td>客户咨费信息</td>
+                            <td>{% if not perms.users.can_view_cfee %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_change_cfee %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_change_cfee %} - {% else %} 有权限 {% endif %}</td>
+                            <td>{% if not perms.users.can_view_cfee %} - {% else %} 有权限 {% endif %}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-      </div>
-        <br><br>
-      <!-- FORM HERE -->
     </div>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            <p class="text-secondary">Welcome, {{ user.username }}</p>
-        </small>
-    </div>
+    <br>
+    <!-- FORM HERE -->
+</div>
+<div class="border-top pt-3">
+    <small class="text-muted">
+        <p class="text-secondary">Welcome, {{ user.username }}</p>
+    </small>
+</div>
 {% endblock content %}

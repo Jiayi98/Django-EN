@@ -44,9 +44,13 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">项目</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
+                {% if perms.users.can_view_client_info %}
                 <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>
                 <a class="dropdown-item" href="{% url 'advanced_client_form' %}">查找客户</a>
+                {% endif %}
+                {% if perms.users.can_add_client %}
                 <a class="dropdown-item" href="{% url 'add_client' %}">添加客户</a>
+                {% endif %}
             </div>
         </li>
         <li class="nav-item active">
@@ -72,79 +76,7 @@
 
 
 
-       <!--
-     <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 45px">
-         <ul class="container-fluid">
-        <div class="navbar-header" style="margin-top: 15px">
-             {% if user.is_authenticated %}
-            <ul class="nav navbar-nav">
-            <li class="dropdown">
-				<a href="{% url 'base' %}" class="navbar-brand dropdown-toggle" data-toggle="dropdown">
-					专家
-				</a>
-				<ul class="dropdown-menu">
-                    <li><a role="menuitem" tabindex="-1" href="{% url 'expertinfolist' %}" class="btn btn-sm">&nbsp&nbsp&nbsp专家列表</a></li>
-					<li><a role="menuitem" tabindex="-1" href="{% url 'advanced_expert_form'%}" class="btn btn-sm">&nbsp&nbsp&nbsp查找专家</a></li>
-					<li><a role="menuitem" tabindex="-1" href="{% url 'addexpert'%}" class="btn btn-sm"> &nbsp&nbsp&nbsp添加专家 </a></li>
-					<li><a role="menuitem" tabindex="-1" href="{% url 'updateexpert' %}" class="btn btn-sm"> &nbsp&nbsp&nbsp更新专家信息</a></li>
-				</ul>
-			</li>
-            <li class="dropdown">
-				<a href="{% url 'project_base' %}" class="navbar-brand dropdown-toggle" data-toggle="dropdown">
-					项目
-				</a>
-				<ul class="dropdown-menu">
-                    <li><a role="menuitem" tabindex="-1" href="{% url 'project_info_list' %}" class="btn btn-sm">&nbsp&nbsp&nbsp项目列表</a></li>
-					<li><a role="menuitem" tabindex="-1" href="{% url 'advanced_project_form' %}" class="btn btn-sm">&nbsp&nbsp&nbsp查找项目</a></li>
-					<li><a role="menuitem" tabindex="-1" href="{% url 'add_project' %}" class="btn btn-sm"> &nbsp&nbsp&nbsp添加项目 </a></li>
-				</ul>
-			</li>
-                <li class="dropdown">
-				<a href="{% url 'client_base' %}" class="navbar-brand dropdown-toggle" data-toggle="dropdown">
-					客户
-				</a>
-				<ul class="dropdown-menu">
-                    <li><a role="menuitem" tabindex="-1" href="{% url 'client_info_list' %}" class="btn btn-sm">&nbsp&nbsp&nbsp客户列表</a></li>
-					<li><a role="menuitem" tabindex="-1" href="{% url 'add_client' %}" class="btn btn-sm"> &nbsp&nbsp&nbsp添加客户</a></li>
-				</ul>
-			</li>
-                </ul>
-            {% endif %}
-        </div>
 
-        <ul class="nav navbar-nav navbar-left" style="margin-top: 15px">
-            {% if user.is_authenticated %}
-
-                <li class="nav-item">
-                    <div class="container-fluid">
-                        <form style="margin-top: 0%" method="get" action="{% url 'search_expert' %}" class="navbar-form navbar-left" role="search">
-                            {% csrf_token %}
-                            <input type="search" class="btn btn-sm" name='q' placeholder="全局搜索" required>
-                            <button type="submit" class="btn btn-success btn-sm">搜索</button>
-                        </form>
-                        {% if error_msg %}
-                            {{error_msg}}
-                        {% endif %}
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <button class="btn btn-info btn-sm" onclick="location.href='{% url 'dashboard' %}'">个人账户 </button>
-                </li>
-             &nbsp&nbsp&nbsp
-                <li class="nav-item">
-                    <button class="btn btn-danger btn-sm" onclick="location.href='{% url 'logout' %}'">登出</button>
-                </li>
-            {% else %}
-
-            &nbsp&nbsp&nbsp
-                <li class="nav-item">
-                    <button class="btn btn-success btn-sm" onclick="location.href='{% url 'login' %}'">登录</button>
-                </li>
-            {% endif %}
-        </ul>
-     </nav>
-   </header>-->
 
     <main role="main" class="container-fluid">
       <div class="row">
