@@ -42,7 +42,41 @@ urlpatterns = [
     path('reset/done/',
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name='password_reset_complete'),
-    path('addexpert/', experts_views.addExpert, name='addexpert'),
+
+
+    path('', include('projects.urls')),
+    path('', include('clients.urls')),
+    path('', include('experts.urls')),
+    path('', include('users.urls')),
+
+]
+
+"""
+    path('expert_contact_info/<str:ename>/<int:eid>/', experts_views.expert_contact_info, name='expert_contact_info'),
+path('addeworkexp/', experts_views.addWorkexp, name='addworkexp'),
+    path('addecomment/', experts_views.addComment, name='addcomment'),
+path('addexperttodatabase/', experts_views.addExpertToDatabase, name='addexperttodatabase'),
+path('projects/', projects_views.project, name='project_base'),
+    path('projects_list/', projects_views.projectInfo_list, name='project_info_list'),
+    path('add_project/', projects_views.add_project, name='add_project'),
+    path('addProjectToDatabase/', projects_views.addProjectToDatabase, name='addProjectToDatabase'),
+     path('clients/', clients_views.client, name='client_base'),
+    
+path('export_all_excel/', experts_views.export_all_excel, name='export_all_excel'),
+path('addworkexptodatabase/', experts_views.addWorkexpToDatabase, name='addworkexptodatabase'),
+path('addcommenttodatabase/<str:ename>/<str:emobile>/', experts_views.addCommentToDatabase, name='addcommenttodatabase'),
+ path('update/<int:eid>/<str:ename>/commentdetail/', experts_views.comment_detail_update, name='comment_detail_update'),
+path('updateomment', update_views.commentUpdate, name='updatecomment'),
+    path('updateworkexp/', update_views.workexpUpdate, name='updateworkexp'),
+   
+path('update/<int:eid>/<str:ename>/workexpdetail/', experts_views.workexp_detail_update, name='workexp_detail_update'),
+    path('workexpupdatetodatabase/', update_views.workexpUpdateToDatabase, name='workexpupdatetodatabase'),
+path('update/<int:eid>/<str:ename>/commentdetail/', experts_views.comment_detail_update, name='comment_detail_update'),
+    path('commentupdatetodatabase/', update_views.commentUpdateToDatabase, name='commentupdatetodatabase'),
+
+"""
+"""
+path('addexpert/', experts_views.addExpert, name='addexpert'),
     path('home/', experts_views.base, name='home'),
 
 
@@ -83,36 +117,5 @@ urlpatterns = [
 
     path('expert_payment/<int:ep_id>/edit', experts_views.get_payment_update, name='get_payment_update'),
 
-
-
-    path('', include('projects.urls')),
-    path('', include('clients.urls')),
-    path('', include('experts.urls')),
-    path('', include('users.urls')),
-
-]
-
-"""
-    path('expert_contact_info/<str:ename>/<int:eid>/', experts_views.expert_contact_info, name='expert_contact_info'),
-path('addeworkexp/', experts_views.addWorkexp, name='addworkexp'),
-    path('addecomment/', experts_views.addComment, name='addcomment'),
-path('addexperttodatabase/', experts_views.addExpertToDatabase, name='addexperttodatabase'),
-path('projects/', projects_views.project, name='project_base'),
-    path('projects_list/', projects_views.projectInfo_list, name='project_info_list'),
-    path('add_project/', projects_views.add_project, name='add_project'),
-    path('addProjectToDatabase/', projects_views.addProjectToDatabase, name='addProjectToDatabase'),
-     path('clients/', clients_views.client, name='client_base'),
-    
-path('export_all_excel/', experts_views.export_all_excel, name='export_all_excel'),
-path('addworkexptodatabase/', experts_views.addWorkexpToDatabase, name='addworkexptodatabase'),
-path('addcommenttodatabase/<str:ename>/<str:emobile>/', experts_views.addCommentToDatabase, name='addcommenttodatabase'),
- path('update/<int:eid>/<str:ename>/commentdetail/', experts_views.comment_detail_update, name='comment_detail_update'),
-path('updateomment', update_views.commentUpdate, name='updatecomment'),
-    path('updateworkexp/', update_views.workexpUpdate, name='updateworkexp'),
-   
-path('update/<int:eid>/<str:ename>/workexpdetail/', experts_views.workexp_detail_update, name='workexp_detail_update'),
-    path('workexpupdatetodatabase/', update_views.workexpUpdateToDatabase, name='workexpupdatetodatabase'),
-path('update/<int:eid>/<str:ename>/commentdetail/', experts_views.comment_detail_update, name='comment_detail_update'),
-    path('commentupdatetodatabase/', update_views.commentUpdateToDatabase, name='commentupdatetodatabase'),
 
 """
