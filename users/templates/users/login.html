@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container">
 
-    <h3 class="col-sm-10">Log In</h3>
-    <div class="col-sm-10 content-section">
+    <h3>Log In</h3>
+    <div content-section">
         <form class="form-horizontal" action="." method="post">
               <div class="control-group">
                 {{ form.as_p }}
@@ -15,10 +15,10 @@
 
             <p><input class="btn btn-success btn-sm" type="submit" value="Submit"></p>
         </form>
-        <div class="border-top pt-3">
+        <!--<div class="border-top pt-3">
             <small class="text-muted">
                 <a class="ml-2" href="{% url 'password_reset' %}"> 忘记密码?</a>
             </small>
-        </div>
+        </div>-->
     </div>
 {% endblock %}

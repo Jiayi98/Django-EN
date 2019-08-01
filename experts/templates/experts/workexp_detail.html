@@ -5,8 +5,8 @@
     <div class="control-group">
         <h5>{{expert.ename}}——工作经历列表</h5>
     </div>
-    <input type="button" class="btn btn-info btn-sm"  value="返回专家信息" onclick="location.href='{% url 'expert_detail' expert.ename expert.eid%}'">
-    <input type="button" class="btn btn-warning btn-sm"  value="新建工作经历" onclick="window.location.href='{{ expert.add_workexp_url }}'">
+    <input type="button" class="btn btn-info btn-sm"  value="专家个人页面" onclick="location.href='{% url 'expert_detail' expert.ename expert.eid%}'">
+    <input type="button" class="btn btn-success btn-sm"  value="新建" onclick="window.location.href='{{ expert.add_workexp_url }}'">
     <div class="control-group">
         <table class="table table-condensed table-hover" width="100%" style="margin-top: 10px;font-size: 11px">
             <caption></caption>
@@ -54,9 +54,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </td>
             </tr>
             {% endfor %}

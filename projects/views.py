@@ -38,8 +38,8 @@ def delete_p2e(request, pteid, pid):
 
     result = p2e.delete()
     if result:
-        myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=pid, cid=project.cid.cid)
-        # myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
+        myurl = '/project_detail/{pid}/{cid}/'.format(pid=pid, cid=project.cid.cid)
+        #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=pid, cid=project.cid.cid)
         return HttpResponseRedirect(myurl)
     else:
         result = '删除失败'
@@ -69,8 +69,7 @@ def project_detail(request, pid, cid):
     p2es = Project2Expert.objects.filter(pid=pid)
     return render(request, 'projects/project_detail.html', {'experts':experts,'project': project, 'client': client, 'p2es': p2es,'createtime':project.pcreatetime})
 
-
-
+# 添加项目访谈
 def add_p2e(request,pid):
     form = P2EForm(data=request.POST)
     project = Project.objects.get(pid=pid)
@@ -80,7 +79,6 @@ def add_p2e(request,pid):
     if request.method == "POST":
         try:
             expert = ExpertInfo.objects.get(eid=eid_num)
-            print("===========projects/views.valid=========")
         except:
             flag['status'] = 'error'
         else:
@@ -95,11 +93,11 @@ def add_p2e(request,pid):
                 new_obj = Project2Expert.objects.create(eid=expert,pid=project,c_payment=0.0,e_payment=0.0)
                 myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
                 return HttpResponseRedirect(myurl)
-                #return render(request, 'projects/add_p2e.html', {"project": project, "form": form,"new_obj":new_obj})
             else:
                 flag['status'] = 'error'
     return render(request, 'projects/add_p2e.html', {"project": project, "form": form,'flag':flag})
 
+# 修改项目访谈信息
 def update_p2e_detail(request,pteid):
     object = get_object_or_404(Project2Expert, pteid=pteid)
     #print(type(object.pid),type(object.eid))
@@ -107,10 +105,14 @@ def update_p2e_detail(request,pteid):
     if request.method == 'POST':
         form = Project2ExpertForm(instance=object, data=request.POST)
         if form.is_valid():
-
             form.save()
+            client = object.pid.cid
+            expert = object.eid
+            object.c_payment = client.cfee * object.fee_index * (object.itv_paid_duration/60)
+            object.e_payment = expert.efee * (object.itv_paid_duration/60)
+            object.save()
             result['status'] = 'success'
-            myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
+            myurl = '/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             return HttpResponseRedirect(myurl)
     else:
@@ -172,7 +174,7 @@ def update_project_detail(request,pid):
         form = ProjectUpdateForm(instance=project, data=request.POST)
         if form.is_valid():
             form.save()
-            myurl = 'http://127.0.0.1:8000/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
+            myurl = '/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
             #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
             return HttpResponseRedirect(myurl)
     else:

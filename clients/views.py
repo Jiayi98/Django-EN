@@ -34,7 +34,7 @@ def delete_client_bc(request, bc_id,cid):
     bc = BusinessContact.objects.get(bc_id=bc_id)
     result = bc.delete()
     if result:
-        myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+        myurl = "/clients/{cid}/detail".format(cid=cid)
         #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
         return HttpResponseRedirect(myurl)
     else:
@@ -47,7 +47,7 @@ def delete_client_fc(request, fc_id,cid):
     fc = FinancialContact.objects.get(fc_id=fc_id)
     result = fc.delete()
     if result:
-        myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+        myurl = "/clients/{cid}/detail".format(cid=cid)
         #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
         return HttpResponseRedirect(myurl)
     else:
@@ -110,6 +110,7 @@ def client_add_project(request, cid):
     if request.method == "POST":
         pname = request.POST.get('pname')
         pm = request.POST.get('pm')
+        person_in_charge = request.POST.get('person_in_charge')
         pcreatetime = request.POST.get('pcreatetime')
         pdeadline = request.POST.get('pdeadline')
         premark = request.POST.get('premark')
@@ -121,12 +122,13 @@ def client_add_project(request, cid):
             new_project.pname = pname
             new_project.cname = client.cname
             new_project.pm = pm
+            new_project.person_in_charge = person_in_charge
             new_project.pcreatetime = pcreatetime
             new_project.pdeadline = pdeadline
             new_project.premark = premark
             new_project.save()
             result['status'] = 'success'
-            myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+            myurl = "/clients/{cid}/detail".format(cid=cid)
             #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
             return HttpResponseRedirect(myurl)
 
@@ -160,8 +162,8 @@ def addClientToDatabase(request):
                 if new_client.fc_name != '':
                     FinancialContact.objects.create(fc_name=new_client.fc_name,cid=new_client)
 
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=new_client.cid)
-                #myurl = "http://47.94.224.242:197/clients/{cid}/detail".format(cid=new_client.cid)
+                myurl = "/clients/{cid}/detail".format(cid=new_client.cid)
+                #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=new_client.cid)
                 return HttpResponseRedirect(myurl)
             else:
                 # 如果存在同名客户会自动跳转到该客户详情页
@@ -192,8 +194,7 @@ def update_client_detail(request,cid):
         if form.is_valid():
             form.save()
             result['status'] = 'success'
-
-            myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+            myurl = "/clients/{cid}/detail".format(cid=cid)
             #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
             return HttpResponseRedirect(myurl)
         else:
@@ -232,7 +233,7 @@ def client_add_bc(request, cid):
                 new_bc.bc_position = bc_position
                 new_bc.save()
                 result['status'] = 'success'
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                myurl = "/clients/{cid}/detail".format(cid=cid)
                 #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
@@ -268,7 +269,7 @@ def client_add_fc(request, cid):
                 new_fc.fc_position = fc_position
                 new_fc.save()
                 result['status'] = 'success'
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                myurl = "/clients/{cid}/detail".format(cid=cid)
                 #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
@@ -291,7 +292,7 @@ def bc_detail_update(request, bc_id, cid):
             if form.is_valid():
                 form.save()
                 result['status'] = 'success'
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                myurl = "/clients/{cid}/detail".format(cid=cid)
                 #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
@@ -312,7 +313,7 @@ def fc_detail_update(request, fc_id, cid):
             if form.is_valid():
                 form.save()
                 result['status'] = 'success'
-                myurl = "http://127.0.0.1:8000/clients/{cid}/detail".format(cid=cid)
+                myurl = "/clients/{cid}/detail".format(cid=cid)
                 #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
