@@ -4,18 +4,19 @@
     <div class="control-group">
         <h5>添加客户</h5>
     </div>
+
     <div class="control-group">
     <form action="/addClientToDatabase/" method="post" name="addClientToDatabase">
         {% csrf_token %}
         <div class="form-group row">
-            <label for="cname" class="col-2 col-form-label">*客户名称：</label>
+            <label for="cname" class="col-2 col-form-label"><a style="color: red">*</a>客户名称：</label>
             <div class="col-6">
                 <input type="text" id="cname" name='cname' class="form-control" required>
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="bc_name" class="col-2 col-form-label">*主业务联系人：</label>
+            <label for="bc_name" class="col-2 col-form-label"><a style="color: red">*</a>主业务联系人：</label>
             <div class="col-2">
                 <input type="text" id="bc_name" name='bc_name' class="form-control" placeholder="业务联系人姓名" required>
             </div>
@@ -25,7 +26,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="ctype" class="col-2 col-form-label">*客户类型：</label>
+            <label for="ctype" class="col-2 col-form-label"><a style="color: red">*</a>客户类型：</label>
             <div class="col-2">
                 <select id="ctype" name='ctype' class="form-control" required>
                     <option>请选择</option>
@@ -35,21 +36,21 @@
                     <option>其它</option>
                 </select>
             </div>
-            <label for="cfee" class="col-2 col-form-label">咨费：</label>
+            <label for="cfee" class="col-2 col-form-label"><a style="color: red">*</a>咨费：</label>
             <div class="col-2">
-                <input type="number" id="cfee" name='cfee' class="form-control" value=0>
+                <input type="number" id="cfee" name='cfee' class="form-control" value=1 required>
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="cinfo" class="col-2 col-form-label">*客户信息：</label>
+            <label for="cinfo" class="col-2 col-form-label"><a style="color: red">*</a>客户信息：</label>
             <div class="col-10">
                 <textarea id="cinfo" name='cinfo' class="form-control" row="5" required></textarea>
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="cpolicy" class="col-2 col-form-label">*收费政策：</label>
+            <label for="cpolicy" class="col-2 col-form-label"><a style="color: red">*</a>收费政策：</label>
             <div class="col-10">
                 <textarea id="cpolicy" name='cpolicy' class="form-control" row="5" required></textarea>
             </div>
@@ -66,6 +67,7 @@
             &nbsp
             <button type="reset" class="btn btn-warning btn-sm">重置</button>
         </div>
+
 
     </form>
 

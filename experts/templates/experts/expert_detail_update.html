@@ -18,13 +18,13 @@
             </div>
 
             <div class="form-group row">
-                <label for="etrade" class="col-1 col-form-label">*行 业：</label>
+                <label for="etrade" class="col-1 col-form-label"><a style="color: red">*</a>行 业：</label>
                         <div class="col-2">
                             <select name="etrade" id="etrade" class="form-control" onchange="esubtrade_change(this)" required></select>
                         </div>
 
 
-                <label for="esubtrade" class="col-1 col-form-label">*子行业：</label>
+                <label for="esubtrade" class="col-1 col-form-label"><a style="color: red">*</a>子行业：</label>
                 <div class="col-2">
                     <select name="esubtrade" id="esubtrade" class="form-control" required></select>
                 </div>
@@ -166,7 +166,7 @@
                     <input type="text" id="elocation" name='elocation' class="form-control" value="{{expert.elocation}}">
                 </div>
 
-                <label for="esex" class="col-1 col-form-label">*性别：</label>
+                <label for="esex" class="col-1 col-form-label"><a style="color: red">*</a>性别：</label>
                 <div class="col-2">
                     <select id="esex" name='esex' class="form-control" required>
                             <option selected>请选择</option>
@@ -216,7 +216,7 @@
                 <div class="form-group row">
                 <label for="eupdated_by" class="col-1 col-form-label">添加人：</label>
                     <div class="col-2">
-                        <input id="eupdated_by" type="text" name='eupdated_by' value="{{ user.username }}" class="form-control">
+                        <input id="eupdated_by" type="text" name='eupdated_by' value="{{ user.username }}" class="form-control" required>
                     </div>
                 </div>
 

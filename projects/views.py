@@ -6,6 +6,7 @@ from experts.models import ExpertInfo,WorkExp
 from clients.models import Client,BusinessContact
 from projects.models import Project
 from .forms import *
+import django.utils.timezone as timezone
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -90,7 +91,11 @@ def add_p2e(request,pid):
                 else:
                     expert.interview_num = expert.interview_num + 1
                     expert.save()
-                new_obj = Project2Expert.objects.create(eid=expert,pid=project,c_payment=0.0,e_payment=0.0)
+                year = timezone.now().year
+                month = timezone.now().month
+                day = timezone.now().day
+                date = "{y}-{m}-{d}".format(y=year,m=month,d=day)
+                new_obj = Project2Expert.objects.create(eid=expert,pid=project,c_payment=0.0,e_payment=0.0, interviewer=request.user.username,itv_date=date,itv_stime='00:00',itv_etime='24:00')
                 myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
                 return HttpResponseRedirect(myurl)
             else:
@@ -101,16 +106,20 @@ def add_p2e(request,pid):
 def update_p2e_detail(request,pteid):
     object = get_object_or_404(Project2Expert, pteid=pteid)
     #print(type(object.pid),type(object.eid))
+    origin_itv_paid_duration = object.itv_paid_duration
     result = {}
     if request.method == 'POST':
         form = Project2ExpertForm(instance=object, data=request.POST)
         if form.is_valid():
             form.save()
-            client = object.pid.cid
-            expert = object.eid
-            object.c_payment = client.cfee * object.fee_index * (object.itv_paid_duration/60)
-            object.e_payment = expert.efee * (object.itv_paid_duration/60)
-            object.save()
+            if object.itv_paid_duration != origin_itv_paid_duration:
+                #如果计费市场发生改变则更新专家付费和客户收费总价
+                #print(object.itv_paid_duration, origin_itv_paid_duration)
+                client = object.pid.cid
+                expert = object.eid
+                object.c_payment = (client.cfee* 0.25) * object.fee_index * (object.itv_paid_duration//15)
+                object.e_payment = (expert.efee * 0.25) * (object.itv_paid_duration//15)
+                object.save()
             result['status'] = 'success'
             myurl = '/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)

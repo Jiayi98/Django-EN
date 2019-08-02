@@ -62,6 +62,11 @@
                 <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
             </form>-->
             {% endif %}
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link">{{user.username}}</a></li>
+
+            </ul>
+
             <ul>
                 {% if user.is_authenticated %}
                 <li class="nav-item" style="margin-top: 15px">
@@ -80,26 +85,24 @@
 
 <main role="main" class="container-fluid">
 
-    <div class="jumbotron">
-        <div class="container">
+    <div class="jumbotron" style="background-image: url("/www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwia6IHr3OPjAhXVLqYKHYPODOUQjRx6BAgBEAU&url=https%3A%2F%2Fwww.123rf.com%2Fphoto_74303161_stock-vector-social-network-connection-and-global-business-communication-concept.html&psig=AOvVaw3zuYYSHqqBMX6bNSb3-q5R&ust=1564819422788457")">
+        <div class="container" align="center">
             <h1 class="display-3">信息管理查询系统</h1>
             {% if user.is_authenticated %}
             <p>
-                <div class="row">
-                    <div class="col-md-2" align="center">
-
-                        <a class="btn btn-info" href="{% url 'advanced_expert_form'%}" role="button">查找专家 &raquo;</a>
-
+                <div class="row" align="center">
+                    <div class="col-2" align="center">
                     </div>
-                    <div class="col-md-2" align="center">
+                    <div class="col-8" align="center">
+                            <a class="btn btn-info" href="{% url 'advanced_expert_form'%}" role="button">查找专家 &raquo;</a>
 
                             <a class="btn btn-info" href="{% url 'advanced_project_form' %}" role="button">查找项目 &raquo;</a>
 
-                    </div>
-                    <div class="col-md-2" align="center">
-                        {% if perms.users.can_view_client_info %}
+                            {% if perms.users.can_view_client_info %}
                             <a class="btn btn-info" href="{% url 'advanced_client_form' %}" role="button">查找客户 &raquo;</a>
-                        {% endif %}
+                            {% endif %}
+                    </div>
+                    <div class="col-2" align="center">
                     </div>
                 </div>
             </p>

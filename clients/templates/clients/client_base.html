@@ -60,6 +60,10 @@
       <input style="height: 32px" class="form-control" type="text" aria-label="Search" name='q' placeholder="专家-全局搜索" required>
     </form>-->
       {% endif %}
+      <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link">{{user.username}}</a></li>
+
+            </ul>
       <ul>
            {% if user.is_authenticated %}
            <li class="nav-item" style="margin-top: 15px">

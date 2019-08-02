@@ -8,6 +8,8 @@ class MyUser(models.Model):
     user = models.OneToOneField(User, on_delete= models.CASCADE)
 
     class Meta:
+        managed = True
+        db_table = 'users_myuser'
         permissions = (
             ('can_view_expert_contact_info', u'查看专家联系方式'),
             ('can_change_expert_contact_info', u'修改专家联系方式'),
@@ -37,6 +39,7 @@ class MyUser(models.Model):
 
     def __str__(self):
         return self.user.username
+
 # # Create your models here.
 #
 # #每个model默认都有三个permission，即 add model, change model 和 delete model

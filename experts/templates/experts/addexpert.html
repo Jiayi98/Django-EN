@@ -4,16 +4,17 @@
     <div class="control-group">
         <h5>添加专家</h5>
     </div>
+
     <div class="control-group" align="left">
         <form method="post" class="form-horizontal">
             {% csrf_token %}
 
             <div class="form-group row">
-                <label for="ename" class="col-1 col-form-label">*姓名：</label>
+                <label for="ename" class="col-1 col-form-label"><a style="color: red">*</a>姓名：</label>
                 <div class="col-2">
                     <input type="text" id="ename" name='ename' class="form-control" required>
                 </div>
-                <label for="emobile" class="col-1 col-form-label">*电话：</label>
+                <label for="emobile" class="col-1 col-form-label"><a style="color: red">*</a>电话：</label>
                 <div class="col-2">
                     <input type="text" id="emobile" name="emobile" class="form-control" required>
                 </div>
@@ -30,13 +31,13 @@
             </div>
 
             <div class="form-group row">
-                <label for="etrade" class="col-1 col-form-label">行 业：</label>
+                <label for="etrade" class="col-1 col-form-label"><a style="color: red">*</a>行 业：</label>
                         <div class="col-2">
                             <select name="etrade" id="etrade" class="form-control" onchange="esubtrade_change(this)"></select>
                         </div>
 
 
-                <label for="esubtrade" class="col-1 col-form-label">子行业：</label>
+                <label for="esubtrade" class="col-1 col-form-label"><a style="color: red">*</a>子行业：</label>
                 <div class="col-2">
                     <select name="esubtrade" id="esubtrade" class="form-control"></select>
                 </div>
@@ -178,7 +179,7 @@
                     <input type="text" id="elocation" name='elocation' class="form-control">
                 </div>
 
-                <label for="esex" class="col-1 col-form-label">*性别：</label>
+                <label for="esex" class="col-1 col-form-label"><a style="color: red">*</a>性别：</label>
                 <div class="col-2">
                     <select id="esex" name='esex' class="form-control" required>
                             <option selected>请选择</option>
@@ -195,9 +196,9 @@
                     <input type="text" id="ecomefrom" name='ecomefrom' class="form-control">
                 </div>
 
-                <label for="efee" class="col-1 col-form-label">咨询费：</label>
+                <label for="efee" class="col-1 col-form-label"><a style="color: red">*</a>咨询费：</label>
                 <div class="col-2">
-                    <input type="number" id="efee" value="0" name='efee' class="form-control">
+                    <input type="number" id="efee" value="0" name='efee' class="form-control" required>
                 </div>
 
                 <label for="estate" class="col-1 col-form-label">级别：</label>
@@ -230,16 +231,15 @@
                 <div class="form-group row">
                 <label for="eupdated_by" class="col-1 col-form-label">添加人：</label>
                     <div class="col-2">
-                            <input id="eupdated_by" type="text" name='eupdated_by' value="{{ user.username }}" class="form-control">
+                            <input id="eupdated_by" type="text" name='eupdated_by' value="{{ user.username }}" class="form-control" required>
                     </div>
                 </div>
 
-
-                <p class="control-group">
-                    {% if error == 'error' %}
-                    操作未成功请重新操作(操作失败原因：已存在同名同电话专家)
-                    {% endif %}
-                </p>
+                {% if error == 'error' %}
+                    <div class="alert-danger" role="alert">
+                        操作未成功请重新操作!(操作失败潜在原因：已存在同名同电话专家)
+                    </div>
+                {% endif %}
                 <div class="control-group">
                     <button type="submit" class="btn btn-success btn-sm">提交</button>
                     &nbsp

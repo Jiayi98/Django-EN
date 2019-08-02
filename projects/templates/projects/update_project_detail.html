@@ -9,13 +9,13 @@
             {% csrf_token %}
 
             <div class="form-group row">
-                <label for="pname" class="col-2 col-form-label">*项目名称：</label>
+                <label for="pname" class="col-2 col-form-label"><a style="color: red">*</a>项目名称：</label>
                 <div class="col-6">
                     <input type="text" id="pname" name='pname' class="form-control" value="{{ project.pname }}">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="pm" class="col-2 col-form-label">*客户对接人：</label>
+                <label for="pm" class="col-2 col-form-label"><a style="color: red">*</a>客户对接人：</label>
                 <div class="col-2">
                     <select id="pm" name='pm' class="form-control" required>
                         <option selected>请选择</option>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="pcreatetime" class="col-2 col-form-label">*开始日期：</label>
+                <label for="pcreatetime" class="col-2 col-form-label"><a style="color: red">*</a>开始日期：</label>
                 <div class="col-2">
                     <input type="text" id="pcreatetime" name='pcreatetime' class="form-control" value="{{ project.pcreatetime }}">
                 </div>

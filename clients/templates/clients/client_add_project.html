@@ -6,9 +6,9 @@
     </div>
     <div class="control-group" align="left">
         {% if result.status == 'error' %}
-        <p role="alert-danger">
+        <div class="alert-danger" role="alert">
             该客户已有同名项目！
-        </p>
+        </div>
         {% endif %}
     </div>
     <div class="control-group" align="left">
@@ -17,13 +17,13 @@
             {% csrf_token %}
 
             <div class="form-group row">
-                <label for="pname" class="col-2 col-form-label">*项目名称：</label>
+                <label for="pname" class="col-2 col-form-label"><a style="color: red">*</a>项目名称：</label>
                 <div class="col-6">
                     <input type="text" id="pname" name='pname' class="form-control" required>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="pm" class="col-2 col-form-label">*客户对接人：</label>
+                <label for="pm" class="col-2 col-form-label"><a style="color: red">*</a>客户对接人：</label>
                 <div class="col-2">
                     <select id="pm" name='pm' class="form-control" required>
                         <option selected>请选择</option>
@@ -33,13 +33,13 @@
                     </select>
                 </div>
 
-                <label for="person_in_charge" class="col-2 col-form-label">*项目经理：</label>
+                <label for="person_in_charge" class="col-2 col-form-label"><a style="color: red">*</a>项目经理：</label>
                 <div class="col-2">
                     <input type="text" id="person_in_charge" name='person_in_charge' class="form-control" required>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="pcreatetime" class="col-2 col-form-label">*开始日期：</label>
+                <label for="pcreatetime" class="col-2 col-form-label"><a style="color: red">*</a>开始日期：</label>
                 <div class="col-2">
                     <input type="text" id="pcreatetime" name='pcreatetime' class="form-control" required>
                 </div>

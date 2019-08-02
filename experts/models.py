@@ -7,21 +7,21 @@ from django.shortcuts import render
 
 class ExpertInfo(models.Model):
     eid = models.AutoField(primary_key=True)
-    ename = models.CharField(max_length=50, blank=True, null=True)
+    ename = models.CharField(max_length=150, blank=True, null=True)
     esex = models.CharField(max_length=10, choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
-    emobile = models.CharField(max_length=50, blank=True, null=True)
-    eemail = models.CharField(max_length=80, blank=True, null=True)
+    emobile = models.CharField(max_length=150, blank=True, null=True)
+    eemail = models.CharField(max_length=150, blank=True, null=True)
     etrade = models.CharField(max_length=150, blank=True, null=True)
     esubtrade = models.CharField(max_length=150, blank=True, null=True)
     elocation = models.CharField(max_length=150, blank=True, null=True)
-    eqq = models.CharField(max_length=50, blank=True, null=True)
+    eqq = models.CharField(max_length=150, blank=True, null=True)
     estate = models.IntegerField(blank=True, null=True)
     ecomefrom = models.TextField(blank=True, null=True)
     eremark = models.TextField(blank=True, null=True)
     addtime = models.DateTimeField(auto_now_add=True)
     ebackground = models.TextField(blank=True, null=False)
     efee = models.FloatField(blank=True,null=False,default=0.0,verbose_name='专家付费单价')
-    eupdated_by = models.CharField(max_length=50, blank=True, null=True)
+    eupdated_by = models.CharField(max_length=150, blank=True, null=True)
     interview_num = models.IntegerField(blank=True,null=True,default=0)
 
     class Meta:
@@ -122,19 +122,19 @@ class ExpertComments(models.Model):
     def get_comment_update_url(self):
         print("==========在models.py中的 get_comment_update_url()")
         num = self.eid.eid
-        print(type(num))
+        #print(type(num))
         return reverse('comment_detail_update', args=[num,self.cmtid ])
 
     def delete_comment(self):
         print("==========在models.py中的 delete_comment()")
         num = self.eid.eid
-        print(type(num))
+        #print(type(num))
         return reverse('delete_comment', args=[num,self.cmtid ])
 
     def delete_comment_confirm(self):
         print("==========在models.py中的 delete_comment_confirm()")
         num = self.eid.eid
-        print(type(num))
+        #print(type(num))
         return reverse('delete_comment_confirm', args=[num,self.cmtid ])
     """
     def get_comment_url(self):
@@ -146,7 +146,7 @@ class WorkExp(models.Model):
     eid = models.ForeignKey(ExpertInfo, models.DO_NOTHING, db_column='eid')
     stime = models.CharField(max_length=150,blank=True, null=True)
     etime = models.CharField(max_length=150,blank=True, null=True)
-    company = models.CharField(max_length=150, blank=True, null=True)
+    company = models.CharField(max_length=250, blank=True, null=True)
     agency = models.CharField(max_length=150, blank=True, null=True)
     position = models.CharField(max_length=150, blank=True, null=True)
     duty = models.TextField(blank=True, null=True)
@@ -181,9 +181,9 @@ class Payment(models.Model):
     ep_id = models.AutoField(primary_key=True)
     eid = models.ForeignKey(ExpertInfo, on_delete=models.CASCADE)
     alipay = models.CharField(max_length=150, blank=True, null=True, verbose_name='支付宝')
-    bank = models.CharField(max_length=150, blank=True, null=True, verbose_name='银行账号')
+    bank = models.CharField(max_length=250, blank=True, null=True, verbose_name='银行账号')
     wechat = models.CharField(max_length=150, blank=True, null=True, verbose_name='微信支付')
-    remark = models.TextField(max_length=150, blank=True, null=True, verbose_name='备注')
+    remark = models.TextField(blank=True, null=True, verbose_name='备注')
 
     class Meta:
         managed = True

@@ -4,22 +4,22 @@ from .models import ExpertInfo,ExpertComments,WorkExp,Payment
 
 # 从ExpertInfo模型中动态地创建表单
 class ExpertInfoForm(forms.ModelForm):
-    ename = forms.CharField(label='*姓名',max_length=50, required=True)
-    esex = forms.CharField(label='性别(M/F)',max_length=10, required=False)
-    emobile = forms.CharField(label='*电话(多个电话请用分号隔开)',max_length=50, required=True)
-    eemail = forms.CharField(label='邮箱',max_length=80, required=False)
-    etrade = forms.CharField(label='行业',max_length=150, required=False)
-    esubtrade = forms.CharField(label='子行业',max_length=150, required=False)
+    ename = forms.CharField(label='*姓名',required=True)
+    esex = forms.CharField(label='性别(M/F)',required=False)
+    emobile = forms.CharField(label='*电话(多个电话请用分号隔开)',required=True)
+    eemail = forms.CharField(label='邮箱',required=False)
+    etrade = forms.CharField(label='行业',required=False)
+    esubtrade = forms.CharField(label='子行业',required=False)
 
-    elocation = forms.CharField(label='城市',max_length=150, required=False)
-    eqq = forms.CharField(label='微信',max_length=50, required=False)
+    elocation = forms.CharField(label='城市',required=False)
+    eqq = forms.CharField(label='微信',required=False)
     estate = forms.IntegerField(label='级别',required=False)
     ecomefrom = forms.CharField(label='来源',required=False)
     eremark = forms.CharField(label='备注',required=False)
     ebackground = forms.CharField(label='背景',required=False)
     efee = forms.FloatField(label='咨询费',required=False)
     interview_num = forms.IntegerField(label='访谈次数',required=False)
-    eupdated_by = forms.CharField(label='*录入员工姓名',max_length=50, required=True)
+    eupdated_by = forms.CharField(label='*录入员工姓名',required=True)
 
 
     class Meta:
@@ -45,8 +45,8 @@ class CommentForm(forms.ModelForm):
     #for exp in allExperts:
     #    if(exp.ename==ename and exp.emobile==emobile):
     #        eid = exp.eid
-    eproblem = forms.CharField(label='问题',required=True)
-    ecomment = forms.CharField(label='回答',required=True)
+    eproblem = forms.CharField(label='问题',required=False)
+    ecomment = forms.CharField(label='回答',required=False)
 
 
     class Meta:
@@ -71,11 +71,11 @@ class WorkexpForm(forms.ModelForm):
     #         eid = exp.eid
     stime = forms.CharField(label='*开始时间(YYYY-MM)',required=True)
     etime = forms.CharField(label='结束时间(YYYY-MM)',required=False)
-    company = forms.CharField(label='公司',max_length=150,required=False)
-    agency = forms.CharField(label='部门',max_length=150,required=False)
-    position = forms.CharField(label='职位',max_length=150,required=False)
-    duty = forms.CharField(label='职责',max_length=150,required=False)
-    area = forms.CharField(label='领域',max_length=150,required=False)
+    company = forms.CharField(label='公司',required=True)
+    agency = forms.CharField(label='部门',required=False)
+    position = forms.CharField(label='职位',required=False)
+    duty = forms.CharField(label='职责',required=False)
+    area = forms.CharField(label='领域',required=False)
 
 
     class Meta:
@@ -107,10 +107,10 @@ class deleteConfirmForm(forms.Form):
 
 class PaymentForm(forms.ModelForm):
     # F. Expert_Payment
-    alipay = forms.CharField(max_length=150, label='支付宝',required=False)
-    bank = forms.CharField(max_length=150, label='银行账号',required=False)
-    wechat = forms.CharField(max_length=150, label='微信支付',required=False)
-    remark = forms.CharField(max_length=150, label='备注',required=False)
+    alipay = forms.CharField(label='支付宝',required=False)
+    bank = forms.CharField(label='银行账号',required=False)
+    wechat = forms.CharField(label='微信支付',required=False)
+    remark = forms.CharField(label='备注',required=False)
 
     class Meta:
         model = Payment

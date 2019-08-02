@@ -8,7 +8,7 @@
         <form action="." method="post">
             {% csrf_token %}
             <div class="form-group row">
-                <label for="eid" class="col-2 col-form-label">*专家ID：</label>
+                <label for="eid" class="col-2 col-form-label"><a style="color: red">*</a>专家ID：</label>
                 <div class="col-2">
                     <input type="text" id="eid" name='eid' class="form-control" placeholder="必填" required>
                 </div>

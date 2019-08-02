@@ -5,10 +5,10 @@ from django.urls import reverse
 class Client(models.Model):
     cid = models.AutoField(primary_key=True)
     cname = models.CharField(max_length=150, blank=True, null=True, verbose_name='客户名称')
-    bc_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='主业务联系人')
-    fc_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='主财务联系人')
-    cpolicy = models.CharField(max_length=50, blank=True, null=True,verbose_name='收费政策')
-    ctype = models.CharField(max_length=50,blank=True,null=True,verbose_name='客户类型')
+    bc_name = models.CharField(max_length=150, blank=True, null=True, verbose_name='主业务联系人')
+    fc_name = models.CharField(max_length=150, blank=True, null=True, verbose_name='主财务联系人')
+    cpolicy = models.TextField(blank=True, null=True,verbose_name='收费政策')
+    ctype = models.CharField(max_length=150,blank=True,null=True,verbose_name='客户类型')
     cinfo = models.TextField(blank=True, null=True,verbose_name='客户介绍')
     cremark = models.TextField(blank=True, null=True,verbose_name='备注')
     cfee = models.FloatField(blank=True,null=False,default=0.0,verbose_name='咨费')
@@ -47,12 +47,12 @@ class Client(models.Model):
 class BusinessContact(models.Model):
     # D. BusinessContact: 一个客户公司有多个业务联系人
     bc_id = models.AutoField(primary_key=True)
-    bc_name = models.CharField(max_length=50, blank=True, null=True)
+    bc_name = models.CharField(max_length=150, blank=True, null=True)
     bc_gender = models.CharField(max_length=10,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
-    bc_mobile = models.CharField(max_length=50, blank=True, null=True)
+    bc_mobile = models.CharField(max_length=150, blank=True, null=True)
     bc_email = models.CharField(max_length=150, blank=True, null=True)
     bc_wechat = models.CharField(max_length=150, blank=True, null=True)
-    bc_position = models.CharField(max_length=80, blank=True, null=True)
+    bc_position = models.CharField(max_length=150, blank=True, null=True)
     cid = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     class Meta:
@@ -62,12 +62,12 @@ class BusinessContact(models.Model):
 class FinancialContact(models.Model):
     # E. FinancialContact: 一个客户公司有多个财务联系人
     fc_id = models.AutoField(primary_key=True)
-    fc_name = models.CharField(max_length=50, blank=True, null=True)
+    fc_name = models.CharField(max_length=150, blank=True, null=True)
     fc_gender = models.CharField(max_length=10,choices=[('M', '男'), ('F', '女'), ('X','未知')], default='X')
     fc_mobile = models.CharField(max_length=150, blank=True, null=True)
     fc_email = models.CharField(max_length=150, blank=True, null=True)
     fc_wechat = models.CharField(max_length=150, blank=True, null=True)
-    fc_position = models.CharField(max_length=80, blank=True, null=True)
+    fc_position = models.CharField(max_length=150, blank=True, null=True)
     cid = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     class Meta:

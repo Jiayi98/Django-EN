@@ -14,7 +14,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from projects.models import Project,Project2Expert
 from clients.models import Client
-
+from time import time
 
 
 
@@ -182,7 +182,8 @@ def addok(request):
 
 
 def expertInfo_list(request):
-    experts_list = ExpertInfo.objects.all()[:300]
+    experts_list = ExpertInfo.objects.raw('select * from expert_info order by eid desc limit 100;')
+    #experts_list = ExpertInfo.objects.all()[:300]
     paginator = Paginator(experts_list, 30)
     page = request.GET.get('page')
     try:
@@ -357,10 +358,11 @@ def advanced_expert_search(request):
 
     print("高级搜索关键词：",info_variables, work_variables)
     if len(info_variables) == 0 and len(work_variables) == 0:
-        # 没有任何限制，直接获取所有专家
-        expert_list = ExpertInfo.objects.all()
-        num_of_result = len(expert_list)
-        return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
+        # 没有任何限制，回到查找专家页面
+        return advanced_expert_form(request)
+        # expert_list = ExpertInfo.objects.all()
+        # num_of_result = len(expert_list)
+        #return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
     elif eid:
         # 已知eid，直接获取对象
         expert_list = ExpertInfo.objects.filter(eid=eid)
@@ -369,10 +371,9 @@ def advanced_expert_search(request):
 
     elif len(info_variables) == 0:
         # 对专家个人信息无限制，仅对工作经历筛选
-        #work_list = WorkExp.objects.filter(company__contains=company,agency__contains=agency,position__contains=position,duty__contains=duty,area__contains=area)
         work_list = WorkExp.objects.filter(company__contains=company)
         expert_list = [work.eid for work in work_list]
-
+        expert_list = list(set(expert_list))
         if company != '':
             # 搜索限定词中包括公司名，则以"公司限定搜索词"与专家公司名称相似度排序
             expert_list = search_sort_helper(expert_list, company)
@@ -381,7 +382,6 @@ def advanced_expert_search(request):
 
     elif len(work_variables) == 0:
         # 对工作经历无限制，仅通过对专家信息的条件限制筛选
-        #expert_list = ExpertInfo.objects.filter(ename__contains=name,esex__icontains=sex,etrade__contains=trade, esubtrade__contains=subtrade, elocation__contains=location, ebackground__contains=background)
         keywords = background.split()   # 对背景字段的搜索词进行分隔
         if len(keywords) >= 1:
             #   背景有一个或多个搜索词
@@ -391,6 +391,7 @@ def advanced_expert_search(request):
                                              esubtrade__contains=subtrade,
                                              ebackground__contains=keywords[0]
                                              )
+
             print("第一次筛选结果数量：",len(temp))
             keywords = keywords[1:]     # 获取第一个之后的搜索词
             for k in keywords:
@@ -405,7 +406,6 @@ def advanced_expert_search(request):
 
             expert_list = temp
         else:
-            expert_list = ExpertInfo.objects.filter(etrade__contains=trade)
             expert_list = ExpertInfo.objects.filter(
                 ename__contains=name,
                 etrade__contains=trade,
@@ -420,7 +420,6 @@ def advanced_expert_search(request):
         # 既对工作经历有限制，又对专家信息有限制
         result_list = WorkExp.objects.filter(company__contains=company)
         expert_list = []
-
         keywords = background.split()
         print("先通过公司限制筛选出的结果数量：",len(result_list))    # 对背景字段的搜索词进行分隔
         for workexp in result_list:
@@ -438,10 +437,11 @@ def advanced_expert_search(request):
             # 对背景有限制条件
             temp = expert_list
             print("temp:", len(temp))
-            keywords = keywords[1:]
+
             for k in keywords:
                 pool = temp
                 temp = []
+                print("本次筛选关键词为：", k)
                 for expert in pool:
                     if expert.ebackground and k in expert.ebackground:
                         temp.append(expert)
@@ -460,6 +460,7 @@ def advanced_expert_search(request):
 
 
 def search_expert(request):
+    t = time()
     q = request.GET.get('q')
     error_msg = ''
     print("========== 全局搜索搜索关键词： ",q)
@@ -469,6 +470,7 @@ def search_expert(request):
 
     expert_list = get_expert_list(q)
     num_of_result = len(expert_list)
+    print("时间：",time() - t)
     # 可对所有模块进行全局搜索
     #client_list = get_client_list(q)
     #project_list = get_project_list(q)
@@ -525,6 +527,7 @@ def get_expert_list(q):
 
         result_list2 = ExpertComments.objects.filter(
             Q(eproblem__contains=q) | Q(ecomment__contains=q))
+        temp2 = [comment.eid for comment in result_list2]
 
         result_list3 = WorkExp.objects.filter(
             Q(company__contains=q) |
@@ -532,6 +535,7 @@ def get_expert_list(q):
             Q(position__contains=q) |
             Q(duty__contains=q)
         )
+        temp3 = [workexp.eid for workexp in result_list3]
 
     else:
 
@@ -548,6 +552,7 @@ def get_expert_list(q):
                                                  )
 
         result_list2 = ExpertComments.objects.filter(Q(eproblem__icontains=q) | Q(ecomment__icontains=q))
+        temp2 = [comment.eid for comment in result_list2]
 
         result_list3 = WorkExp.objects.filter(
             Q(company__icontains=q) |
@@ -555,31 +560,10 @@ def get_expert_list(q):
             Q(position__icontains=q) |
             Q(duty__icontains=q)
         )
+        temp3 = [workexp.eid for workexp in result_list3]
 
-    items = chain(result_list1, result_list2, result_list3)
-    # items = chain(result_list1, result_list2)
-    for item in items:
-        if type(item) is ExpertInfo:
-            expert_list.append(item)
-            # print(item, "========expert")
-        elif type(item) is ExpertComments:
-            try:
-                expert = item.eid
-            except:
-                pass
-            else:
-                expert_list.append(expert)
-            # print(expert, "=======comments")
-        else:
-            try:
-                expert = item.eid
-            except:
-                pass
-            else:
-                expert_list.append(expert)
-            # print(expert,"=====workexp")
-    expert_list = list(set(expert_list))
-
+    items = chain(result_list1, temp2, temp3)    # 合并三个lists
+    expert_list = list(set(items))    # 去重后变回list，因为不可对set进行排序
     expert_list = search_sort_helper(expert_list, q)
     return expert_list
 

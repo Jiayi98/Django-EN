@@ -1,7 +1,7 @@
 {% extends "experts/base.html" %}
 {% block content %}
 <div class="container-fluid">
-      <div class="control-group">
+    <div class="control-group">
         <h5>{{ expert.ename }}&nbsp
             {% if perms.experts.can_change_expert %}
             <input type="button" class="btn btn-info btn-sm"  value="编辑" onclick="window.location.href='{{ expert.get_update_url }}'">
@@ -137,90 +137,7 @@
         </table>
     </div>
 
-    <div class="control-group">
-        <h5>Comments &nbsp
-            <input type="button" class="btn btn-success btn-sm"  value="新建" onclick="window.location.href='{{ expert.add_comment_url }}'"></caption>
-        </h5>
-        <table class="table table-condensed table-hover" width="100%" style="font-size:10px">
-            <caption>评论</caption>
-            <thead style="background-color: whitesmoke">
-            <tr>
-                <th width="26%">问题</th>
-                <th width="64%">详情</th>
-                <th width="11%"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for comment in comments %}
-            <tr>
 
-                <td>{{ comment.eproblem }}</td>
-                <td style="white-space: pre-line">{{ comment.ecomment }}</td>
-
-                <td>
-                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
-                    <!-- 模态框（Modal） -->
-                    {% if perms.users.can_delete_expert_comments %}
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCommentModal">删除</button>
-                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label  class="control-label">确定要删除吗？</label>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ comment.delete_comment_confirm }}'">确认</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="control-group">
-        <h5>支付方式</h5>
-        <table class="table table-condensed table-hover" width="100%" style="font-size:10px">
-            <caption>支付方式</caption>
-            <thead style="background-color: whitesmoke">
-            <tr>
-                <th width="23%">支付宝</th>
-                <th width="25%">银行账号</th>
-                <th width="25%">微信支付</th>
-                <th width="25%">备注</th>
-                <th width="2%"></th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <tr>
-                <td>{{ pay.alipay }}</td>
-                <td>{{ pay.bank }}</td>
-                <td>{{ pay.wechat }}</td>
-                <td>{{ pay.remark }}</td>
-
-                <td>
-                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ pay.get_payment_update }}'">编辑</button>
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
 
     <div class="control-group">
         <h5>参与项目</h5>
@@ -314,5 +231,91 @@
             </tbody>
         </table>
     </div>
+
+    <div class="control-group">
+        <h5>支付方式</h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px">
+            <caption>支付方式</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="23%">支付宝</th>
+                <th width="25%">银行账号</th>
+                <th width="25%">微信支付</th>
+                <th width="25%">备注</th>
+                <th width="2%"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>{{ pay.alipay }}</td>
+                <td>{{ pay.bank }}</td>
+                <td>{{ pay.wechat }}</td>
+                <td>{{ pay.remark }}</td>
+
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ pay.get_payment_update }}'">编辑</button>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="control-group">
+        <h5>Comments &nbsp
+            <input type="button" class="btn btn-success btn-sm"  value="新建" onclick="window.location.href='{{ expert.add_comment_url }}'"></caption>
+        </h5>
+        <table class="table table-condensed table-hover" width="100%" style="font-size:10px">
+            <caption>评论</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="26%">问题</th>
+                <th width="64%">详情</th>
+                <th width="11%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+            <tr>
+
+                <td>{{ comment.eproblem }}</td>
+                <td style="white-space: pre-line">{{ comment.ecomment }}</td>
+
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ comment.get_comment_update_url }}'">修改</button>
+                    <!-- 模态框（Modal） -->
+                    {% if perms.users.can_delete_expert_comments %}
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCommentModal">删除</button>
+                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  class="control-label">确定要删除吗？</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ comment.delete_comment_confirm }}'">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
 </div>
 {% endblock content %}

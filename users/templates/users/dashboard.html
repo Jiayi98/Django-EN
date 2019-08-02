@@ -29,10 +29,10 @@
                             <tbody>
                             <tr style="text-align: center">
                                 <td>专家基本信息</td>
-                                <td>{% if not perms.experts.can_add_expert %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.experts.can_delete_expert %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.experts.can_change_expert %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.experts.can_view_expert %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.can_add_expert_info %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.can_delete_expert_info %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.can_change_expert_info %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.can_view_expert_info %} - {% else %} 有权限 {% endif %}</td>
                             </tr>
                             <tr style="text-align: center">
                                 <td>专家联系方式</td>
