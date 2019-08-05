@@ -97,7 +97,7 @@
    {% endfor %}-->
     <div class="control-group">
         <h5>项目列表 &nbsp
-            {% if perms.projects.can_add_project %}
+            {% if perms.projects.add_project %}
             <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ client.client_add_project }}'">
             {% endif %}
         </h5>
@@ -124,7 +124,7 @@
                 <td>{{ project.person_in_charge }}</td>
                 <td>{{ project.pcreatetime }}</td>
                 <td>{{ project.pdeadline }}</td>
-                {% if perms.projects.can_change_project %}
+                {% if perms.projects.change_project %}
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ project.update_project_detail }}'">修改</button>
                 </td>

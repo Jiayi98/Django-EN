@@ -29,10 +29,10 @@
                             <tbody>
                             <tr style="text-align: center">
                                 <td>专家基本信息</td>
-                                <td>{% if not perms.experts.can_add_expert_info %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.experts.can_delete_expert_info %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.experts.can_change_expert_info %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.experts.can_view_expert_info %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.add_expertinfo %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.delete_expertinfo %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.change_expertinfo %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.experts.view_expertinfo %} - {% else %} 有权限 {% endif %}</td>
                             </tr>
                             <tr style="text-align: center">
                                 <td>专家联系方式</td>
@@ -43,10 +43,10 @@
                             </tr>
                             <tr style="text-align: center">
                                 <td>项目基本信息</td>
-                                <td>{% if not perms.projects.can_add_project %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.projects.can_delete_project %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.projects.can_change_project %} - {% else %} 有权限 {% endif %}</td>
-                                <td>{% if not perms.projects.can_view_project %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.projects.add_project %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.projects.delete_project %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.projects.change_project %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.projects.view_project %} - {% else %} 有权限 {% endif %}</td>
                             </tr>
                             <tr style="text-align: center">
                                 <td>项目访谈信息</td>
@@ -57,7 +57,7 @@
                             </tr>
                             <tr style="text-align: center">
                                 <td>客户基本信息</td>
-                                <td>{% if not perms.users.can_add_client_info %} - {% else %} 有权限 {% endif %}</td>
+                                <td>{% if not perms.users.can_add_client %} - {% else %} 有权限 {% endif %}</td>
                                 <td>{% if not perms.users.can_delete_client_info %} - {% else %} 有权限 {% endif %}</td>
                                 <td>{% if not perms.users.can_change_client_info %} - {% else %} 有权限 {% endif %}</td>
                                 <td>{% if not perms.users.can_view_client_info %} - {% else %} 有权限 {% endif %}</td>
@@ -81,6 +81,7 @@
                     </div>
                 </a>
             </div>
+            {{ user.get_group_permissions}}
         </div>
 
     </div>

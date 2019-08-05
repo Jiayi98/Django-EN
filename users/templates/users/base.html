@@ -42,7 +42,7 @@
             </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">项目</a>
+            <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">客户</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
                 {% if perms.users.can_view_client_info %}
                 <a class="dropdown-item" href="{% url 'client_info_list' %}">客户列表</a>

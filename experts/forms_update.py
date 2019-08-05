@@ -47,7 +47,7 @@ class ExpertInfoFormUpdateDB(forms.ModelForm):
 class ContactInfoFormUpdateDB(forms.ModelForm):
     #ename = forms.CharField(label='姓名',max_length=50, required=True)
 
-    emobile = forms.CharField(label='电话', required=False)
+    emobile = forms.CharField(label='电话', required=True)
     eemail = forms.CharField(label='邮箱', required=False)
     eqq = forms.CharField(label='微信', required=False)
     eupdated_by = forms.CharField(label='修改人', required=False)
@@ -82,7 +82,7 @@ class CommentFormUpdateDB(forms.ModelForm):
 class WorkexpFormUpdateDB(forms.ModelForm):
     stime = forms.CharField(label='开始时间',required=True)
     etime = forms.CharField(label='结束时间',required=False)
-    company = forms.CharField(label='公司',required=False)
+    company = forms.CharField(label='公司',required=True)
     agency = forms.CharField(label='部门', required=False)
     position = forms.CharField(label='职位', required=False)
     duty = forms.CharField(label='职责',required=False)

@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container-fluid">
     <div class="control-group">
-        {% if perms.projects.can_delete_project %}
+        {% if perms.projects.delete_project %}
         <h5>{{ project.pname }}&nbsp
             <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProject">删除</button>
@@ -35,7 +35,7 @@
         </h5>
         {% else %}
         <h5>{{ project.pname }}&nbsp&nbsp&nbsp
-            {% if perms.projects.can_change_project %}
+            {% if perms.projects.change_project %}
             <input type="button" class="btn btn-info btn-sm"  value="修改项目信息" onclick="window.location.href='{{ project.update_project_detail }}'">
             {% endif %}
         </h5>

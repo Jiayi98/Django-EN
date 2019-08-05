@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="control-group">
         <h5>{{ expert.ename }}&nbsp
-            {% if perms.experts.can_change_expert %}
+            {% if perms.experts.change_expertinfo %}
             <input type="button" class="btn btn-info btn-sm"  value="编辑" onclick="window.location.href='{{ expert.get_update_url }}'">
             {% endif %}
         </h5>
@@ -197,6 +197,7 @@
                 <td>{{ p2e.interviewer }}</td>
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
+                    {% if users.can_delete_project_interview %}
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
                     <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
                         <div class="modal-dialog" role="document">
@@ -221,6 +222,7 @@
                     </div>
                     {% if result == '删除失败' %}
                     {{ result }}
+                    {% endif %}
                     {% endif %}
 
                 </td>

@@ -7,15 +7,7 @@
     <div class="control-group" align="left">
         <form action="{{ expert.expert_contact_info_update }}" method="post" name="expert_contact_info_update">
             {% csrf_token %}
-            <!--{% for field in form %}
-                    <div class="form-group row">
-                        <label class="col-1 col-form-label">{{ field.label }}：</label>
-                        <div class="col-3 control-group">
-                            {{ field }}
-                        </div>
-                    </div>
-            {% endfor %}
-            -->
+
             <div class="form-group row">
 
                 <label for="emobile" class="col-1 col-form-label">电 话：</label>

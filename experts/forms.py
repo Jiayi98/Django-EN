@@ -4,9 +4,9 @@ from .models import ExpertInfo,ExpertComments,WorkExp,Payment
 
 # 从ExpertInfo模型中动态地创建表单
 class ExpertInfoForm(forms.ModelForm):
-    ename = forms.CharField(label='*姓名',required=True)
-    esex = forms.CharField(label='性别(M/F)',required=False)
-    emobile = forms.CharField(label='*电话(多个电话请用分号隔开)',required=True)
+    ename = forms.CharField(label='姓名',required=True)
+    esex = forms.CharField(label='性别',required=False)
+    emobile = forms.CharField(label='电话',required=True)
     eemail = forms.CharField(label='邮箱',required=False)
     etrade = forms.CharField(label='行业',required=False)
     esubtrade = forms.CharField(label='子行业',required=False)
@@ -19,7 +19,7 @@ class ExpertInfoForm(forms.ModelForm):
     ebackground = forms.CharField(label='背景',required=False)
     efee = forms.FloatField(label='咨询费',required=False)
     interview_num = forms.IntegerField(label='访谈次数',required=False)
-    eupdated_by = forms.CharField(label='*录入员工姓名',required=True)
+    eupdated_by = forms.CharField(label='录入员工姓名',required=True)
 
 
     class Meta:
@@ -69,8 +69,8 @@ class WorkexpForm(forms.ModelForm):
     # for exp in allExperts:
     #     if(exp.ename==ename and exp.emobile==emobile):
     #         eid = exp.eid
-    stime = forms.CharField(label='*开始时间(YYYY-MM)',required=True)
-    etime = forms.CharField(label='结束时间(YYYY-MM)',required=False)
+    stime = forms.CharField(label='开始时间',required=True)
+    etime = forms.CharField(label='结束时间',required=False)
     company = forms.CharField(label='公司',required=True)
     agency = forms.CharField(label='部门',required=False)
     position = forms.CharField(label='职位',required=False)
