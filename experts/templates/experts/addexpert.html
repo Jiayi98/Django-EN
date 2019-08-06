@@ -33,11 +33,11 @@
             <div class="form-group row">
                 <label for="etrade" class="col-1 col-form-label"><a style="color: red">*</a>行 业：</label>
                         <div class="col-2">
-                            <select name="etrade" id="etrade" class="form-control" onchange="esubtrade_change(this)"></select>
+                            <select name="etrade" id="etrade" class="form-control" onchange="esubtrade_change(this)" required></select>
                         </div>
 
 
-                <label for="esubtrade" class="col-1 col-form-label"><a style="color: red">*</a>子行业：</label>
+                <label for="esubtrade" class="col-1 col-form-label">子行业：</label>
                 <div class="col-2">
                     <select name="esubtrade" id="esubtrade" class="form-control"></select>
                 </div>
@@ -163,7 +163,7 @@
                         // 解析subtrade数据
                         var esubtrades = esubtradeData.split(",");
                         // 添加 默认选项
-                        $("#esubtrade").append("<option>---请选择子行业---</option>");
+                        $("#esubtrade").append("<option>请选择子行业</option>");
                         // 遍历数据对象
                         for(var i =0;i<esubtrades.length;i++){
                             var v = esubtrades[i].split("#");
@@ -182,7 +182,7 @@
                 <label for="esex" class="col-1 col-form-label"><a style="color: red">*</a>性别：</label>
                 <div class="col-2">
                     <select id="esex" name='esex' class="form-control" required>
-                            <option selected>请选择</option>
+                            <option value="X" selected>请选择</option>
                             <option>M</option>
                             <option>F</option>
                         </select>

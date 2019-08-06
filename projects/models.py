@@ -64,7 +64,7 @@ class Project2Expert(models.Model):
     interviewer = models.CharField(max_length=150, blank=True, null=True, verbose_name='约谈人')
     e_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='专家付费总额')
     c_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='客户收费总额')
-    fee_index = models.FloatField(blank=True,null=False,default=0.0,verbose_name='咨费系数')
+    fee_index = models.FloatField(blank=True,null=False,default=1.0,verbose_name='咨费系数')
 
     class Meta:
         managed = True

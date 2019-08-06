@@ -7,8 +7,12 @@
     </div>
     {% if result.status == 'error' %}
     <div class="alert alert-danger" role="alert">
-           操作失败，请重新操作！请确认必填项！
-        </div>
+        操作失败，请重新操作！请确认必填项！
+    </div>
+    {% elif result.status == 'existed' %}
+    <div class="alert alert-danger" role="alert">
+           操作失败，请勿添加重名联系人(英文名不区分大小写)！
+    </div>
     {% endif %}
     <div class="control-group">
         <form method="post">
@@ -21,10 +25,10 @@
                 </div>
                 <label for="bc_gender" class="col-1 col-form-label"><a style="color: red">*</a>性别：</label>
                 <div class="col-3">
-                    <select id="bc_gender" name='bc_gender' class="form-control" required>
-                        <option selected>请选择</option>
-                        <option>M</option>
-                        <option>F</option>
+                    <select id="bc_gender" name='bc_gender' class="form-control">
+                        <option value="X" {% if bc.bc_gender == '' %} selected = "selected" {% endif %}>请选择</option>
+                        <option value="M" {% if bc.bc_gender == 'M' %} selected = "selected" {% endif %}>M</option>
+                        <option value="F" {% if bc.bc_gender == 'F' %} selected = "selected" {% endif %}>F</option>
                     </select>
                 </div>
                 <label for="bc_position" class="col-1 col-form-label">职位：</label>

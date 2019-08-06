@@ -26,7 +26,7 @@
 
                 <label for="esubtrade" class="col-1 col-form-label"><a style="color: red">*</a>子行业：</label>
                 <div class="col-2">
-                    <select name="esubtrade" id="esubtrade" class="form-control" required></select>
+                    <select name="esubtrade" id="esubtrade" class="form-control"></select>
                 </div>
 
                <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
@@ -135,10 +135,14 @@
 
                     function init_etrade() {
                         $("#esubtrade").empty()
-                        $("#etrade").append("<option selected>请选择行业</option>");
+                        $("#etrade").append("<option value='{{expert.etrade}}' selected>{{expert.etrade}}</option>");
+                        $("#etrade").change();
+                        $("#etrade").append("<option>---选择新的行业---</option>");
                         var etradeArr = data.etrade;   // 得到行业数组
                         for(var i = 0; i < etradeArr.length; i++){
-                            $("#etrade").append("<option value='" + etradeArr[i].id + "'>"+ etradeArr[i].name +"</option>");
+                            var etradeName = etradeArr[i].id
+                            $("#etrade").append("<option value='" + etradeName + "'>" + etradeArr[i].name + "</option>");
+
                         }
                     }
 
@@ -150,13 +154,16 @@
                         // 解析subtrade数据
                         var esubtrades = esubtradeData.split(",");
                         // 添加 默认选项
-                        $("#esubtrade").append("<option selected>请选择子行业</option>");
+                        $("#esubtrade").append("<option value='{{expert.esubtrade}}' selected>{{expert.esubtrade}}</option>");
+                        // 添加 默认选项
+                        $("#esubtrade").append("<option>---选择新的子行业---</option>");
                         // 遍历数据对象
                         for(var i =0;i<esubtrades.length;i++){
                             var v = esubtrades[i].split("#");
                             var esubtradeId = v[0];
                             var esubtradeName = v[1];
                             $("#esubtrade").append("<option value='" + esubtradeName + "'>"+ esubtradeName +"</option>");
+
                         }
                     }
 
@@ -169,10 +176,10 @@
                 <label for="esex" class="col-1 col-form-label"><a style="color: red">*</a>性别：</label>
                 <div class="col-2">
                     <select id="esex" name='esex' class="form-control" required>
-                            <option selected>请选择</option>
-                            <option>M</option>
-                            <option>F</option>
-                        </select>
+                        <option value="X" {% if expert.esex == '' %} selected = "selected" {% endif %}>请选择</option>
+                        <option value="M" {% if expert.esex == 'M' %} selected = "selected" {% endif %}>M</option>
+                        <option value="F" {% if expert.esex == 'F' %} selected = "selected" {% endif %}>F</option>
+                    </select>
                 </div>
             </div>
 

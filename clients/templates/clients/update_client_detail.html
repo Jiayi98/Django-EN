@@ -33,7 +33,8 @@
                     <select id="bc_name" name='bc_name' class="form-control" required>
                         <option>请选择</option>
                         {% for bc in bc_list %}
-                        <option>{{ bc.bc_name }}</option>
+                        <option value="{{bc.bc_name}}" {% if bc.bc_name == bc_name %} selected="selected" {% endif %}>{{ bc.bc_name }}</option>
+                        <!--<option>{{ bc.bc_name }}</option>-->
                         {% endfor %}
                     </select>
                 </div>
@@ -42,7 +43,8 @@
                     <select id="fc_name" name='fc_name' class="form-control">
                         <option>请选择</option>
                         {% for fc in fc_list %}
-                        <option>{{ fc.fc_name }}</option>
+                        <option value="{{fc.fc_name}}" {% if fc.fc_name == fc_name %} selected="selected" {% endif %}>{{ fc.fc_name }}</option>
+                        <!--<option>{{ fc.fc_name }}</option>-->
                         {% endfor %}
                     </select>
                 </div>
@@ -52,10 +54,10 @@
                 <div class="col-2">
                     <select id="ctype" name='ctype' class="form-control" required>
                         <option>请选择</option>
-                        <option>咨询公司</option>
-                        <option>投资机构</option>
-                        <option>企业</option>
-                        <option>其它</option>
+                        <option value="咨询公司" {% if client.ctype == '咨询公司' %} selected="selected" {% endif %}>咨询公司</option>
+                        <option value="投资机构" {% if client.ctype == '投资机构' %} selected="selected" {% endif %}>投资机构</option>
+                        <option value="企业" {% if client.ctype == '企业' %} selected="selected" {% endif %}>企业</option>
+                        <option value="其它" {% if client.ctype == '其它' %} selected="selected" {% endif %}>其它</option>
                     </select>
                 </div>
                 <label for="cfee" class="col-2 col-form-label"><a style="color: red">*</a>咨费：</label>

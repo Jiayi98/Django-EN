@@ -189,6 +189,8 @@ def update_client_detail(request,cid):
     client = get_object_or_404(Client, cid=cid)
     bc_list = BusinessContact.objects.filter(cid=client)
     fc_list = FinancialContact.objects.filter(cid=client)
+    bc_name = client.bc_name
+    fc_name = client.fc_name
     result = {}
     if request.method == 'POST':
         form = ClientUpdateForm(instance=client, data=request.POST)
@@ -203,7 +205,7 @@ def update_client_detail(request,cid):
     else:
         form = ClientUpdateForm(instance=client)
 
-    return render(request, template_name, {'client': client, 'form': form,'bc_list':bc_list,'fc_list':fc_list,'result':result })
+    return render(request, template_name, {'fc_name':fc_name,'bc_name':bc_name,'client': client, 'form': form,'bc_list':bc_list,'fc_list':fc_list,'result':result })
 
 
 """
@@ -238,7 +240,8 @@ def client_add_bc(request, cid):
                 #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=cid)
                 return HttpResponseRedirect(myurl)
             else:
-                result['status'] = 'error'
+                #print("已有同名业务联系人")
+                result['status'] = 'existed'
         else:
             result['status'] = 'error'
     else:

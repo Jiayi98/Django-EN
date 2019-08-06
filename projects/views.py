@@ -93,7 +93,11 @@ def add_p2e(request,pid):
                     expert.save()
                 year = timezone.now().year
                 month = timezone.now().month
+                if month < 10:
+                    month = '0{m}'.format(m=month)
                 day = timezone.now().day
+                if day < 10:
+                    day = '0{d}'.format(d=day)
                 date = "{y}-{m}-{d}".format(y=year,m=month,d=day)
                 new_obj = Project2Expert.objects.create(eid=expert,pid=project,c_payment=0.0,e_payment=0.0, interviewer=request.user.username,itv_date=date,itv_stime='00:00',itv_etime='24:00')
                 myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
@@ -179,6 +183,7 @@ def update_project_detail(request,pid):
     template_name = 'projects/update_project_detail.html'
     project = get_object_or_404(Project, pid=pid)
     bc_list = BusinessContact.objects.filter(cid=project.cid)
+    pm = project.pm
     if request.method == 'POST':
         form = ProjectUpdateForm(instance=project, data=request.POST)
         if form.is_valid():
@@ -189,7 +194,7 @@ def update_project_detail(request,pid):
     else:
         form = ProjectUpdateForm(instance=project)
 
-    return render(request, template_name, {'bc_list':bc_list,'project': project, 'form': form, })
+    return render(request, template_name, {'bc_list':bc_list,'project': project, 'form': form,'pm':pm })
 
 def advanced_project_form(request):
     template_name = 'projects/advanced_project_search.html'
