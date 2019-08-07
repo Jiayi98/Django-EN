@@ -2,8 +2,8 @@
 from django.db import models
 from django.urls import reverse
 from django.shortcuts import render
-#import os
-#import xlsxwriter
+
+
 
 class ExpertInfo(models.Model):
     eid = models.AutoField(primary_key=True)
@@ -101,6 +101,20 @@ class ExpertInfo(models.Model):
             #result = ('；').join([work.position for work in work_list])
             #return result
 
+    def get_expert_score(self):
+        from projects.models import Project2Expert
+        interviews = Project2Expert.objects.filter(eid=self.eid)
+        total = 0.0
+        num = 0
+        for itv in interviews:
+            if itv.status == 1:
+                total += itv.avg_score
+                num += 1
+        if num == 0:
+            return 0
+        else:
+            score = round(total / num, 2)
+            return score
 
 class ExpertComments(models.Model):
 

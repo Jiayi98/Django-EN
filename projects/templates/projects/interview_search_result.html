@@ -1,0 +1,106 @@
+{% extends "projects/project_base.html" %}
+{% block content %}
+<div class="container-fluid">
+<div class="control-group" align="left" style="margin-bottom: 10px">
+        <dis class="control-group">
+            <form class="form-inline" method="get" action="{% url 'search_interview_by_time' %}">
+                {% csrf_token %}
+
+                <input style="height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='q' placeholder="YYYY-MM-DD YYYY-MM-DD" required>
+                    &nbsp<button type="submit" class="btn btn-warning btn-sm">搜索</button>
+            </form>
+        </div>
+    </dis>
+
+    <div align="center">
+
+        <h5>项目访谈列表</h5>
+    <table class="table table-hover" align=center border="1" style="font-size:11px;table-layout:fixed;" aline=center>
+            <caption>项目访谈列表</caption>
+            <thead style="background-color: whitesmoke">
+            <tr>
+                <th width="6%">专家</th>
+                <th width="18%">公司</th>
+                <th width="10%">咨询方式</th>
+                <th width="6%">状态</th>
+                <th width="8%">访谈日期</th>
+                <th width="5%">开始时间</th>
+                <th width="5%">结束时间</th>
+                <th width="6%">访谈时长</th>
+                <th width="6%">计费时长</th>
+                <th width="4%">知识</th>
+                <th width="4%">沟通</th>
+                <th width="4%">配合</th>
+                <th width="6%">均分</th>
+                <th width="8%">约谈人</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for p2e in list %}
+            {% if p2e.interviewer == user.username or perms.users.can_view_all_project_interview %}
+            <tr class="info">
+                <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.eid.ename }}</a></td>
+                <td>{{ p2e.get_expert_company }}</td>
+                <td>{{ p2e.itv_approach }}</td>
+                <td>{% if p2e.status == 1 %}
+                    已访谈
+                    {% else %}
+                    未访谈
+                    {% endif %}
+                </td>
+                <td>{{ p2e.itv_date }}</td>
+                <td>{{ p2e.itv_stime }}</td>
+                <td>{{ p2e.itv_etime }}</td>
+                <td>{{ p2e.itv_duration }} 分钟</td>
+                <td>{{ p2e.itv_paid_duration }} 分钟</td>
+                <td>{{ p2e.knowledge }}</td>
+                <td>{{ p2e.communication }}</td>
+                <td>{{ p2e.cooperation }}</td>
+                <td>{{ p2e.avg_score }}</td>
+                <td>{{ p2e.interviewer }}</td>
+                {% if perms.users.can_change_all_project_interview or perms.users.can_change_project_interview %}
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
+
+                    {% if perms.users.can_delete_project_interview %}
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteProjectP2E">删除</button>
+                    <div class="modal fade" id="deleteProjectP2E" tabindex="-1" role="dialog" aria-labelledby="deleteProjectP2ELabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">返回</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{% url 'delete_p2e' p2e.pteid project.pid %}'">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if result == '删除失败' %}
+                        {{ result }}
+                    {% endif %}
+
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+{% endblock content %}

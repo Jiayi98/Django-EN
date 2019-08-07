@@ -80,18 +80,22 @@ class P2EForm(forms.ModelForm):
 class Project2ExpertForm(forms.ModelForm):
     # 该表单用于添加/更新p_e_relationship表中的单条访谈记录
     status = forms.IntegerField(label='访谈状态',required=False)
-    itv_date = forms.CharField(label='访谈日期(YYYY-MM-DD)', required=False)
-    itv_stime = forms.CharField(label='开始时间(hh-mm)', required=False)
-    itv_etime = forms.CharField(label='结束时间(hh-mm)', required=False)
+    itv_date = forms.CharField(label='访谈日期', required=False)
+    itv_stime = forms.CharField(label='开始时间', required=False)
+    itv_etime = forms.CharField(label='结束时间', required=False)
     itv_duration = forms.IntegerField(label='访谈时长(min)',required=False)
     itv_paid_duration = forms.IntegerField(label='计费时长(min)',required=False)
     recorder = forms.CharField(label='录入人',required=False)
     interviewer = forms.CharField(label='约谈人',required=False)
     fee_index = forms.FloatField(label='咨费系数',required=False)
+    knowledge = forms.IntegerField(label='知识范围',required=False)
+    communication = forms.IntegerField(label='沟通能力',required=False)
+    cooperation = forms.IntegerField(label='配合程度',required=False)
+    itv_approach = forms.CharField(label='咨询方式',required=False)
 
     class Meta:
         model = Project2Expert
-        fields = ('status','itv_date','itv_stime', 'itv_etime', 'itv_duration','itv_paid_duration', 'fee_index', 'interviewer', 'recorder')
+        fields = ('status','itv_date','itv_stime', 'itv_etime','itv_approach','itv_duration','itv_paid_duration', 'knowledge','communication','cooperation','fee_index', 'interviewer', 'recorder')
 
     def __init__(self, *args, **kwargs):
         super(Project2ExpertForm, self).__init__(*args, **kwargs)

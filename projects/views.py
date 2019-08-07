@@ -62,12 +62,26 @@ def project_info_list(request):
         projects = paginator.page(paginator.num_pages)
     return render(request, 'projects/project_info_list.html', {'page':page, 'projects':projects})
 
+def interview_info_list(request):
+    interview_list = Project2Expert.objects.all()
+    paginator = Paginator(interview_list, 20)
+    page = request.GET.get('page')
+    try:
+        interviews = paginator.page(page)
+    except PageNotAnInteger:
+        interviews = paginator.page(1)
+    except EmptyPage:
+        interviews = paginator.page(paginator.num_pages)
+    return render(request, 'projects/interview_info_list.html', {'page':page, 'interviews':interviews})
+
+
 def project_detail(request, pid, cid):
     project = get_object_or_404(Project, pid=pid)
     client = Client.objects.filter(cid=cid).first()
     experts = get_object_or_404(Project, pid=pid).expertinfos.all().distinct()
 
     p2es = Project2Expert.objects.filter(pid=pid)
+
     return render(request, 'projects/project_detail.html', {'experts':experts,'project': project, 'client': client, 'p2es': p2es,'createtime':project.pcreatetime})
 
 # 添加项目访谈
@@ -99,7 +113,7 @@ def add_p2e(request,pid):
                 if day < 10:
                     day = '0{d}'.format(d=day)
                 date = "{y}-{m}-{d}".format(y=year,m=month,d=day)
-                new_obj = Project2Expert.objects.create(eid=expert,pid=project,c_payment=0.0,e_payment=0.0, interviewer=request.user.username,itv_date=date,itv_stime='00:00',itv_etime='24:00')
+                new_obj = Project2Expert.objects.create(eid=expert,pid=project,c_payment=0.0,e_payment=0.0, interviewer=request.user.username,itv_date=date,itv_stime='00:00',itv_etime='24:00',avg_score=0.0)
                 myurl = '/projects/update_p2e_detail/{pteid}/'.format(pteid=new_obj.pteid)
                 return HttpResponseRedirect(myurl)
             else:
@@ -111,19 +125,29 @@ def update_p2e_detail(request,pteid):
     object = get_object_or_404(Project2Expert, pteid=pteid)
     #print(type(object.pid),type(object.eid))
     origin_itv_paid_duration = object.itv_paid_duration
+    origin_status = object.status
     result = {}
     if request.method == 'POST':
         form = Project2ExpertForm(instance=object, data=request.POST)
         if form.is_valid():
             form.save()
             if object.itv_paid_duration != origin_itv_paid_duration:
-                #如果计费市场发生改变则更新专家付费和客户收费总价
+                #如果计费时长发生改变则更新专家付费和客户收费总价
                 #print(object.itv_paid_duration, origin_itv_paid_duration)
                 client = object.pid.cid
                 expert = object.eid
                 object.c_payment = (client.cfee* 0.25) * object.fee_index * (object.itv_paid_duration//15)
                 object.e_payment = (expert.efee * 0.25) * (object.itv_paid_duration//15)
                 object.save()
+            #if origin_status == 1 and object.status == 0:
+            #    # 如果访谈状态从1变为0，则三项访谈评分重置为0
+            #    object.knowledge = 0
+            #    object.communication = 0
+            #    object.cooperation = 0
+            #    object.avg_score = 0.0
+
+            object.avg_score = round((object.knowledge + object.communication + object.cooperation) / 3.0,2)
+            object.save()
             result['status'] = 'success'
             myurl = '/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
@@ -251,3 +275,30 @@ def get_pname_index(proj,p):
 
 def comparator(elem):
     return elem[1]
+
+def search_interview_by_time(request):
+    q = request.GET.get('q')
+    error_msg = ''
+    if not q:
+        error_msg = '请输入关键词'
+        return render(request, 'experts/base.html', {'error_msg': error_msg})
+
+    q = q.split()
+    print(q)
+    start = q[0]
+    year = timezone.now().year
+    month = timezone.now().month
+    if month < 10:
+        month = '0{m}'.format(m=month)
+    day = timezone.now().day
+    if day < 10:
+        day = '0{d}'.format(d=day)
+    end = "{y}-{m}-{d}".format(y=year, m=month, d=day)
+    if len(q) > 1:
+        end = q[1]
+    list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
+
+    #list = Project2Expert.objects.raw('SELECT * FROM p_e_relationship where itv_date >= {start} and itv_date <= {end}  order by itv_date;'.format(start=start,end=end))
+
+
+    return render(request, 'projects/interview_search_result.html', {'q':q,'error_msg': error_msg,'list': list,})

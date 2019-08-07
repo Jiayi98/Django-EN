@@ -3,6 +3,7 @@ from experts.models import ExpertInfo
 from clients.models import Client
 from django.urls import reverse
 
+
 # Create your models here.
 class Project(models.Model):
     # B. Project: 一个项目有多个专家,一个专家参与多个项目
@@ -65,6 +66,11 @@ class Project2Expert(models.Model):
     e_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='专家付费总额')
     c_payment = models.FloatField(blank=True,null=False,default=0.0,verbose_name='客户收费总额')
     fee_index = models.FloatField(blank=True,null=False,default=1.0,verbose_name='咨费系数')
+    knowledge = models.IntegerField(blank=True, null=False, default=0, verbose_name='知识范围')
+    communication = models.IntegerField(blank=True, null=False, default=0, verbose_name='沟通能力')
+    cooperation = models.IntegerField(blank=True, null=False, default=0, verbose_name='配合程度')
+    avg_score = models.FloatField(blank=True,null=False,default=0.0,verbose_name='均分')
+    itv_approach = models.CharField(max_length=150, blank=True, null=True, verbose_name='咨询方式')
 
     class Meta:
         managed = True
@@ -76,9 +82,10 @@ class Project2Expert(models.Model):
         return "{}-{}".format(self.pname,self.ename)
 
     def update_p2e_url(self):
-        print("==========projects/models.update_p2e_url()")
+        #print("==========projects/models.update_p2e_url()")
         return reverse('update_p2e_detail', args=[self.pteid,])
 
     def get_expert_company(self):
         # 返回最近一条工作经历的公司名
         return self.eid.get_company()
+

@@ -460,7 +460,7 @@ def advanced_expert_search(request):
 
 
 def search_expert(request):
-    t = time()
+    #t = time()
     q = request.GET.get('q')
     error_msg = ''
     print("========== 全局搜索搜索关键词： ",q)
@@ -470,7 +470,7 @@ def search_expert(request):
 
     expert_list = get_expert_list(q)
     num_of_result = len(expert_list)
-    print("时间：",time() - t)
+    #print("时间：",time() - t)
     # 可对所有模块进行全局搜索
     #client_list = get_client_list(q)
     #project_list = get_project_list(q)

@@ -42,6 +42,19 @@
             </div>
 
             <div class="form-group row">
+                <label for="itv_approach" class="col-2 col-form-label"><a style="color: red">*</a>咨询方式：</label>
+                <div class="col-2">
+                    <select id="itv_approach" name='itv_approach' class="form-control" required>
+                        <option value="请选择" {% if object.itv_approach == '' %} selected="selected" {% endif %}>请选择</option>
+                        <option value="电话访谈" {% if object.itv_approach == '电话访谈' %} selected="selected" {% endif %}>电话访谈</option>
+                        <option value="见面访谈" {% if object.itv_approach == '见面访谈' %} selected="selected" {% endif %}>见面访谈</option>
+                        <option value="数据资料" {% if object.itv_approach == '数据资料' %} selected="selected" {% endif %}>数据资料</option>
+                        <option value="路演" {% if object.itv_approach == '路演' %} selected="selected" {% endif %}>路演</option>
+                        <option value="推荐" {% if object.itv_approach == '推荐' %} selected="selected" {% endif %}>推荐</option>
+                        <option value="其它" {% if object.itv_approach == '其它' %} selected="selected" {% endif %}>其它</option>
+                    </select>
+                </div>
+
                 <label for="status" class="col-2 col-form-label"><a style="color: red">*</a>访谈状态：</label>
                 <div class="col-2">
                     <input type="number" id="status" name='status' class="form-control" placeholder="1:已访谈|0:未访谈" required>
@@ -62,6 +75,25 @@
                 <div class="col-2">
                     <input type="number" id="itv_paid_duration" name='itv_paid_duration' class="form-control" value="{{ object.itv_paid_duration }}" required>
                 </div>
+
+
+            </div>
+
+            <div class="form-group row">
+                <label for="knowledge" class="col-2 col-form-label"><a style="color: red">*</a>知识范围(1-5分)：</label>
+                <div class="col-2">
+                    <input type="number" id="knowledge" name='knowledge' class="form-control" value="{{ object.knowledge }}" placeholder="1-5分">
+                </div>
+
+                <label for="communication" class="col-2 col-form-label"><a style="color: red">*</a>沟通能力(1-5分)：</label>
+                <div class="col-2">
+                    <input type="number" id="communication" name='communication' class="form-control" value="{{ object.communication }}" placeholder="1-5分">
+                </div>
+                <label for="cooperation" class="col-2 col-form-label"><a style="color: red">*</a>配合程度(1-5分)：</label>
+                <div class="col-2">
+                    <input type="number" id="cooperation" name='cooperation' class="form-control" value="{{ object.cooperation }}" placeholder="1-5分">
+                </div>
+
 
 
             </div>
