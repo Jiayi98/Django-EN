@@ -7,7 +7,7 @@ from clients.models import Client,BusinessContact
 from projects.models import Project
 from .forms import *
 import django.utils.timezone as timezone
-
+from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -290,42 +290,53 @@ def comparator(elem):
 
 def search_interview_by_time(request):
     q = request.GET.get('q')
-    error_msg = ''
-    if not q:
-        error_msg = '请输入关键词'
-        return render(request, 'experts/base.html', {'error_msg': error_msg})
-
-    q = q.split()
-    #print("--------------",q)
-    start = q[0]
-    year = timezone.now().year
-    month = timezone.now().month
-    if month < 10:
-        month = '0{m}'.format(m=month)
-    day = timezone.now().day
-    if day < 10:
-        day = '0{d}'.format(d=day)
-    end = "{y}-{m}-{d}".format(y=year, m=month, d=day)
-    if len(q) > 1:
-        end = q[1]
-    #print("--------------", start, end)
-    list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
-
-    #list = Project2Expert.objects.raw('SELECT * FROM p_e_relationship where itv_date >= {start} and itv_date <= {end}  order by itv_date;'.format(start=start,end=end))
-
-
-    return render(request, 'projects/interview_search_result.html', {'q':q,'error_msg': error_msg,'list': list,})
+    list = search_by_time_helper(q)
+    print(len(list))
+    return render(request, 'projects/interview_search_result.html', {'q':q,'list': list,})
 
 def search_client_project_by_time(request):
-    q = request.GET.get('q')
-    error_msg = ''
-    if not q:
-        error_msg = '请输入关键词'
-        return render(request, 'experts/base.html', {'error_msg': error_msg})
+    time = request.GET.get('time')
+    client_name = request.GET.get('client_name')
+    error_msg = 'none'
+    if not time and not client_name:
+        error_msg = 'error'
+        return render(request, 'projects/client_project_search_result.html', {'time': time, 'error_msg': error_msg,})
+    else:
+        list = []
+        if not client_name:
+            list_time = search_by_time_helper(time)
+            list = list_time
+        if not time:
+            print(client_name)
+            list_client = search_by_cnmae_helper(client_name)
 
-    q = q.split()
-    #print("--------------", q)
-    start = q[0]
+            list = list_client
+        else:
+            #print("双重限制")
+            """
+            list_time = search_by_time_helper(time)
+            for elem in list_time:
+                if client_name in elem.pid.cid.cname:
+                    list.append(elem)
+            """
+            list_time = set(search_by_time_helper(time))
+            list_client = set(search_by_cnmae_helper(client_name))
+            list = list_time & list_client
+
+        return render(request, 'projects/client_project_search_result.html', {'error_msg': error_msg, 'list': list })
+
+def search_by_time_helper(time):
+    time = time.split()
+    #print("--------------", time)
+    start = time[0]
+    end = get_today_date()
+    if len(time) > 1:
+        end = time[1]
+    #print("--------------", start, end)
+    list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
+    return list
+
+def get_today_date():
     year = timezone.now().year
     month = timezone.now().month
     if month < 10:
@@ -333,12 +344,20 @@ def search_client_project_by_time(request):
     day = timezone.now().day
     if day < 10:
         day = '0{d}'.format(d=day)
-    end = "{y}-{m}-{d}".format(y=year, m=month, d=day)
-    if len(q) > 1:
-        end = q[1]
-    #print("--------------", start, end)
-    list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
+    date = "{y}-{m}-{d}".format(y=year, m=month, d=day)
+    return date
 
-    # list = Project2Expert.objects.raw('SELECT * FROM p_e_relationship where itv_date >= {start} and itv_date <= {end}  order by itv_date;'.format(start=start,end=end))
+def search_by_cnmae_helper(client_name):
+    clients = Client.objects.filter(cname__contains=client_name)
 
-    return render(request, 'projects/client_project_search_result.html', {'q': q, 'error_msg': error_msg, 'list': list, })
+    projects = []
+    for client in clients:
+        projects_per_client = Project.objects.filter(cid=client)
+        projects = chain(projects_per_client, projects)  # 合并
+
+    list = []
+    for project in projects:
+        temp = Project2Expert.objects.filter(pid=project)
+        list = chain(list,temp)
+    return list
+

@@ -39,7 +39,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for p2e in interviews %}
+            {% for p2e in list %}
             {% if p2e.interviewer == user.username or perms.users.can_view_all_project_interview %}
             <tr class="info">
                 <td>{{ p2e.itv_date }}</td>

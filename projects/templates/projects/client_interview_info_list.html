@@ -5,14 +5,22 @@
         <dis class="control-group">
             <form class="form-inline" method="get" action="{% url 'search_client_project_by_time' %}">
                 {% csrf_token %}
-
-                <input style="height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='q' placeholder="YYYY-MM-DD YYYY-MM-DD" required>
-                    &nbsp<button type="submit" class="btn btn-warning btn-sm">搜索</button>
+                <input style="text-align: center;height: 32px" class="col-2 form-control" type="text" aria-label="Search" name='client_name' placeholder="客户公司名称" >
+                &nbsp
+                <input style="text-align: center;height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='time' placeholder="起止日期" >
+                &nbsp
+                <button type="submit" class="btn btn-warning btn-sm">搜索</button>
             </form>
-            <span class="small muted" style="color: grey">起止日期以空格隔开,只填开始时间则默认截止日期为当日</span>
+            <span class="small muted" style="color: grey">起止日期以空格隔开("2019-08-01 2019-08-15"),只填开始时间则默认截止日期为当日</span>
         </div>
     </dis>
-
+    <div class="control-group">
+        {% if error_msg == 'error' %}
+        <div class="alert alert-danger" role="alert">
+            请输入至少一个关键词
+        </div>
+        {% endif %}
+    </div>
     <div align="center">
 
         <h5>客户项目账单</h5>
