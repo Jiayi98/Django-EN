@@ -76,6 +76,11 @@
                     <input type="number" id="itv_paid_duration" name='itv_paid_duration' class="form-control" value="{{ object.itv_paid_duration }}" required>
                 </div>
 
+                <label for="itv_remark" class="col-2 col-form-label">备注：</label>
+                <div class="col-2">
+                    <textarea id="itv_remark" name='itv_remark' class="form-control">{% if object.itv_remark %}{{ object.itv_remark }}{% else %}{% endif %}</textarea>
+                </div>
+
 
             </div>
 

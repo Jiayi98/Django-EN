@@ -74,17 +74,17 @@
     </div>
 
     <div class="control-group">
-        <h5>项目访谈 &nbsp
+        <h5>访谈 &nbsp;
             {% if perms.users.can_add_project_interview_1 %}
             <input type="button" class="btn btn-success btn-sm"  value="添加" onclick="window.location.href='{{ project.add_p2e }}'">
             {% endif %}
         </h5>
         <table class="table table-condensed table-hover" width="100%" style="font-size:10px; max-height:50px">
-            <caption>项目访谈列表</caption>
+            <caption>访谈列表</caption>
             <thead style="background-color: whitesmoke">
             <tr>
                 <th width="6%">专家</th>
-                <th width="20%">公司</th>
+                <th width="14%">公司</th>
                 <th width="10%">咨询方式</th>
                 <th width="6%">状态</th>
                 <th width="8%">访谈日期</th>
@@ -93,10 +93,12 @@
                 <th width="6%">访谈时长</th>
                 <th width="6%">计费时长</th>
                 <th width="6%">均分</th>
+                <th width="6%">备注</th>
                 <th width="6%">约谈人</th>
                 <th width="10%"></th>
 
             </tr>
+
             </thead>
             <tbody>
             {% for p2e in p2es %}
@@ -117,8 +119,9 @@
                 <td>{{ p2e.itv_duration }} 分钟</td>
                 <td>{{ p2e.itv_paid_duration }} 分钟</td>
                 <td>{{ p2e.avg_score }}</td>
+                <td>{{ p2e.itv_remark }}</td>
                 <td>{{ p2e.interviewer }}</td>
-                 {% if perms.users.can_change_all_project_interview or perms.users.can_change_project_interview %}
+                {% if perms.users.can_change_all_project_interview or perms.users.can_change_project_interview %}
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>
 
@@ -146,7 +149,7 @@
                         </div>
                     </div>
                     {% if result == '删除失败' %}
-                        {{ result }}
+                    {{ result }}
                     {% endif %}
 
                     {% endif %}

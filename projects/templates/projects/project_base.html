@@ -51,9 +51,21 @@
                 {% endif %}
             </div>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账单</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown04">
+                {% if perms.users.can_view_cfee %}
+                <a class="dropdown-item" href="{% url 'client_interview_info_list' %}">客户账单</a>
+                {% endif %}
+                {% if perms.users.can_view_project_interview or perms.users.can_view_all_project_interview %}
+                <a class="dropdown-item" href="{% url 'interview_info_list' %}">专家账单</a>
+                {% endif %}
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard' %}">个人中心</a>
         </li>
+
     </ul>
     <!--<form class="form-inline my-2 my-md-0" method="get" action="{% url 'search_expert' %}">
         {% csrf_token %}

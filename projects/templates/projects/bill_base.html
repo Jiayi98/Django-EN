@@ -24,8 +24,8 @@
         {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbarsExample01">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown active" style="background-color: white;height: 42px">
-                    <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bolder;color: darkslategray">专家</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">专家</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown01">
                         <a class="dropdown-item" href="{% url 'expertinfolist' %}">专家列表</a>
                         <a class="dropdown-item" href="{% url 'advanced_expert_form'%}">查找专家</a>
@@ -53,8 +53,8 @@
                         {% endif %}
                     </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账单</a>
+                <li class="nav-item dropdown" style="background-color: white;height: 42px">
+                    <a class="nav-link dropdown-toggle active" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bolder;color: darkslategray">账单</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
                         {% if perms.users.can_view_cfee %}
                         <a class="dropdown-item" href="{% url 'client_interview_info_list' %}">客户账单</a>
@@ -92,34 +92,9 @@
         </div>
     </nav>
 </header>
-<br>
+<br><br><br>
 
 <main role="main" class="container-fluid">
-
-    <div class="badge-fluid" style="min-height:130px;background-color: lightgrey;border-radius: 5px 5px">
-        <div class="container" align="center" >
-            <h1 class="display-4" style="margin-top: 18px">专家信息管理系统</h1>
-            {% if user.is_authenticated %}
-            <p>
-            <div class="row" align="center">
-                <div class="col-2" align="center">
-                </div>
-                <div class="col-8" align="center">
-                    <a class="btn btn-info" href="{% url 'advanced_expert_form'%}" role="button">查找专家 &raquo;</a>
-
-                    <a class="btn btn-info" href="{% url 'advanced_project_form' %}" role="button">查找项目 &raquo;</a>
-
-                    {% if perms.users.can_view_client_info %}
-                    <a class="btn btn-info" href="{% url 'advanced_client_form' %}" role="button">查找客户 &raquo;</a>
-                    {% endif %}
-                </div>
-                <div class="col-2" align="center">
-                </div>
-            </div>
-            </p>
-            {% endif %}
-        </div>
-    </div>
     <div class="container marketing">
 
 

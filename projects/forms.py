@@ -92,10 +92,10 @@ class Project2ExpertForm(forms.ModelForm):
     communication = forms.IntegerField(label='沟通能力',required=False)
     cooperation = forms.IntegerField(label='配合程度',required=False)
     itv_approach = forms.CharField(label='咨询方式',required=False)
-
+    itv_remark = forms.CharField(label='备注',required=False)
     class Meta:
         model = Project2Expert
-        fields = ('status','itv_date','itv_stime', 'itv_etime','itv_approach','itv_duration','itv_paid_duration', 'knowledge','communication','cooperation','fee_index', 'interviewer', 'recorder')
+        fields = ('status','itv_date','itv_stime', 'itv_etime','itv_approach','itv_duration','itv_paid_duration', 'itv_remark','knowledge','communication','cooperation','fee_index', 'interviewer', 'recorder')
 
     def __init__(self, *args, **kwargs):
         super(Project2ExpertForm, self).__init__(*args, **kwargs)

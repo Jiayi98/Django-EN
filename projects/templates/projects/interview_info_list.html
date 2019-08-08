@@ -1,22 +1,23 @@
-{% extends "projects/project_base.html" %}
+{% extends "projects/bill_base.html" %}
 {% block content %}
 <div class="container-fluid">
-<div class="control-group" align="left" style="margin-bottom: 10px">
-        <dis class="control-group">
+    <div class="control-group" align="left" style="margin-bottom: 10px">
+        <div class="control-group">
             <form class="form-inline" method="get" action="{% url 'search_interview_by_time' %}">
                 {% csrf_token %}
 
-                <input style="height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='q' placeholder="YYYY-MM-DD YYYY-MM-DD" required>
-                    &nbsp<button type="submit" class="btn btn-warning btn-sm">搜索</button>
+                <input style="height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='q' placeholder="2019-08-01 2019-08-15" required>
+                &nbsp;
+                <button type="submit" class="btn btn-warning btn-sm">搜索</button>
             </form>
             <span class="small muted" style="color: grey">起止日期以空格隔开,只填开始时间则默认截止日期为当日</span>
         </div>
-    </dis>
+    </div>
 
     <div align="center">
 
         <h5>专家访谈账单</h5>
-    <table class="table table-hover"  border="1" style="font-size:11px;table-layout:fixed;" align="center">
+        <table class="table table-hover"  border="1" style="font-size:11px;table-layout:fixed;" align="center">
             <caption>专家访谈账单</caption>
             <thead style="background-color: whitesmoke" align="center">
             <tr>

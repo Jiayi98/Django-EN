@@ -12,12 +12,7 @@
             <div class="list-group">
                 <button type="button" class="list-group-item list-group-item-action" onclick="location.href='.'">Welcome, {{ user.username }}</button>
                 <!-- <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'password_change' %}'">修改密码</button>-->
-                {% if perms.users.can_view_cfee %}
-                <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'client_interview_info_list' %}'">客户账单</button>
-                {% endif %}
-                {% if perms.users.can_view_project_interview or perms.users.can_view_all_project_interview %}
-                <button type="button" class="list-group-item list-group-item-action" onclick="location.href='{% url 'interview_info_list' %}'">专家账单</button>
-                {% endif %}
+
                 <a>
                     <div class="control-group">
                         <table class="table table table-bordered" border="0" width="100%" style="font-size:10px;table-layout: auto">
@@ -86,7 +81,7 @@
                     </div>
                 </a>
             </div>
-            {{ user.get_group_permissions}}
+            <!--{{ user.get_group_permissions}}-->
         </div>
 
     </div>

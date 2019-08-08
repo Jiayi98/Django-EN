@@ -71,7 +71,7 @@ class Project2Expert(models.Model):
     cooperation = models.IntegerField(blank=True, null=False, default=0, verbose_name='配合程度')
     avg_score = models.FloatField(blank=True,null=False,default=0.0,verbose_name='均分')
     itv_approach = models.CharField(max_length=150, blank=True, null=True, verbose_name='咨询方式')
-
+    itv_remark = models.TextField(blank=True, null=True, verbose_name='备注')
     class Meta:
         managed = True
         ordering = ('-itv_date', '-itv_stime',)
