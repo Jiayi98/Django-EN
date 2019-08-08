@@ -1,5 +1,5 @@
 from django.db import models
-from experts.models import ExpertInfo
+from experts.models import ExpertInfo,Payment
 from clients.models import Client
 from django.urls import reverse
 
@@ -89,3 +89,8 @@ class Project2Expert(models.Model):
         # 返回最近一条工作经历的公司名
         return self.eid.get_company()
 
+    def get_expert_bank_account(self):
+        payment_methods = Payment.objects.filter(eid=self.eid)
+        if payment_methods.exists() != 0:
+            return payment_methods[0].bank
+        return '未知'

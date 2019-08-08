@@ -6,6 +6,8 @@ urlpatterns = [
     path('projects/', views.project, name='project_base'),
     path('project_info_list/', views.project_info_list, name='project_info_list'),
     path('interview_info_list/', views.interview_info_list, name='interview_info_list'),
+    path('client_interview_info_list/', views.client_interview_info_list, name='client_interview_info_list'),
+
 
     path('add_project/', views.add_project, name='add_project'),
     path('addProjectToDatabase/', views.addProjectToDatabase, name='addProjectToDatabase'),
@@ -18,6 +20,7 @@ urlpatterns = [
     path('projects/delete_p2e/<int:pteid>/<int:pid>', views.delete_p2e, name='delete_p2e'),
 
     path('projects/search_interview_by_time/', views.search_interview_by_time, name='search_interview_by_time'),
+    path('projects/search_client_project_by_time/', views.search_client_project_by_time, name='search_client_project_by_time'),
 
     path('projects/advanced_project_search/', views.advanced_project_search, name='advanced_project_search'),
     path('projects/advanced_project/', views.advanced_project_form, name='advanced_project_form'),

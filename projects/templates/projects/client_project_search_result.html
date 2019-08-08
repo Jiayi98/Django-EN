@@ -3,7 +3,7 @@
 <div class="container-fluid">
 <div class="control-group" align="left" style="margin-bottom: 10px">
         <dis class="control-group">
-            <form class="form-inline" method="get" action="{% url 'search_interview_by_time' %}">
+            <form class="form-inline" method="get" action="{% url 'search_client_project_by_time' %}">
                 {% csrf_token %}
 
                 <input style="height: 32px" class="col-3 form-control" type="text" aria-label="Search" name='q' placeholder="YYYY-MM-DD YYYY-MM-DD" required>
@@ -15,53 +15,54 @@
 
     <div align="center">
 
-        <h5>专家访谈账单</h5>
-    <table class="table table-hover"  border="1" style="font-size:11px;table-layout:fixed;" align="center">
-            <caption>专家访谈账单</caption>
+        <h5>客户项目账单</h5>
+    <table class="table table-hover" align=center border="1" style="font-size:11px;table-layout:fixed;" aline=center>
+            <caption>客户项目账单</caption>
             <thead style="background-color: whitesmoke" align="center">
             <tr>
-                <th width="7%">访谈日期</th>
-                <th width="5%">姓名</th>
-                <th width="9%">电话</th>
-                <th width="12%">公司</th>
-                <th width="6%">职位</th>
 
-                <th width="6%">服务形式</th>
+                <th width="8%">客户公司</th>
+                <th width="10%">项目</th>
+                <th width="5%">客户</th>
+                <th width="5%">专家</th>
+                <th width="10%">专家公司</th>
+                <th width="6%">专家职位</th>
+                <th width="6%">咨询方式</th>
                 <th width="5%">状态</th>
-
-
-                <th width="6%">计费时长</th>
-                <th width="6%">费率</th>
-                <th width="6%">专家付费</th>
-                <th width="24%">专家账户</th>
-                <th width="8%">约谈人</th>
+                <th width="8%">日期</th>
+                <th width="5%">开始时间</th>
+                <th width="5%">访谈时长</th>
+                <th width="5%">计费时长</th>
+                <th width="4%">费率</th>
+                <th width="5%">客户单价</th>
+                <th width="5%">客户收费</th>
             </tr>
             </thead>
             <tbody>
             {% for p2e in interviews %}
             {% if p2e.interviewer == user.username or perms.users.can_view_all_project_interview %}
             <tr class="info">
-                <td>{{ p2e.itv_date }}</td>
 
+                <td><a href="{{ project.cid.get_client_detail }}">{{ p2e.pid.cid.cname }}</a></td>
+                <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pname }}</a></td>
+                <td>{{ p2e.pid.pm }}</td>
                 <td><a href="{{ p2e.eid.get_absolute_url }}">{{ p2e.eid.ename }}</a></td>
-                <td align="center">{{ p2e.eid.emobile }}</td>
                 <td>{{ p2e.get_expert_company }}</td>
                 <td>{{ p2e.eid.get_position }}</td>
                 <td>{{ p2e.itv_approach }}</td>
-
-                <td>{% if p2e.status == 1 %}
+                <td align="center">{% if p2e.status == 1 %}
                     已访谈
                     {% else %}
                     未访谈
                     {% endif %}
                 </td>
-
-
+                <td>{{ p2e.itv_date }}</td>
+                <td align="center">{{ p2e.itv_stime }}</td>
+                <td align="center">{{ p2e.itv_duration }} 分钟</td>
                 <td align="center">{{ p2e.itv_paid_duration }} 分钟</td>
-                <td align="center">{{ p2e.eid.efee }}</td>
-                <td align="center">{{ p2e.e_payment }}</td>
-                <td>{{ p2e.get_expert_bank_account }}</td>
-                <td>{{ p2e.interviewer }}</td>
+                <td align="center">{{ p2e.fee_index }}</td>
+                <td align="center">{{ p2e.pid.cid.cfee }}</td>
+                <td align="center">{{ p2e.c_payment }}</td>
             </tr>
             {% endif %}
             {% endfor %}

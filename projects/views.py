@@ -74,6 +74,18 @@ def interview_info_list(request):
         interviews = paginator.page(paginator.num_pages)
     return render(request, 'projects/interview_info_list.html', {'page':page, 'interviews':interviews})
 
+def client_interview_info_list(request):
+    interview_list = Project2Expert.objects.all()
+    paginator = Paginator(interview_list, 20)
+    page = request.GET.get('page')
+    try:
+        interviews = paginator.page(page)
+    except PageNotAnInteger:
+        interviews = paginator.page(1)
+    except EmptyPage:
+        interviews = paginator.page(paginator.num_pages)
+    return render(request, 'projects/client_interview_info_list.html', {'page':page, 'interviews':interviews})
+
 
 def project_detail(request, pid, cid):
     project = get_object_or_404(Project, pid=pid)
@@ -284,7 +296,7 @@ def search_interview_by_time(request):
         return render(request, 'experts/base.html', {'error_msg': error_msg})
 
     q = q.split()
-    print(q)
+    #print("--------------",q)
     start = q[0]
     year = timezone.now().year
     month = timezone.now().month
@@ -296,9 +308,37 @@ def search_interview_by_time(request):
     end = "{y}-{m}-{d}".format(y=year, m=month, d=day)
     if len(q) > 1:
         end = q[1]
+    #print("--------------", start, end)
     list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
 
     #list = Project2Expert.objects.raw('SELECT * FROM p_e_relationship where itv_date >= {start} and itv_date <= {end}  order by itv_date;'.format(start=start,end=end))
 
 
     return render(request, 'projects/interview_search_result.html', {'q':q,'error_msg': error_msg,'list': list,})
+
+def search_client_project_by_time(request):
+    q = request.GET.get('q')
+    error_msg = ''
+    if not q:
+        error_msg = '请输入关键词'
+        return render(request, 'experts/base.html', {'error_msg': error_msg})
+
+    q = q.split()
+    #print("--------------", q)
+    start = q[0]
+    year = timezone.now().year
+    month = timezone.now().month
+    if month < 10:
+        month = '0{m}'.format(m=month)
+    day = timezone.now().day
+    if day < 10:
+        day = '0{d}'.format(d=day)
+    end = "{y}-{m}-{d}".format(y=year, m=month, d=day)
+    if len(q) > 1:
+        end = q[1]
+    #print("--------------", start, end)
+    list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
+
+    # list = Project2Expert.objects.raw('SELECT * FROM p_e_relationship where itv_date >= {start} and itv_date <= {end}  order by itv_date;'.format(start=start,end=end))
+
+    return render(request, 'projects/client_project_search_result.html', {'q': q, 'error_msg': error_msg, 'list': list, })
