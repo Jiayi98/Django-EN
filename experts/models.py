@@ -32,34 +32,34 @@ class ExpertInfo(models.Model):
         return "{}-{}".format(self.eid, self.ename)
 
     def contact_info(self):
-        print("==============models.contact_info============", self.ename,self.eid)
+        #print("==============models.contact_info============", self.ename,self.eid)
         #print(reverse('expert_contact_info', args=[self.eid]))
         return reverse('expert_contact_info', args=[self.ename,self.eid])
 
     def expert_contact_info_update(self):
-        print("==============models.expert_contact_info_update============", self.ename, self.eid)
+        #print("==============models.expert_contact_info_update============", self.ename, self.eid)
         return reverse('expert_contact_info_update', args=[self.ename, self.eid])
 
     def myDelete(self):
-        print("==============models.delete============",self.eid, self.ename)
+        #print("==============models.delete============",self.eid, self.ename)
         return reverse('myDelete',args=[self.eid, self.ename])
 
     def delete_confirm_url(self):
-        print("==============models.delete_confirm_url============",self.eid, self.ename)
+        #print("==============models.delete_confirm_url============",self.eid, self.ename)
         return reverse('delete_confirm',args=[self.eid, self.ename])
 
     def get_absolute_url(self):
         return reverse('expert_detail',args=[self.ename, self.eid])
 
     def get_comment_url(self):
-        print("==============models.get_comment_url============",self.eid, self.ename)
+        #print("==============models.get_comment_url============",self.eid, self.ename)
         return reverse('comment_detail',args=[self.eid, self.ename])
 
     def add_comment_url(self):
         return reverse('add_comment',args=[self.eid,self.ename])
 
     def get_workexp_url(self):
-        print("==============models.get_workexp_url============", self.eid, self.ename)
+        #print("==============models.get_workexp_url============", self.eid, self.ename)
         return reverse('workexp_detail',args=[self.eid, self.ename])
 
     def add_workexp_url(self):
@@ -134,19 +134,19 @@ class ExpertComments(models.Model):
 
     # 刚加的
     def get_comment_update_url(self):
-        print("==========在models.py中的 get_comment_update_url()")
+        #print("==========在models.py中的 get_comment_update_url()")
         num = self.eid.eid
         #print(type(num))
         return reverse('comment_detail_update', args=[num,self.cmtid ])
 
     def delete_comment(self):
-        print("==========在models.py中的 delete_comment()")
+        #print("==========在models.py中的 delete_comment()")
         num = self.eid.eid
         #print(type(num))
         return reverse('delete_comment', args=[num,self.cmtid ])
 
     def delete_comment_confirm(self):
-        print("==========在models.py中的 delete_comment_confirm()")
+        #print("==========在models.py中的 delete_comment_confirm()")
         num = self.eid.eid
         #print(type(num))
         return reverse('delete_comment_confirm', args=[num,self.cmtid ])
@@ -207,7 +207,7 @@ class Payment(models.Model):
         return "{}-{}".format(self.ep_id,self.eid)
 
     def get_payment_update(self):
-        print("==========在models.py中的 get_payment_update()")
+        #print("==========在models.py中的 get_payment_update()")
 
         return reverse('get_payment_update', args=[self.ep_id,])
 

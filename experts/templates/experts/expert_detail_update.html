@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label for="etrade" class="col-1 col-form-label"><a style="color: red">*</a>行 业：</label>
                         <div class="col-2">
-                            <select name="etrade" id="etrade" class="form-control" onchange="esubtrade_change(this)" required></select>
+                            <select name="etrade" id="etrade" class="form-control" {% if expert.etrade != '' %} onchange="esubtrade_change(this)" {% else %} onchange="esubtrade_change_v2(this)" {% endif %} required></select>
                         </div>
 
 
@@ -128,22 +128,23 @@
 
 
                     }
+
                     $(function () {
                         init_etrade(); // 初始化行业数据
-
                     })
 
                     function init_etrade() {
                         $("#esubtrade").empty()
                         $("#etrade").append("<option value='{{expert.etrade}}' selected>{{expert.etrade}}</option>");
-                        $("#etrade").change();
                         $("#etrade").append("<option>---选择新的行业---</option>");
+
                         var etradeArr = data.etrade;   // 得到行业数组
                         for(var i = 0; i < etradeArr.length; i++){
                             var etradeName = etradeArr[i].id
                             $("#etrade").append("<option value='" + etradeName + "'>" + etradeArr[i].name + "</option>");
 
                         }
+                        $("#etrade").change();
                     }
 
                     function esubtrade_change(obj) {
@@ -164,6 +165,34 @@
                             var esubtradeName = v[1];
                             $("#esubtrade").append("<option value='" + esubtradeName + "'>"+ esubtradeName +"</option>");
 
+                        }
+                    }
+
+                    // 和addexpert.html里的一样。这一部分重复的代码是为了处理之前数据库里很多专家没有行业
+                    function init_etrade_v2() {
+                        $("#esubtrade").empty()
+                        $("#etrade").append("<option>请选择行业</option>");
+                        var etradeArr = data.etrade;   // 得到行业数组
+                        for(var i = 0; i < etradeArr.length; i++){
+                            $("#etrade").append("<option value='" + etradeArr[i].id + "'>"+ etradeArr[i].name +"</option>");
+                        }
+                    }
+
+                    function esubtrade_change_v2(obj) {
+                        $("#esubtrade").empty()
+                        var value=obj.value;    // 获取选中的trade
+                        // 根据trade的 id，找到对应的subtrade
+                        var esubtradeData = data["esubtrade"][value];
+                        // 解析subtrade数据
+                        var esubtrades = esubtradeData.split(",");
+                        // 添加 默认选项
+                        $("#esubtrade").append("<option>请选择子行业</option>");
+                        // 遍历数据对象
+                        for(var i =0;i<esubtrades.length;i++){
+                            var v = esubtrades[i].split("#");
+                            var esubtradeId = v[0];
+                            var esubtradeName = v[1];
+                            $("#esubtrade").append("<option value='" + esubtradeName + "'>"+ esubtradeName +"</option>");
                         }
                     }
 

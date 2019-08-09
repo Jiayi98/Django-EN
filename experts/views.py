@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ExpertInfo,ExpertComments,WorkExp,Payment
 from .forms import ExpertInfoForm, CommentForm,WorkexpForm,deleteConfirmForm,PaymentForm
+import json
 
 from .forms_update import ExpertInfoFormUpdateDB,CommentFormUpdateDB, WorkexpFormUpdateDB,ExpertInfoFormUpdate,ContactInfoFormUpdateDB
 
@@ -75,7 +76,9 @@ def addExpert(request):
             expert = ExpertInfo.objects.filter(ename=new_expert.ename, emobile=new_expert.emobile, eemail=new_expert.eemail)
             if expert.exists() == 0:
                 new_expert = expertInfo_form.save()
-                return HttpResponseRedirect('/addcomplete/')
+                myurl = "/{ename}/{eid}/".format(eid=new_expert.eid, ename=new_expert.ename)
+                return HttpResponseRedirect(myurl)
+                #return HttpResponseRedirect('/addcomplete/')
             else:
                 print("!!!!!!!!!!!This expert already existed!!!!!!!!")
                 error = "error"
@@ -223,6 +226,7 @@ def expert_detail_update(request, ename, eid):
     error = ""
     template_name = 'experts/expert_detail_update.html'
     object = get_object_or_404(ExpertInfo, eid=eid)
+    mydata = {'trade': object.etrade,'subtrade': object.esubtrade}
 
     if request.method == 'POST':
         form = ExpertInfoFormUpdateDB(instance=object, data=request.POST)
@@ -237,7 +241,7 @@ def expert_detail_update(request, ename, eid):
     else:
         form = ExpertInfoFormUpdateDB(instance=object)
 
-    return render(request, template_name, {'expert':object,'form': form,'error':error})
+    return render(request, template_name, {'expert':object,'form': form,'error':error,'mydata':json.dumps(mydata)})
 
 
 def expert_contact_info_update(request, ename, eid):

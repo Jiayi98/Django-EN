@@ -143,13 +143,13 @@ def update_p2e_detail(request,pteid):
         form = Project2ExpertForm(instance=object, data=request.POST)
         if form.is_valid():
             form.save()
-            if object.itv_paid_duration != origin_itv_paid_duration:
-                #如果计费时长发生改变则更新专家付费和客户收费总价
+            if object.itv_paid_duration != origin_itv_paid_duration and object.status == 1:
+                #如果计费时长发生改变则更新专家付费和客户收费总价 且 访谈状态为已访谈
                 #print(object.itv_paid_duration, origin_itv_paid_duration)
                 client = object.pid.cid
                 expert = object.eid
-                object.c_payment = (client.cfee* 0.25) * object.fee_index * (object.itv_paid_duration//15)
-                object.e_payment = (expert.efee * 0.25) * (object.itv_paid_duration//15)
+                object.c_payment = (client.cfee* 0.25) * object.fee_index * (object.itv_paid_duration//15)    #用计费市场计算客户收费
+                object.e_payment = (expert.efee * 0.25) * (object.itv_duration//15)    #用访谈时长计算专家付费
                 object.save()
             #if origin_status == 1 and object.status == 0:
             #    # 如果访谈状态从1变为0，则三项访谈评分重置为0
