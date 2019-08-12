@@ -175,28 +175,35 @@
             <caption>访谈记录</caption>
             <thead style="background-color: whitesmoke">
             <tr>
-                <th width="10%">项目ID-名称</th>
-                <th width="3%">状态</th>
+                <th width="10%">项目名称</th>
+                <th width="10%">服务形式</th>
+                <th width="10%">状态</th>
                 <th width="10%">访谈日期</th>
                 <th width="10%">开始时间</th>
                 <th width="10%">结束时间</th>
-                <th width="6%">访谈时长</th>
-                <th width="6%">计费时长</th>
-                <th width="5%">约谈人</th>
-                <th width="11%"></th>
+                <th width="10%">访谈时长</th>
+                <th width="10%">均分</th>
+                <th width="10%">约谈人</th>
+                <th width="10%"></th>
             </tr>
             </thead>
             <tbody>
             {% for p2e in p2es %}
             <tr class="info">
                 {% if p2e.interviewer == user.username or perms.users.can_view_all_project_interview %}
-                <td><a href="{{ p2e.pid.get_project_detail }}">{{ p2e.pid.pid }}-{{ p2e.pid.pname }}</a></td>
-                <td>{{ p2e.status}}</td>
-                <td>{{ p2e.date }}</td>
+                <td>{{ p2e.pid.pname }}</a></td>
+                <td>{{ p2e.itv_approach }}</td>
+                <td>{% if p2e.status == 1 %}
+                    已访谈
+                    {% else %}
+                    未访谈
+                    {% endif %}
+                </td>
+                <td>{{ p2e.itv_date }}</td>
                 <td>{{ p2e.itv_stime }}</td>
                 <td>{{ p2e.itv_etime }}</td>
                 <td>{{ p2e.itv_duration }} 分钟</td>
-                <td>{{ p2e.itv_paid_duration }} 分钟</td>
+                <td>{{ p2e.avg_score }}</td>
                 <td>{{ p2e.interviewer }}</td>
                 <td>
                     <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='{{ p2e.update_p2e_url }}'">修改</button>

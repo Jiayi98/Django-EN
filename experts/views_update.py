@@ -11,7 +11,6 @@ from django.db import transaction
 from django.contrib.auth.decorators import permission_required
 
 @login_required
-
 def expertInfoDelete(request):
     #print("============用到了这个吗==========")
     form = ExpertInfoFormUpdate()
@@ -57,26 +56,24 @@ def expertInfoUpdateToDatabase(request):
     # 更新信息的form【ExpertInfoFormUpdateDB】所对应的view在view.expert_detail_update()中
     return render(request, 'experts/update_expert.html', {'form': form,'expert_objs': expert_objs})
 
-# 6.24
+
 
 @login_required
 def delete_comment(request, eid, cmtid):
-    print("=============views_update.delete_comment======")
+    #print("=============views_update.delete_comment======")
     template_name = 'experts/comment_detail.html'
     result = {}
     try:
-        #print("==============Try========")
         expert = ExpertInfo.objects.get(eid=eid)
         c = ExpertComments.objects.get(cmtid=cmtid)
     except:
-        #print("==============ERROR========")
         result['status'] = 'error'
     else:
         result['status'] = 'success'
         return render(request, template_name,{'c':c,'expert':expert,'result':result})
 
 def delete_workexp(request, eid, expid):
-    print("=============views_update.delete_workexp======")
+    #print("=============views_update.delete_workexp======")
     template_name = 'experts/workexp_detail.html'
     result = {}
     try:
@@ -107,7 +104,6 @@ def delete_comment_confirm(request, eid, cmtid):
     else:
         c.delete()
         result['status'] = 'success'
-        print(request.get_host())
         url = '/{eid}/{ename}/commentdetail'.format(eid=eid,ename=expert.ename)
         #url = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=eid,ename=expert.ename)
         return HttpResponseRedirect(url)

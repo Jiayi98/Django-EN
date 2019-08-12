@@ -5,10 +5,11 @@
 <div class="container-fluid">
     <div class="control-group">
         {% if perms.users.can_delete_client_info %}
-        <h5>{{ client.cname }}&nbsp
+        <h5>{{ client.cname }}&nbsp;
             <input type="button" class="btn btn-info btn-sm"  value="修改客户信息" onclick="window.location.href='{{ client.update_client_detail }}'">
 
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteClient">删除</button>
+            </h5>
             <div class="modal fade" id="deleteClient" tabindex="-1" role="dialog" aria-labelledby="deleteClientLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -19,7 +20,7 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <label  style="color: red" class="control-label">确定要删除吗？</label>
+                                    <label class="control-label">确定要删除吗？</label>
                                 </div>
                             </form>
                         </div>
@@ -37,7 +38,7 @@
             </div>
             {% endif %}
 
-        </h5>
+
         {% else %}
         <h5>{{ client.cname }}&nbsp
             {% if perms.users.can_change_client_info %}

@@ -20,7 +20,7 @@ delete_client，delete_client_bc，delete_client_fc
 @login_required
 def delete_client(request, cid):
     template_name = 'clients/client_detail.html'
-    client = Client.objects.get(cid=cid)
+    client = get_object_or_404(Client, cid=cid)
     result = client.delete()
     if result:
         return HttpResponseRedirect('/client_info_list/')
@@ -31,7 +31,7 @@ def delete_client(request, cid):
 @login_required
 def delete_client_bc(request, bc_id,cid):
     template_name = 'clients/client_detail.html'
-    bc = BusinessContact.objects.get(bc_id=bc_id)
+    bc = get_object_or_404(BusinessContact, bc_id=bc_id)
     result = bc.delete()
     if result:
         myurl = "/clients/{cid}/detail".format(cid=cid)
@@ -44,7 +44,7 @@ def delete_client_bc(request, bc_id,cid):
 @login_required
 def delete_client_fc(request, fc_id,cid):
     template_name = 'clients/client_detail.html'
-    fc = FinancialContact.objects.get(fc_id=fc_id)
+    fc = get_object_or_404(FinancialContact, fc_id=fc_id)
     result = fc.delete()
     if result:
         myurl = "/clients/{cid}/detail".format(cid=cid)
@@ -104,7 +104,7 @@ def client_detail(request, cid):
 @login_required
 def client_add_project(request, cid):
     form = ProjectForm()
-    client = Client.objects.get(cid=cid)
+    client = get_object_or_404(Client, cid=cid)
     bc_list = BusinessContact.objects.filter(cid=client)    #获取客户方所有业务联系人
     result = {}
     if request.method == "POST":
@@ -117,6 +117,7 @@ def client_add_project(request, cid):
 
         project = Project.objects.filter(pname=pname, cid=client)    #同一个客户不可添加同名项目
         if project.exists() == 0:
+            # 不存在名字为pname的项目，则可添加一个名字为pname的新项目
             new_project = Project()
             new_project.cid = client
             new_project.pname = pname
@@ -157,7 +158,9 @@ def addClientToDatabase(request):
             new_client = clientInfo_form.save(commit=False)
             client = Client.objects.filter(cname=new_client.cname)    # 不可添加同名客户
             if client.exists() == 0:
+                # 如果不存在名字为cname的客户，则可新建名字为cname的新客户
                 new_client = clientInfo_form.save()
+                # 填写了主业务联系人/主财务联系人的名字，则新建该对象
                 if new_client.bc_name != '':
                     BusinessContact.objects.create(bc_name=new_client.bc_name,cid=new_client)
                 if new_client.fc_name != '':
@@ -173,8 +176,11 @@ def addClientToDatabase(request):
                 #myurl = "http://47.94.224.242:1973/clients/{cid}/detail".format(cid=c.cid)
                 return HttpResponseRedirect(myurl)
         else:
-            print("=============views.addClientToDatabase======")
-            print("-----------NOT VALID----------")
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("clients/views.addClientToDatabase")
+            print(username,"Form NOT VALID")
     else:
         pass
         #print("!!!!!!!!!!!GET!!!!!!!!")
@@ -202,6 +208,11 @@ def update_client_detail(request,cid):
             return HttpResponseRedirect(myurl)
         else:
             result['status'] = 'error'
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("clients/views.update_client_detail")
+            print(username, "Form NOT VALID")
     else:
         form = ClientUpdateForm(instance=client)
 
@@ -244,6 +255,12 @@ def client_add_bc(request, cid):
                 result['status'] = 'existed'
         else:
             result['status'] = 'error'
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("clients/views.client_add_bc")
+            print(username, "Form NOT VALID")
+
     else:
         form = BCForm()
     return render(request, template_name, {'form': form, 'result': result, })
@@ -280,6 +297,11 @@ def client_add_fc(request, cid):
                 result['status'] = 'error'
         else:
             result['status'] = 'error'
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("clients/views.client_add_fc")
+            print(username, "Form NOT VALID")
 
     else:
         form = FCForm()
@@ -301,6 +323,12 @@ def bc_detail_update(request, bc_id, cid):
                 return HttpResponseRedirect(myurl)
             else:
                 result['status'] = 'error'
+                username = 'unknown'
+                if request.user.is_authenticated():
+                    username = request.user.username
+                print("clients/views.bc_detail_update")
+                print(username, "Form NOT VALID")
+
         else:
             form = BCForm(instance=object)
 
@@ -322,6 +350,12 @@ def fc_detail_update(request, fc_id, cid):
                 return HttpResponseRedirect(myurl)
             else:
                 result['status'] = 'error'
+                username = 'unknown'
+                if request.user.is_authenticated():
+                    username = request.user.username
+                print("clients/views.fc_detail_update")
+                print(username, "Form NOT VALID")
+
         else:
             form = FCForm(instance=object)
 

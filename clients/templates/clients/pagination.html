@@ -4,7 +4,7 @@
             <a href="?page={{ page.previous_page_number }}" class="btn btn-success btn-sm">Previous Page</a>&nbsp&nbsp&nbsp
         {% endif %}
         <span class="current">
-            Page {{ page.number }} of {{ page.paginator.num_pages }}
+            第 {{ page.number }} 页/共 {{ page.paginator.num_pages }} 页
         </span>
         {% if page.has_next %}
             &nbsp&nbsp&nbsp<a href="?page={{ page.next_page_number }}" class="btn btn-success btn-sm">Next Page</a>

@@ -30,7 +30,7 @@ def myDelete(request, eid, ename):
     expert = get_object_or_404(ExpertInfo, ename=ename, eid=eid)
     return render(request, 'experts/delete.html', {'expert':expert})
 
-#def deleteConfirm(request):
+@login_required
 def delete_confirm(request, eid,ename):
     #print("=============views.delete_confirm======")
     template_name = 'experts/delete_confirm.html'
@@ -54,8 +54,12 @@ def delete_confirm(request, eid,ename):
                 return HttpResponseRedirect('/addcomplete/')
 
         else:
-            print("=============views.delete_confirm======")
-            print("==============form is INVALID========")
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.delete_confirm")
+            print(username, "FORM NOT VALID")
+
     else:
         form = deleteConfirmForm(request.POST)
 
@@ -80,12 +84,15 @@ def addExpert(request):
                 return HttpResponseRedirect(myurl)
                 #return HttpResponseRedirect('/addcomplete/')
             else:
-                print("!!!!!!!!!!!This expert already existed!!!!!!!!")
+                print("experts/views.addExpert","This expert already existed!")
                 error = "error"
                 return render(request, 'experts/addexpert.html', {'form': form, 'error': error})
         else:
-            print("=============views.addExpertToDatabase======")
-            print("-----------NOT VALID----------")
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.addExpert")
+            print(username, "FORM NOT VALID")
             error = "error"
     else:
         return render(request, 'experts/addexpert.html', {'form': form, 'error': error})
@@ -106,9 +113,8 @@ def add_comment(request,eid,ename):
         #myurl = 'http://47.94.224.242:1973/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
         myurl = '/{eid}/{ename}/commentdetail'.format(eid=expert.eid, ename=expert.ename)
     except:
-        print("=============views.add_comment======")
-        print("!!!!!!!!!!!This expert not exist!!!!!!!!")
-        return HttpResponseRedirect('/addecomment/')
+        print("experts/views.add_comment")
+        print("This expert not exist")
     else:
         #print("----------Expert Exists----------")
 
@@ -148,14 +154,11 @@ def add_workexp(request,eid,ename):
     try:
         expert = ExpertInfo.objects.get(eid=eid)
     except:
-        print("=============views.add_workexp======")
-        print("!!!!!!!!!!!This expert not exist!!!!!!!!")
-        return HttpResponseRedirect('/addecomment/')
+        print("experts/views.add_workexp")
+        print("This expert not exist!")
     else:
         #print("----------Expert Exists----------")
-
         if request.method == "POST":
-            #print("----------进来了----------")
             newExp = WorkExp()
             newExp.eid_id = expert.eid
             newExp.stime = stime
@@ -183,7 +186,7 @@ def add_workexp(request,eid,ename):
 def addok(request):
     return render(request, 'experts/add_complete.html')
 
-
+@login_required
 def expertInfo_list(request):
     experts_list = ExpertInfo.objects.raw('select * from expert_info order by eid desc limit 100;')
     #experts_list = ExpertInfo.objects.all()[:300]
@@ -197,6 +200,7 @@ def expertInfo_list(request):
         experts = paginator.page(paginator.num_pages)
     return render(request, 'experts/expertinfo_list.html', {'page':page, 'experts':experts})
 
+@login_required
 def expert_detail(request, ename, eid):
     expert = get_object_or_404(ExpertInfo, eid=eid)
     pay = Payment.objects.filter(eid=expert)
@@ -218,10 +222,7 @@ def expert_detail(request, ename, eid):
     addtime = ' {year}年{mon}月{day}日'.format(year=expert.addtime.year,mon=expert.addtime.month, day=expert.addtime.day)
     return render(request, 'experts/expert_detail.html', {'projects':projects,'addtime':addtime,'expert': expert, 'workexps':workexps,'comments': comments,'pay':pay,'p2es':p2es})
 
-
-
-
-
+@login_required
 def expert_detail_update(request, ename, eid):
     error = ""
     template_name = 'experts/expert_detail_update.html'
@@ -237,13 +238,17 @@ def expert_detail_update(request, ename, eid):
             return HttpResponseRedirect(myurl)
         else:
             error = "error"
-            print("=======expert_detail_update/ form is invalid=========")
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.expert_detail_update")
+            print(username, "FORM NOT VALID")
     else:
         form = ExpertInfoFormUpdateDB(instance=object)
 
     return render(request, template_name, {'expert':object,'form': form,'error':error,'mydata':json.dumps(mydata)})
 
-
+@login_required
 def expert_contact_info_update(request, ename, eid):
     #print('==================views.expert_contact_info_update===============')
     template_name = 'experts/update_expert_contact_info.html'
@@ -256,19 +261,26 @@ def expert_contact_info_update(request, ename, eid):
             myurl = "/{ename}/{eid}/".format(ename=ename, eid=eid)
             #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=ename, eid=eid)
             return HttpResponseRedirect(myurl)
+        else:
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.expert_contact_info_update")
+            print(username, "FORM NOT VALID")
     else:
         form = ContactInfoFormUpdateDB(instance=object)
 
 
     return render(request, template_name, {'expert': object, 'form': form, })
 
+@login_required
 def comment_detail(request, eid, ename):
     #print("=================在views.py中comment_detail()==========")
     expert = get_object_or_404(ExpertInfo,eid=eid)
     comments = ExpertComments.objects.filter(eid=eid)
     return render(request, 'experts/comment_detail.html', {'expert':expert,'comments': comments})
 
-# 刚加的
+@login_required
 def comment_detail_update(request, eid, cmtid):
     #print("=============views.py中comment_detail_update()")
     template_name = 'experts/comment_detail_update.html'
@@ -289,19 +301,26 @@ def comment_detail_update(request, eid, cmtid):
             #myurl = "/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
             #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
             return HttpResponseRedirect(myurl)
+        else:
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.comment_detail_update")
+            print(username, "FORM NOT VALID")
     else:
         form = CommentFormUpdateDB(instance=comment)
 
     return render(request, template_name, {'comment':comment,'expert': expert,'form': form,'result':result})
 
-
+@login_required
 def workexp_detail(request, eid, ename):
     #print("-------views.py/In Workexp_Detail-----")
     expert = get_object_or_404(ExpertInfo,eid=eid)
     workexps = WorkExp.objects.filter(eid=eid)
     return render(request, 'experts/workexp_detail.html', {'expert':expert,'workexps': workexps})
 
-# 刚加的
+
+@login_required
 def workexp_detail_update(request, eid, expid):
     #print("=============views.py中workexp_detail_update()")
     template_name = 'experts/workexp_detail_update.html'
@@ -321,17 +340,22 @@ def workexp_detail_update(request, eid, expid):
             #myurl = "http://47.94.224.242:1973/{ename}/{eid}/".format(ename=expert.ename, eid=eid)
             return HttpResponseRedirect(myurl)
         else:
-            print("=============views.py中workexp_detail_update()============")
-            print("表单无效")
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.workexp_detail_update")
+            print(username, "FORM NOT VALID")
 
     else:
         form = WorkexpFormUpdateDB(instance=exp)
 
     return render(request, template_name, {'workexp':exp,'expert': expert,'form': form,'result':result})
 
+@login_required
 def advanced_expert_form(request):
     return render(request, 'experts/advanced_expert_search.html')
 
+@login_required
 def advanced_expert_search(request):
     # 对某字段进行限定 = 用户对该字段进行搜索
     template_name = 'experts/advanced_expert_search_result.html'
@@ -360,13 +384,15 @@ def advanced_expert_search(request):
     if not company:
         company = ''
 
-    print("高级搜索关键词：",info_variables, work_variables)
+    username = 'unknown'
+    if request.user.is_authenticated():
+        username = request.user.username
+    print(username,"正在进行组合搜索：",info_variables, work_variables)
+
     if len(info_variables) == 0 and len(work_variables) == 0:
         # 没有任何限制，回到查找专家页面
         return advanced_expert_form(request)
-        # expert_list = ExpertInfo.objects.all()
-        # num_of_result = len(expert_list)
-        #return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
+
     elif eid:
         # 已知eid，直接获取对象
         expert_list = ExpertInfo.objects.filter(eid=eid)
@@ -396,7 +422,7 @@ def advanced_expert_search(request):
                                              ebackground__contains=keywords[0]
                                              )
 
-            print("第一次筛选结果数量：",len(temp))
+            #print("第一次筛选结果数量：",len(temp))
             keywords = keywords[1:]     # 获取第一个之后的搜索词
             for k in keywords:
                 pool = temp
@@ -404,7 +430,7 @@ def advanced_expert_search(request):
                 for expert in pool:
                     if expert.ebackground and k in expert.ebackground:
                         temp.append(expert)
-                print("本次筛选关键词为：",k, "筛选结果数量：", len(temp))
+                #print("本次筛选关键词为：",k, "筛选结果数量：", len(temp))
                 if len(temp) == 0:
                     break
 
@@ -417,7 +443,6 @@ def advanced_expert_search(request):
                 )
 
         num_of_result = len(expert_list)
-        print("num_of_result:", num_of_result)
         return render(request, template_name, {'num_of_result': num_of_result, 'expert_list': expert_list})
 
     else:
@@ -425,7 +450,7 @@ def advanced_expert_search(request):
         result_list = WorkExp.objects.filter(company__contains=company)
         expert_list = []
         keywords = background.split()
-        print("先通过公司限制筛选出的结果数量：",len(result_list))    # 对背景字段的搜索词进行分隔
+        #print("先通过公司限制筛选出的结果数量：",len(result_list))    # 对背景字段的搜索词进行分隔
         for workexp in result_list:
             expert = workexp.eid
             if name in info_variables and (not expert.ename or name not in expert.ename):
@@ -445,11 +470,11 @@ def advanced_expert_search(request):
             for k in keywords:
                 pool = temp
                 temp = []
-                print("本次筛选关键词为：", k)
+                #print("本次筛选关键词为：", k)
                 for expert in pool:
                     if expert.ebackground and k in expert.ebackground:
                         temp.append(expert)
-                print("本次筛选关键词为：",k, "筛选结果数量：", len(temp))
+                #print("本次筛选关键词为：",k, "筛选结果数量：", len(temp))
                 if len(temp) == 0:
                     break
 
@@ -462,12 +487,15 @@ def advanced_expert_search(request):
 
 
 
-
+@login_required
 def search_expert(request):
     #t = time()
     q = request.GET.get('q')
     error_msg = ''
-    print("========== 全局搜索搜索关键词： ",q)
+    username = 'unknown'
+    if request.user.is_authenticated():
+        username = request.user.username
+    print(username, "正在进行全局搜索： ",q)
     if not q:
         error_msg = '请输入关键词'
         return render(request, 'experts/base.html', {'error_msg': error_msg})
@@ -481,7 +509,7 @@ def search_expert(request):
     #print(len(expert_list), len(client_list), len(project_list))
     return render(request, 'experts/search_expert_results.html', {'num_of_result':num_of_result,'q':q,'error_msg': error_msg,'expert_list': expert_list,})
 
-
+# 全局搜索涵盖client信息表
 def get_client_list(q):
     client_list = []
     result_list1 = Client.objects.filter( Q(cname__contains=q) |
@@ -495,6 +523,7 @@ def get_client_list(q):
     client_list = list(set(result_list1))
     return client_list
 
+# 全局搜索涵盖project信息表
 def get_project_list(q):
     project_list = []
     result_list1 = Project.objects.filter(Q(pname__contains=q) |
@@ -509,6 +538,7 @@ def get_project_list(q):
     project_list = list(set(result_list1))
     return project_list
 
+# 全局搜索涵盖expert信息表
 def get_expert_list(q):
     expert_list = []
     result_list1 = []
@@ -597,16 +627,17 @@ def get_index(exp,q):
 def comparator(elem):
     return elem[1]
 
+
 def isContainChinese(s):
     for c in s:
         if ('\u4e00' <= c <= '\u9fa5'):
             return True
     return False
 
+@login_required
 def get_payment_update(request, ep_id):
     template_name = 'experts/payment_update.html'
-    print("========experts/views.get_payment_update========")
-    print(ep_id)
+
     pay = get_object_or_404(Payment, ep_id=ep_id)
 
     if request.method == 'POST':
@@ -618,8 +649,12 @@ def get_payment_update(request, ep_id):
             print(myurl)
             return HttpResponseRedirect(myurl)
         else:
-            print("=============views.get_payment_update()============")
-            print("表单无效")
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("experts/views.get_payment_update")
+            print(username, "FORM NOT VALID")
+
     else:
         form = PaymentForm(instance=pay)
 

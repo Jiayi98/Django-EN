@@ -15,9 +15,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def delete_project(request, pid):
-    print("=============project/views.delete======")
     template_name = 'projects/project_detail.html'
-    project = Project.objects.get(pid=pid)
+    project = get_object_or_404(Project,pid=pid)
     result = project.delete()
     if result:
         return HttpResponseRedirect('/project_info_list/')
@@ -27,10 +26,9 @@ def delete_project(request, pid):
 
 @login_required
 def delete_p2e(request, pteid, pid):
-    print("=============project/views.delete======")
     template_name = 'projects/project_detail.html'
-    p2e = Project2Expert.objects.get(pteid=pteid)
-    project = Project.objects.get(pid=pid)
+    p2e = get_object_or_404(Project2Expert, pteid=pteid)
+    project = get_object_or_404(Project,pid=pid)
 
     # 删除一次访谈记录，对应专家的访谈次数字段更新
     expert = p2e.eid
@@ -50,6 +48,7 @@ def delete_p2e(request, pteid, pid):
 def project(request):
     return render(request, 'projects/project_base.html')
 
+@login_required
 def project_info_list(request):
     projects_list = Project.objects.all()[:100]
     paginator = Paginator(projects_list, 20)
@@ -62,6 +61,7 @@ def project_info_list(request):
         projects = paginator.page(paginator.num_pages)
     return render(request, 'projects/project_info_list.html', {'page':page, 'projects':projects})
 
+@login_required
 def interview_info_list(request):
     interview_list = Project2Expert.objects.all()
     paginator = Paginator(interview_list, 20)
@@ -74,6 +74,7 @@ def interview_info_list(request):
         interviews = paginator.page(paginator.num_pages)
     return render(request, 'projects/interview_info_list.html', {'page':page, 'interviews':interviews})
 
+@login_required
 def client_interview_info_list(request):
     interview_list = Project2Expert.objects.all()
     paginator = Paginator(interview_list, 20)
@@ -86,7 +87,7 @@ def client_interview_info_list(request):
         interviews = paginator.page(paginator.num_pages)
     return render(request, 'projects/client_interview_info_list.html', {'page':page, 'interviews':interviews})
 
-
+@login_required
 def project_detail(request, pid, cid):
     project = get_object_or_404(Project, pid=pid)
     client = Client.objects.filter(cid=cid).first()
@@ -97,6 +98,7 @@ def project_detail(request, pid, cid):
     return render(request, 'projects/project_detail.html', {'experts':experts,'project': project, 'client': client, 'p2es': p2es,'createtime':project.pcreatetime})
 
 # 添加项目访谈
+@login_required
 def add_p2e(request,pid):
     form = P2EForm(data=request.POST)
     project = Project.objects.get(pid=pid)
@@ -164,6 +166,12 @@ def update_p2e_detail(request,pteid):
             myurl = '/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=object.pid.pid, cid=object.pid.cid.cid)
             return HttpResponseRedirect(myurl)
+        else:
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("projects/views.update_p2e_detail")
+            print(username, "FORM NOT VALID")
     else:
         form = Project2ExpertForm(instance=object)
 
@@ -215,6 +223,7 @@ def addProjectToDatabase(request):
     # 重定向
     return HttpResponseRedirect('/project_info_list/')
 
+@login_required
 def update_project_detail(request,pid):
     template_name = 'projects/update_project_detail.html'
     project = get_object_or_404(Project, pid=pid)
@@ -227,15 +236,23 @@ def update_project_detail(request,pid):
             myurl = '/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
             #myurl = 'http://47.94.224.242:1973/project_detail/{pid}/{cid}/'.format(pid=project.pid,cid=project.cid.cid)
             return HttpResponseRedirect(myurl)
+        else:
+            username = 'unknown'
+            if request.user.is_authenticated():
+                username = request.user.username
+            print("projects/views.update_project_detail")
+            print(username, "FORM NOT VALID")
     else:
         form = ProjectUpdateForm(instance=project)
 
     return render(request, template_name, {'bc_list':bc_list,'project': project, 'form': form,'pm':pm })
 
+@login_required
 def advanced_project_form(request):
     template_name = 'projects/advanced_project_search.html'
     return render(request, template_name)
 
+@login_required
 def advanced_project_search(request):
     template_name = 'projects/advanced_project_search_result.html'
     pid = request.GET.get('pid')
@@ -262,7 +279,7 @@ def advanced_project_search(request):
             project_list = search_sort_pname_helper(project_list, pname)
         return render(request, template_name, {'num_of_result': num_of_result, 'project_list': project_list})
 
-
+# 以项目名称匹配度排序
 def search_sort_pname_helper(proj_list, p):
     new_list = []
     for proj in proj_list:
@@ -288,12 +305,14 @@ def get_pname_index(proj,p):
 def comparator(elem):
     return elem[1]
 
+# 专家账单筛选，起止时间
 def search_interview_by_time(request):
     q = request.GET.get('q')
     list = search_by_time_helper(q)
-    print(len(list))
+    #print(len(list))
     return render(request, 'projects/interview_search_result.html', {'q':q,'list': list,})
 
+# 客户账单筛选，客户公司名称和起止时间
 def search_client_project_by_time(request):
     time = request.GET.get('time')
     client_name = request.GET.get('client_name')
@@ -325,6 +344,7 @@ def search_client_project_by_time(request):
 
         return render(request, 'projects/client_project_search_result.html', {'error_msg': error_msg, 'list': list })
 
+# 起止时间筛选
 def search_by_time_helper(time):
     time = time.split()
     #print("--------------", time)
@@ -336,6 +356,7 @@ def search_by_time_helper(time):
     list = Project2Expert.objects.filter(itv_date__gte=start, itv_date__lte=end)
     return list
 
+# format当天日期
 def get_today_date():
     year = timezone.now().year
     month = timezone.now().month
@@ -347,6 +368,7 @@ def get_today_date():
     date = "{y}-{m}-{d}".format(y=year, m=month, d=day)
     return date
 
+# 客户账单，客户公司名称筛选
 def search_by_cnmae_helper(client_name):
     clients = Client.objects.filter(cname__contains=client_name)
 
