@@ -79,18 +79,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'exp_old',
-        'USER': 'zhoujiayi',
-        'PASSWORD': 'JUDYzhou959',
-        'HOST': 'rm-2zebl9v5873iw36c71o.mysql.rds.aliyuncs.com',
-        'PORT': '3306',
-        'OPTIONS':{
-            'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset':'utf8mb4',
-            'connect_timeout': 10,
-        },
+    
     }
 }
 
